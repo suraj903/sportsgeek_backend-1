@@ -1,0 +1,29 @@
+package com.project.sportsgeek.mapper;
+
+import com.project.sportsgeek.model.ContestWithUser;
+import org.springframework.jdbc.core.RowMapper;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class ContestRowMapper implements RowMapper<ContestWithUser> {
+
+    @Override
+    public ContestWithUser mapRow(ResultSet rs, int rowNum) throws SQLException {
+        ContestWithUser contest = new ContestWithUser();
+        contest.setContestId(rs.getInt("BetTeamId"));
+        contest.setMatchId(rs.getInt("MatchId"));
+        contest.setUserId(rs.getInt(rs.getInt("UserId")));
+        contest.setContestPoints(rs.getInt("BetPoints"));
+        contest.setUsername(rs.getString("Username"));
+        contest.setTeamId(rs.getInt("TeamId"));
+        contest.setShortName(rs.getString("TeamShortName"));
+//	        contest.setShortName(rs.getString("TeamShortName"));
+//	        contest.setShortName(rs.getString("TeamShortName"));
+        contest.setProfilePicture(rs.getString("ProfilePicture"));
+        contest.setFirstName(rs.getString("FirstName"));
+        contest.setLastName(rs.getString("LastName"));
+        contest.setWinningPoints(rs.getInt("WinningPoints"));
+        return contest;
+    }
+}

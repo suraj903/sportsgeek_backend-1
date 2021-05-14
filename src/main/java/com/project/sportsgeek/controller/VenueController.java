@@ -33,9 +33,9 @@ public class VenueController {
     )
     @PreAuthorize("hasRole('Admin')")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Result<List<Venue>>> getAllVenue() {
+    public ResponseEntity<List<Venue>> getAllVenue() {
         Result<List<Venue>> VenueList = venueService.findAllVenue();
-        return new ResponseEntity<>(VenueList, HttpStatus.valueOf(VenueList.getCode()));
+        return new ResponseEntity<>(VenueList.getData(), HttpStatus.valueOf(VenueList.getCode()));
     }
 
     @ApiResponses(value =
@@ -48,9 +48,9 @@ public class VenueController {
     )
     @PreAuthorize("hasRole('Admin')")
     @GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Result<Venue>> getVenueById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id) throws Exception {
+    public ResponseEntity<Venue> getVenueById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id) throws Exception {
         Result<Venue> VenueList = venueService.findVenueById(id);
-        return new ResponseEntity<>(VenueList, HttpStatus.valueOf(VenueList.getCode()));
+        return new ResponseEntity<>(VenueList.getData(), HttpStatus.valueOf(VenueList.getCode()));
     }
 
     @ApiResponses(value =
@@ -63,9 +63,9 @@ public class VenueController {
     )
     @PreAuthorize("hasRole('Admin')")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Result<Venue>> addVenue(@RequestBody(required = true) @Valid Venue venue) throws Exception {
+    public ResponseEntity<Venue> addVenue(@RequestBody(required = true) @Valid Venue venue) throws Exception {
         Result<Venue> VenueResult = venueService.addVenue(venue);
-        return new ResponseEntity(VenueResult,HttpStatus.valueOf(VenueResult.getCode()));
+        return new ResponseEntity(VenueResult.getData(), HttpStatus.valueOf(VenueResult.getCode()));
     }
 
     @ApiResponses(value =
@@ -78,9 +78,9 @@ public class VenueController {
     )
     @PreAuthorize("hasRole('Admin')")
     @PutMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Result<Venue>> updateVenue(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id,@RequestBody(required = true) @Valid Venue Venue) throws Exception {
+    public ResponseEntity<Venue> updateVenue(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id,@RequestBody(required = true) @Valid Venue Venue) throws Exception {
         Result<Venue> VenueResult = venueService.updateVenue(id,Venue);
-        return new ResponseEntity(VenueResult,HttpStatus.valueOf(VenueResult.getCode()));
+        return new ResponseEntity(VenueResult.getData(), HttpStatus.valueOf(VenueResult.getCode()));
     }
 
     @ApiResponses(value =
@@ -95,6 +95,6 @@ public class VenueController {
     @DeleteMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Result<Venue>> deleteVenueById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id) throws Exception {
         Result<Integer> integerResult =  venueService.deleteVenue(id);
-        return new ResponseEntity(integerResult,HttpStatus.valueOf(integerResult.getCode()));
+        return new ResponseEntity(integerResult, HttpStatus.valueOf(integerResult.getCode()));
     }
 }

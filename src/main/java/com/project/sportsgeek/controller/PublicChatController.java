@@ -33,9 +33,9 @@ public class PublicChatController {
     )
     @PreAuthorize("hasAnyRole('Admin','User')")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Result<List<PublicChatWithUser>>> getAllPublicChat() {
+    public ResponseEntity<List<PublicChatWithUser>> getAllPublicChat() {
         Result<List<PublicChatWithUser>> publicChatList = publicChatService.findAllPublicChat();
-        return new ResponseEntity<>(publicChatList, HttpStatus.valueOf(publicChatList.getCode()));
+        return new ResponseEntity<>(publicChatList.getData(), HttpStatus.valueOf(publicChatList.getCode()));
     }
 
     @ApiResponses(value =
@@ -47,9 +47,9 @@ public class PublicChatController {
     )
     @PreAuthorize("hasAnyRole('Admin','User')")
     @GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Result<PublicChatWithUser>> getPublicChatById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id) throws Exception {
+    public ResponseEntity<PublicChatWithUser> getPublicChatById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id) throws Exception {
         Result<PublicChatWithUser> publicChatList = publicChatService.findPublicChatById(id);
-        return new ResponseEntity<>(publicChatList, HttpStatus.valueOf(publicChatList.getCode()));
+        return new ResponseEntity<>(publicChatList.getData(), HttpStatus.valueOf(publicChatList.getCode()));
     }
 
     @ApiResponses(value =
@@ -61,9 +61,9 @@ public class PublicChatController {
     )
     @PreAuthorize("hasAnyRole('Admin','User')")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Result<PublicChat>> addPublicChat(@RequestBody(required = true) @Valid PublicChat publicChat) throws Exception {
+    public ResponseEntity<PublicChat> addPublicChat(@RequestBody(required = true) @Valid PublicChat publicChat) throws Exception {
         Result<PublicChat> publicChatResult = publicChatService.addPublicChat(publicChat);
-        return new ResponseEntity(publicChatResult, HttpStatus.valueOf(publicChatResult.getCode()));
+        return new ResponseEntity(publicChatResult.getData(), HttpStatus.valueOf(publicChatResult.getCode()));
     }
 
     @ApiResponses(value =
@@ -75,9 +75,9 @@ public class PublicChatController {
     )
     @PreAuthorize("hasAnyRole('Admin','User')")
     @PutMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Result<PublicChat>> updatePublicChat(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id,@RequestBody(required = true) @Valid PublicChat publicChat) throws Exception {
+    public ResponseEntity<PublicChat> updatePublicChat(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id,@RequestBody(required = true) @Valid PublicChat publicChat) throws Exception {
         Result<PublicChat> publicChatResult = publicChatService.updatePublicChat(id, publicChat);
-        return new ResponseEntity(publicChatResult,HttpStatus.valueOf(publicChatResult.getCode()));
+        return new ResponseEntity(publicChatResult.getData(), HttpStatus.valueOf(publicChatResult.getCode()));
     }
 
     @ApiResponses(value =

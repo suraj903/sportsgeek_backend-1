@@ -35,9 +35,9 @@ public class TournamentController {
     )
     @PreAuthorize("hasRole('Admin')")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Result<List<Tournament>>> getAllTournament() {
+    public ResponseEntity<List<Tournament>> getAllTournament() {
         Result<List<Tournament>> tournamentList = tournamentService.findAllTournament();
-        return new ResponseEntity<>(tournamentList, HttpStatus.valueOf(tournamentList.getCode()));
+        return new ResponseEntity<>(tournamentList.getData(), HttpStatus.valueOf(tournamentList.getCode()));
     }
 
     @ApiResponses(value =
@@ -50,9 +50,9 @@ public class TournamentController {
     )
     @PreAuthorize("hasRole('Admin')")
     @GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Result<Tournament>> getTournamentById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id) throws Exception{
+    public ResponseEntity<Tournament> getTournamentById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id) throws Exception{
         Result<Tournament> tournamentList = tournamentService.findTournamentById(id);
-        return new ResponseEntity<>(tournamentList, HttpStatus.valueOf(tournamentList.getCode()));
+        return new ResponseEntity<>(tournamentList.getData(), HttpStatus.valueOf(tournamentList.getCode()));
     }
 
     @ApiResponses(value =
@@ -65,9 +65,9 @@ public class TournamentController {
     )
     @PreAuthorize("hasRole('Admin')")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Result<Tournament>> addTournament(@RequestBody(required = true) @Valid Tournament Tournament) throws  Exception {
+    public ResponseEntity<Tournament> addTournament(@RequestBody(required = true) @Valid Tournament Tournament) throws  Exception {
         Result<Tournament> tournamentResult = tournamentService.addTournament(Tournament);
-        return new ResponseEntity(tournamentResult,HttpStatus.CREATED);
+        return new ResponseEntity(tournamentResult.getData(), HttpStatus.valueOf(tournamentResult.getCode()));
     }
 
     @ApiResponses(value =
@@ -80,9 +80,9 @@ public class TournamentController {
     )
     @PreAuthorize("hasRole('Admin')")
     @PutMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Result<Tournament>> updateTournament(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id,@RequestBody(required = true) @Valid Tournament Tournament) throws Exception {
+    public ResponseEntity<Tournament> updateTournament(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id,@RequestBody(required = true) @Valid Tournament Tournament) throws Exception {
         Result<Tournament> tournamentResult = tournamentService.updateTournament(id,Tournament);
-        return new ResponseEntity(tournamentResult,HttpStatus.valueOf(tournamentResult.getCode()));
+        return new ResponseEntity(tournamentResult.getData(), HttpStatus.valueOf(tournamentResult.getCode()));
     }
 
     @ApiResponses(value =
@@ -95,9 +95,9 @@ public class TournamentController {
     )
     @PreAuthorize("hasRole('Admin')")
     @PutMapping(value = "/activate-tournament/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Result<String>> updateActivateTournament(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id) throws Exception {
+    public ResponseEntity<String> updateActiveTournament(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id) throws Exception {
         Result<String> tournamentResult = tournamentService.updateActiveTournament(id);
-        return new ResponseEntity(tournamentResult,HttpStatus.valueOf(tournamentResult.getCode()));
+        return new ResponseEntity(tournamentResult.getData(), HttpStatus.valueOf(tournamentResult.getCode()));
     }
 
     @ApiResponses(value =

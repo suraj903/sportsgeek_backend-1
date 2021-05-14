@@ -34,9 +34,9 @@ public class StatisticsController {
     )
     @PreAuthorize("hasAnyRole('Admin','User')")
     @GetMapping(value = "/users/statistics", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Result<List<Statistics>>> getAllStatistics() {
+    public ResponseEntity<List<Statistics>> getAllStatistics() {
         Result<List<Statistics>> statList = statisticsService.findAllStatistics();
-        return new ResponseEntity<>(statList, HttpStatus.valueOf(statList.getCode()));
+        return new ResponseEntity<>(statList.getData(), HttpStatus.valueOf(statList.getCode()));
     }
 
     @ApiResponses(value =
@@ -48,8 +48,8 @@ public class StatisticsController {
     )
     @PreAuthorize("hasAnyRole('Admin','User')")
     @GetMapping(value = "/users/future-bet", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Result<List<Contest>>> getAllFutureBets() {
-        Result<List<Contest>> betList = statisticsService.findFutureBets();
-        return new ResponseEntity<>(betList, HttpStatus.valueOf(betList.getCode()));
+    public ResponseEntity<List<Contest>> getAllFutureBets() {
+        Result<List<Contest>> contestList = statisticsService.findFutureBets();
+        return new ResponseEntity<>(contestList.getData(), HttpStatus.valueOf(contestList.getCode()));
     }
 }

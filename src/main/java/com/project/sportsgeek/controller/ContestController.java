@@ -33,8 +33,8 @@ public class ContestController {
     @PreAuthorize("hasAnyRole('Admin','User')")
     @PostMapping(path = "/contest", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Contest> addContest(@RequestBody(required = true) Contest contest) throws  Exception {
-        Result<Contest> betonResult = contestService.addContest(contest);
-        return new ResponseEntity(betonResult.getData(), HttpStatus.valueOf(betonResult.getCode()));
+        Result<Contest> contestResult = contestService.addContest(contest);
+        return new ResponseEntity(contestResult.getData(), HttpStatus.valueOf(contestResult.getCode()));
     }
 
     @ApiResponses(value =
@@ -46,9 +46,9 @@ public class ContestController {
     )
     @PreAuthorize("hasAnyRole('Admin','User')")
     @GetMapping(path = "/contest/{matchId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Result<List<ContestWithUser>>> getContestByMatchId(@PathVariable int matchId) throws Exception {
+    public ResponseEntity<List<ContestWithUser>> getContestByMatchId(@PathVariable int matchId) throws Exception {
         Result<List<ContestWithUser>> contestList = contestService.findContestByMatchId(matchId);
-        return new ResponseEntity<>(contestList, HttpStatus.valueOf(contestList.getCode()));
+        return new ResponseEntity<>(contestList.getData(), HttpStatus.valueOf(contestList.getCode()));
     }
 
     @ApiResponses(value =
@@ -60,9 +60,9 @@ public class ContestController {
     )
     @PreAuthorize("hasAnyRole('Admin','User')")
     @GetMapping(value = "/matches/{matchId}/contest",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Result<List<ContestWithResult>>> getContestResultByMatchId(@PathVariable int matchId) throws Exception {
+    public ResponseEntity<List<ContestWithResult>> getContestResultByMatchId(@PathVariable int matchId) throws Exception {
         Result<List<ContestWithResult>> contestList = contestService.findContestResultByMatchId(matchId);
-        return new ResponseEntity<>(contestList, HttpStatus.valueOf(contestList.getCode()));
+        return new ResponseEntity<>(contestList.getData(), HttpStatus.valueOf(contestList.getCode()));
     }
 
     @ApiResponses(value =
@@ -74,9 +74,9 @@ public class ContestController {
     )
     @PreAuthorize("hasAnyRole('Admin','User')")
     @GetMapping(value = "/users/{userId}/contest/{matchId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Result<Contest>> getContestByUserAndMatch(@PathVariable int userId , @PathVariable int matchId) throws Exception {
+    public ResponseEntity<Contest> getContestByUserAndMatch(@PathVariable int userId , @PathVariable int matchId) throws Exception {
         Result<Contest> contestList = contestService.findContestByUserAndMatch(userId, matchId);
-        return new ResponseEntity<>(contestList, HttpStatus.valueOf(contestList.getCode()));
+        return new ResponseEntity<>(contestList.getData(), HttpStatus.valueOf(contestList.getCode()));
     }
 
     @ApiResponses(value =
@@ -88,8 +88,8 @@ public class ContestController {
     )
     @PreAuthorize("hasAnyRole('Admin','User')")
     @PutMapping(value = "/contest/{contestId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Result<Contest>> updateContest(@PathVariable int contestId, @RequestBody(required = true) Contest contest) throws Exception {
-        Result<Contest> betOnTeamResult = contestService.updateContest(contestId, contest);
-        return new ResponseEntity(betOnTeamResult,HttpStatus.valueOf(betOnTeamResult.getCode()));
+    public ResponseEntity<Contest> updateContest(@PathVariable int contestId, @RequestBody(required = true) Contest contest) throws Exception {
+        Result<Contest> contestResult = contestService.updateContest(contestId, contest);
+        return new ResponseEntity(contestResult.getData(),HttpStatus.valueOf(contestResult.getCode()));
     }
 }

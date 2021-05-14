@@ -16,6 +16,6 @@ public interface GenderRepository {
 
     boolean updateGender(int genderId, Gender gender) throws Exception;
 
-    int deleteGender(int genderId) throws Exception;
+    boolean deleteGender(int genderId) throws Exception;
 
 }

@@ -33,9 +33,9 @@ public class PrivateChatController {
     )
     @PreAuthorize("hasAnyRole('Admin','User')")
     @GetMapping(value = "/users/{userid1}/{userid2}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Result<List<PrivateChat>>> getPrivateChatByUserId(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int userid1, @PathVariable @Valid @Pattern(regexp = "[0-9]*") int userid2) throws Exception {
+    public ResponseEntity<List<PrivateChat>> getPrivateChatByUserId(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int userid1, @PathVariable @Valid @Pattern(regexp = "[0-9]*") int userid2) throws Exception {
         Result<List<PrivateChat>> privateChatList = privateChatService.findPrivateChatByUserId(userid1, userid2);
-        return new ResponseEntity<>(privateChatList, HttpStatus.valueOf(privateChatList.getCode()));
+        return new ResponseEntity<>(privateChatList.getData(), HttpStatus.valueOf(privateChatList.getCode()));
     }
 
     @ApiResponses(value =
@@ -47,9 +47,9 @@ public class PrivateChatController {
     )
     @PreAuthorize("hasAnyRole('Admin','User')")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Result<PrivateChat>> addPrivateChat(@RequestBody(required = true) @Valid PrivateChat privateChat) throws Exception {
+    public ResponseEntity<PrivateChat> addPrivateChat(@RequestBody(required = true) @Valid PrivateChat privateChat) throws Exception {
         Result<PrivateChat> privateChatResult = privateChatService.addPrivateChat(privateChat);
-        return new ResponseEntity(privateChatResult, HttpStatus.valueOf(privateChatResult.getCode()));
+        return new ResponseEntity(privateChatResult.getData(), HttpStatus.valueOf(privateChatResult.getCode()));
     }
 
     @ApiResponses(value =
@@ -61,9 +61,9 @@ public class PrivateChatController {
     )
     @PreAuthorize("hasAnyRole('Admin','User')")
     @PutMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Result<PrivateChat>> updatePrivateChat(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id,@RequestBody(required = true) @Valid PrivateChat privateChat) throws Exception {
+    public ResponseEntity<PrivateChat> updatePrivateChat(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id,@RequestBody(required = true) @Valid PrivateChat privateChat) throws Exception {
         Result<PrivateChat> privateChatResult = privateChatService.updatePrivateChat(id, privateChat);
-        return new ResponseEntity(privateChatResult,HttpStatus.valueOf(privateChatResult.getCode()));
+        return new ResponseEntity(privateChatResult.getData(), HttpStatus.valueOf(privateChatResult.getCode()));
     }
 
     @ApiResponses(value =

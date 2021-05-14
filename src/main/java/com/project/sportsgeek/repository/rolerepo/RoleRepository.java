@@ -16,6 +16,6 @@ public interface RoleRepository {
 
     boolean updateRole(int id, Role role) throws Exception;
 
-    int deleteRole(int id) throws Exception;
+    boolean deleteRole(int id) throws Exception;
 
 }

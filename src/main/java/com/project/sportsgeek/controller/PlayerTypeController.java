@@ -34,9 +34,9 @@ public class PlayerTypeController {
     )
     @PreAuthorize("hasRole('Admin')")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Result<List<PlayerType>>> getAllPlayerType() {
+    public ResponseEntity<List<PlayerType>> getAllPlayerType() {
         Result<List<PlayerType>> playerTypeList = playerTypeService.findAllPlayerType();
-        return new ResponseEntity<>(playerTypeList, HttpStatus.valueOf(playerTypeList.getCode()));
+        return new ResponseEntity<>(playerTypeList.getData(), HttpStatus.valueOf(playerTypeList.getCode()));
     }
 
     @ApiResponses(value =
@@ -49,9 +49,9 @@ public class PlayerTypeController {
     )
     @PreAuthorize("hasRole('Admin')")
     @GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Result<PlayerType>> getPlayerTypeById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id) throws Exception {
+    public ResponseEntity<PlayerType> getPlayerTypeById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id) throws Exception {
         Result<PlayerType> playerTypeList = playerTypeService.findPlayerTypeById(id);
-        return new ResponseEntity<>(playerTypeList, HttpStatus.valueOf(playerTypeList.getCode()));
+        return new ResponseEntity<>(playerTypeList.getData(), HttpStatus.valueOf(playerTypeList.getCode()));
     }
 
     @ApiResponses(value =
@@ -64,9 +64,9 @@ public class PlayerTypeController {
     )
     @PreAuthorize("hasRole('Admin')")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Result<PlayerType>> addPlayerType(@RequestBody(required = true) @Valid PlayerType PlayerType) throws  Exception {
+    public ResponseEntity<PlayerType> addPlayerType(@RequestBody(required = true) @Valid PlayerType PlayerType) throws  Exception {
         Result<PlayerType> playerTypeResult = playerTypeService.addPlayerType(PlayerType);
-        return new ResponseEntity(playerTypeResult,HttpStatus.valueOf(playerTypeResult.getCode()));
+        return new ResponseEntity(playerTypeResult.getData(), HttpStatus.valueOf(playerTypeResult.getCode()));
     }
 
     @ApiResponses(value =
@@ -79,9 +79,9 @@ public class PlayerTypeController {
     )
     @PreAuthorize("hasRole('Admin')")
     @PutMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Result<PlayerType>> updatePlayerType(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id,@RequestBody(required = true) @Valid PlayerType PlayerType) throws Exception {
+    public ResponseEntity<PlayerType> updatePlayerType(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id,@RequestBody(required = true) @Valid PlayerType PlayerType) throws Exception {
         Result<PlayerType> playerTypeResult = playerTypeService.updatePlayerType(id,PlayerType);
-        return new ResponseEntity(playerTypeResult,HttpStatus.valueOf(playerTypeResult.getCode()));
+        return new ResponseEntity(playerTypeResult.getData(), HttpStatus.valueOf(playerTypeResult.getCode()));
     }
 
     @ApiResponses(value =

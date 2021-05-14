@@ -51,10 +51,9 @@ public class GenderService {
                 .asList(new Result.SportsGeekSystemError(gender.hashCode(), "given genderId('" + genderId + "') does not exists")))));
     }
 
-    public Result<Integer> deleteGender(int genderId) throws Exception {
-        int data = genderRepository.deleteGender(genderId);
-        if (data > 0) {
-            return new Result<>(200, data);
+    public Result<String> deleteGender(int genderId) throws Exception {
+        if (genderRepository.deleteGender(genderId)) {
+            return new Result<>(200, "Gender deleted successfully.");
         } else {
             throw new ResultException((new Result<>(404, "No Gender's found to delete,please try again", "Gender with id=('" + genderId + "') not found")));
         }

@@ -39,24 +39,24 @@ public class GenderController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Success"), @ApiResponse(code = 500, message = "Internal server error"), @ApiResponse(code = 404, message = "Bad Request")})
     @PreAuthorize("hasAnyRole('Admin','User')")
     @PostMapping
-    public ResponseEntity<Result<Gender>> addGender(@RequestBody(required = true) Gender gender) throws Exception {
+    public ResponseEntity<Gender> addGender(@RequestBody(required = true) Gender gender) throws Exception {
         Result<Gender> genderResult = genderService.addGender(gender);
-        return new ResponseEntity(genderResult, HttpStatus.valueOf(genderResult.getCode()));
+        return new ResponseEntity(genderResult.getData(), HttpStatus.valueOf(genderResult.getCode()));
     }
 
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully updated schema"), @ApiResponse(code = 404, message = "Schema not found"), @ApiResponse(code = 400, message = "Missing or invalid request body"), @ApiResponse(code = 500, message = "Internal error")})
     @PreAuthorize("hasAnyRole('Admin','User')")
-    @PutMapping("/{id}")
-    public ResponseEntity<Result<Gender>> updateGender(@PathVariable int genderId, @RequestBody(required = true) Gender gender) throws Exception {
+    @PutMapping("/{genderId}")
+    public ResponseEntity<Gender> updateGender(@PathVariable int genderId, @RequestBody(required = true) Gender gender) throws Exception {
         Result<Gender> genderResult = genderService.updateGender(genderId, gender);
-        return new ResponseEntity(genderResult, HttpStatus.valueOf(genderResult.getCode()));
+        return new ResponseEntity(genderResult.getData(), HttpStatus.valueOf(genderResult.getCode()));
     }
 
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully deleted schema"), @ApiResponse(code = 404, message = "Schema not found"), @ApiResponse(code = 409, message = "Schema is in use"), @ApiResponse(code = 500, message = "Error deleting schema")})
     @PreAuthorize("hasRole('Admin')")
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Result<Gender>> deleteGenderById(@PathVariable int genderId) throws Exception {
-        Result<Integer> integerResult = genderService.deleteGender(genderId);
-        return new ResponseEntity(integerResult, HttpStatus.valueOf(integerResult.getCode()));
+    @DeleteMapping("/{genderId}")
+    public ResponseEntity<Result<String>> deleteGenderById(@PathVariable int genderId) throws Exception {
+        Result<String> result = genderService.deleteGender(genderId);
+        return new ResponseEntity(result, HttpStatus.valueOf(result.getCode()));
     }
 }

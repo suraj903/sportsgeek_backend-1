@@ -36,9 +36,9 @@ public class TeamController {
     )
     @PreAuthorize("hasRole('Admin')")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Result<List<Team>>> getAllTeam() {
+    public ResponseEntity<List<Team>> getAllTeam() {
         Result<List<Team>> teamList = teamService.findAllTeam();
-        return new ResponseEntity<>(teamList, HttpStatus.valueOf(teamList.getCode()));
+        return new ResponseEntity<>(teamList.getData(), HttpStatus.valueOf(teamList.getCode()));
     }
 
     @ApiResponses(value =
@@ -51,9 +51,9 @@ public class TeamController {
     )
     @PreAuthorize("hasRole('Admin')")
     @GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Result<Team>> getTeamById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id) throws Exception {
+    public ResponseEntity<Team> getTeamById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id) throws Exception {
         Result<Team> teamList = teamService.findTeamById(id);
-        return new ResponseEntity<>(teamList, HttpStatus.valueOf(teamList.getCode()));
+        return new ResponseEntity<>(teamList.getData(), HttpStatus.valueOf(teamList.getCode()));
     }
 
     @ApiResponses(value =
@@ -67,14 +67,14 @@ public class TeamController {
     @PreAuthorize("hasRole('Admin')")
 //    @RequestBody(required = true) @Valid Team team
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Result<Team>> addTeam( @RequestParam("name") String name,@RequestParam("shortName") String shortName,@RequestParam("teamLogo") MultipartFile multipartFile) throws  Exception {
+    public ResponseEntity<Team> addTeam( @RequestParam("name") String name,@RequestParam("shortName") String shortName,@RequestParam("teamLogo") MultipartFile multipartFile) throws  Exception {
         String filename = multipartFile.getOriginalFilename();
         Team team = Team.builder()
                 .name(name)
                 .shortName(shortName)
                 .teamLogo(filename).build();
         Result<Team> teamResult = teamService.addTeam(team,multipartFile);
-        return new ResponseEntity(teamResult,HttpStatus.valueOf(teamResult.getCode()));
+        return new ResponseEntity(teamResult.getData(), HttpStatus.valueOf(teamResult.getCode()));
     }
 
     @ApiResponses(value =
@@ -88,14 +88,14 @@ public class TeamController {
     @PreAuthorize("hasRole('Admin')")
 //    @RequestBody(required = true) @Valid Team team
     @PutMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Result<Team>> updateTeam(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id,@RequestParam("name") String name,@RequestParam("shortName") String shortName,@RequestParam("teamLogo") MultipartFile multipartFile) throws Exception {
+    public ResponseEntity<Team> updateTeam(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id,@RequestParam("name") String name,@RequestParam("shortName") String shortName,@RequestParam("teamLogo") MultipartFile multipartFile) throws Exception {
         String filename = multipartFile.getOriginalFilename();
         Team team = Team.builder()
                 .name(name)
                 .shortName(shortName)
                 .teamLogo(filename).build();
         Result<Team> teamResult = teamService.updateTeam(id,team,multipartFile);
-        return new ResponseEntity(teamResult,HttpStatus.valueOf(teamResult.getCode()));
+        return new ResponseEntity(teamResult.getData(), HttpStatus.valueOf(teamResult.getCode()));
     }
 
     @ApiResponses(value =
@@ -109,7 +109,7 @@ public class TeamController {
     @PreAuthorize("hasRole('Admin')")
     @DeleteMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Result<Team>> deleteTeamById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id) throws Exception {
-       Result<Integer> teamResult =  teamService.deleteTeam(id);
+        Result<Integer> teamResult =  teamService.deleteTeam(id);
         return new ResponseEntity(teamResult,HttpStatus.valueOf(teamResult.getCode()));
     }
 }

@@ -25,40 +25,40 @@ public class RoleController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Success"), @ApiResponse(code = 500, message = "Internal server error"), @ApiResponse(code = 404, message = "Bad Request")})
     @PreAuthorize("hasRole('Admin')")
     @GetMapping
-    public ResponseEntity<Result<List<Role>>> getAllRoles() {
+    public ResponseEntity<List<Role>> getAllRoles() {
         Result<List<Role>> roleList = roleService.findAllRole();
-        return new ResponseEntity<>(roleList, HttpStatus.valueOf(roleList.getCode()));
+        return new ResponseEntity<>(roleList.getData(), HttpStatus.valueOf(roleList.getCode()));
     }
 
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Success"), @ApiResponse(code = 500, message = "Internal server error"), @ApiResponse(code = 404, message = "Bad Request")})
     @PreAuthorize("hasRole('Admin')")
     @GetMapping("/{id}")
-    public ResponseEntity<Result<Role>> getRoleById(@PathVariable int id) throws Exception {
+    public ResponseEntity<Role> getRoleById(@PathVariable int id) throws Exception {
         Result<Role> roleList = roleService.findRoleById(id);
-        return new ResponseEntity<>(roleList, HttpStatus.valueOf(roleList.getCode()));
+        return new ResponseEntity<>(roleList.getData(), HttpStatus.valueOf(roleList.getCode()));
     }
 
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Success"), @ApiResponse(code = 500, message = "Internal server error"), @ApiResponse(code = 404, message = "Bad Request")})
     @PreAuthorize("hasRole('Admin')")
     @PostMapping
-    public ResponseEntity<Result<Role>> addRole(@RequestBody(required = true) Role role) throws Exception {
+    public ResponseEntity<Role> addRole(@RequestBody(required = true) Role role) throws Exception {
         Result<Role> roleResult = roleService.addRole(role);
-        return new ResponseEntity(roleResult, HttpStatus.valueOf(roleResult.getCode()));
+        return new ResponseEntity(roleResult.getData(), HttpStatus.valueOf(roleResult.getCode()));
     }
 
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully updated schema"), @ApiResponse(code = 404, message = "Schema not found"), @ApiResponse(code = 400, message = "Missing or invalid request body"), @ApiResponse(code = 500, message = "Internal error")})
     @PreAuthorize("hasRole('Admin')")
     @PutMapping("/{id}")
-    public ResponseEntity<Result<Role>> updateRole(@PathVariable int id, @RequestBody(required = true) Role role) throws Exception {
+    public ResponseEntity<Role> updateRole(@PathVariable int id, @RequestBody(required = true) Role role) throws Exception {
         Result<Role> roleResult = roleService.updateRole(id, role);
-        return new ResponseEntity(roleResult, HttpStatus.valueOf(roleResult.getCode()));
+        return new ResponseEntity(roleResult.getData(), HttpStatus.valueOf(roleResult.getCode()));
     }
 
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully deleted schema"), @ApiResponse(code = 404, message = "Schema not found"), @ApiResponse(code = 409, message = "Schema is in use"), @ApiResponse(code = 500, message = "Error deleting schema")})
     @PreAuthorize("hasRole('Admin')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Result<Role>> deleteRoleById(@PathVariable int id) throws Exception {
-        Result<Integer> integerResult = roleService.deleteRole(id);
-        return new ResponseEntity(integerResult, HttpStatus.valueOf(integerResult.getCode()));
+    public ResponseEntity<Result<String>> deleteRoleById(@PathVariable int id) throws Exception {
+        Result<String> result = roleService.deleteRole(id);
+        return new ResponseEntity(result, HttpStatus.valueOf(result.getCode()));
     }
 }

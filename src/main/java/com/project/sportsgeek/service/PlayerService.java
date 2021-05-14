@@ -115,7 +115,7 @@ public class PlayerService {
     public Result<Integer> deletePlayer(int id) throws Exception{
         int data = playerRepository.deletePlayer(id);
         if (data > 0) {
-            return new Result<>(200,"Player Deleted Successfully",data);
+            return new Result<>(200,"Player Deleted Successfully", data);
         }
         else {
             throw new ResultException((new Result<>(404,"No Player found to delete,please try again","Player with id=('"+ id +"') not found")));

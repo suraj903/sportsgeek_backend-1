@@ -1,5 +1,6 @@
 package com.project.sportsgeek.service;
 
+import com.project.sportsgeek.exception.ResultException;
 import com.project.sportsgeek.model.profile.Role;
 import com.project.sportsgeek.repository.rolerepo.RoleRepository;
 import com.project.sportsgeek.response.Result;
@@ -46,10 +47,9 @@ public class RoleService {
         return new Result<>(400, "Error in updating the Role!!. Role with Role Id=(" + id + ") not found");
     }
 
-    public Result<Integer> deleteRole(int id) throws Exception {
-        int data = roleRepository.deleteRole(id);
-        if (data > 0) {
-            return new Result<>(200, data);
+    public Result<String> deleteRole(int id) throws Exception {
+        if (roleRepository.deleteRole(id)) {
+            return new Result<>(200, "Role deleted successfully.");
         } else {
             return new Result<>(400, "Error in deleting the Role!!. Role with Role Id=(" + id + ") not found");
         }

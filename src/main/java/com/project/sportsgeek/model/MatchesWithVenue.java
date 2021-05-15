@@ -41,5 +41,5 @@ public class MatchesWithVenue implements Serializable {
     private int resultStatus;
     @NotNull
     private int minimumBet;
-    private Timestamp startDateTime;
+    private Timestamp startDatetime;
 }

@@ -25,6 +25,7 @@ public class MatchesRepoImpl implements MatchesRepository {
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private SimpleJdbcCall simpleJdbcCall;
+
     @Override
     public List<MatchesWithVenue> findAllMatches(int tournamentId) throws Exception {
        String sql = "SELECT MatchId , StartDatetime, Team1,Team2, t1.Name as team1long, t1.ShortName as team1short, " +
@@ -156,7 +157,7 @@ public class MatchesRepoImpl implements MatchesRepository {
         String sql = "UPDATE Matches SET StartDatetime=:startDateTime WHERE MatchId=:matchId";
         Matches matches = new Matches();
         matches.setMatchId(id);
-        matches.setStartDateTime(date);
+        matches.setStartDatetime(date);
         return namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(matches));
     }
 

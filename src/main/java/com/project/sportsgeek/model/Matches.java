@@ -22,7 +22,7 @@ public class Matches implements Serializable {
 
     private int matchId;
     private String name;
-    private Timestamp startDateTime;
+    private Timestamp startDatetime;
     private int venueId;
     private int team1;
     private int team2;

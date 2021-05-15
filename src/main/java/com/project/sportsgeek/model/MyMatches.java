@@ -25,7 +25,7 @@ public class MyMatches implements Serializable {
     @NotNull
     private String TeamName;
     @NotNull
-    private int BetPoints;
+    private int ContestPoints;
     @NotNull
     private String Team1Short;
     private String Team1Logo;

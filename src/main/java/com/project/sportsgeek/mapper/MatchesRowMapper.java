@@ -14,7 +14,7 @@ public class MatchesRowMapper implements RowMapper<MatchesWithVenue> {
     public MatchesWithVenue mapRow(ResultSet rs, int rowNum) throws SQLException {
       MatchesWithVenue matches = new MatchesWithVenue();
       matches.setMatchId(rs.getInt("MatchId"));
-      matches.setStartDateTime(rs.getTimestamp("StartDatetime"));
+      matches.setStartDatetime(rs.getTimestamp("StartDatetime"));
       matches.setTeam1(rs.getString("team1long"));
       matches.setTeam1Short(rs.getString("team1short"));
       matches.setTeam1Logo(rs.getString("team1logo"));

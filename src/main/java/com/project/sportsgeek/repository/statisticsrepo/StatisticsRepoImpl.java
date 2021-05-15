@@ -23,7 +23,7 @@ public class StatisticsRepoImpl implements  StatisticsRepository {
 //        String sql = "SELECT UserId, FirstName, LastName, UserName,AvailablePoints as TotalWinningPoints FROM User ORDER BY AvailablePoints DESC";
 
         String sql = "select u.UserId,FirstName,LastName,UserName,AvailablePoints as TotalWinningPoints " +
-                "from Contest as bot inner join User as u on bot.UserId=u.UserId WHERE u.Status=1 group by bot.UserId" +
+                "from Contest as c inner join User as u on c.UserId=u.UserId WHERE u.Status=1 group by c.UserId" +
                 " order by AvailablePoints desc,TotalWinningPoints desc";
         return jdbcTemplate.query(sql, new StatisticsRowMapper());
     }
@@ -31,8 +31,8 @@ public class StatisticsRepoImpl implements  StatisticsRepository {
     @Override
     public List<Contest> findFutureBetPoints() {
 //        String sql = "SELECT BetPoints FROM Contest WHERE UserId="+userId+" AND ResultStatus IS NULL "
-        String sql = "SELECT UserId, SUM(BetPoints) as TotalBetPoints\n" +
-                "FROM Contest as bot inner join Matches as m on bot.MatchId=m.MatchId\n" +
+        String sql = "SELECT UserId, SUM(ContestPoints) as TotalContestPoints\n" +
+                "FROM Contest as c inner join Matches as m on c.MatchId=m.MatchId\n" +
                 "WHERE ResultStatus IS NULL \n" +
                 "GROUP BY UserId ORDER BY UserId";
        return jdbcTemplate.query(sql , new FutureBetsRowMapper());

@@ -10,7 +10,7 @@ public class FutureBetsRowMapper implements RowMapper<Contest> {
     @Override
     public Contest mapRow(ResultSet rs, int rowNum) throws SQLException {
         Contest contest = new Contest();
-        contest.setContestPoints(rs.getInt("TotalBetPoints"));
+        contest.setContestPoints(rs.getInt("TotalContestPoints"));
         contest.setUserId(rs.getInt("UserId"));
         return contest;
     }

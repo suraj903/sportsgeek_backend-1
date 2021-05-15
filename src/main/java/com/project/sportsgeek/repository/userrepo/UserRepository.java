@@ -63,4 +63,6 @@ public interface UserRepository {
     int addAvailablePoints(int userId, int points) throws Exception;
 
     int deductAvailablePoints(int userId, int points) throws Exception;
+
+    int getUsersCountByUsername(String username) throws Exception;
 }

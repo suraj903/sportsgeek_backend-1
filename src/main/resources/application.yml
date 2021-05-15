@@ -8,8 +8,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/sportsgeekdb
     username: root
-#    password: ENC(QRWFXH2r6PfEQmr/WPB1Gw==)
-    password: elephant
+    password: ENC(QRWFXH2r6PfEQmr/WPB1Gw==)
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
@@ -27,7 +26,8 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: info.sportsgeek@gmail.com
-    password: ENC(5ym15G+WTAtK8ZJzKUibl02wcF9DwhzROa6poARdWgo=)
+#    password: ENC(5ym15G+WTAtK8ZJzKUibl02wcF9DwhzROa6poARdWgo=)
+    password: ENC(Bj/FXTarjs6LTAK+JuFCsERxAIqVAUw/umaqtgxMDBE=)
     properties:
       mail:
         smtp:

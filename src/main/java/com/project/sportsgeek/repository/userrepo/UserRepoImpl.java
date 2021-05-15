@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.RowCountCallbackHandler;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -111,7 +113,8 @@ public class UserRepoImpl implements UserRepository {
 	public UserForLoginState authenticate(UserAtLogin userAtLogin) throws Exception {
 		System.out.println("Authenticate from repo called...");
 //		String sql = "select u.UserId, u.UserName, r.Name, u.Status from User as u inner join Role as r on u.RoleId = r.RoleId where u.UserName=:username";
-		String sql = "SELECT u.UserId AS UserId, Username, r.Name AS Role, Status from User as u inner join Role as r on u.RoleId = r.RoleId where u.UserName=:username";
+		String sql = "SELECT u.UserId AS UserId, Username, r.Name AS Role, Status from User as u inner join Role as r on u.RoleId = r.RoleId where Username=:username";
+//		String sql = "SELECT u.UserId AS UserId, Username, r.Name AS Role, Status from User as u inner join Role as r on u.RoleId = r.RoleId where u.UserName=:username and u.Password=:password";
 
 		List<Map<String, Object>> list = namedParameterJdbcTemplate.queryForList(sql, new BeanPropertySqlParameterSource(userAtLogin));
 		System.out.println("List size : " + list.size());
@@ -248,6 +251,14 @@ public class UserRepoImpl implements UserRepository {
 		user.setAvailablePoints(points);
 		user.setUserId(userId);
 		return namedParameterJdbcTemplate.update(deduct_points, new BeanPropertySqlParameterSource(points));
+	}
+
+	@Override
+	public int getUsersCountByUsername(String username) throws Exception {
+		RowCountCallbackHandler countCallback = new RowCountCallbackHandler();
+		MapSqlParameterSource params = new MapSqlParameterSource("username", username);
+		namedParameterJdbcTemplate.query("SELECT * FROM User WHERE Username= :username", params, countCallback);
+		return countCallback.getRowCount();
 	}
 
 //	--------------------------------------------------------------------------------------------------------------------------------------------

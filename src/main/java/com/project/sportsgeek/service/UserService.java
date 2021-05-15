@@ -10,7 +10,6 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowCountCallbackHandler;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -44,9 +43,6 @@ public class UserService implements UserDetailsService {
 	EmailService emailService;
 	private int otp;
 	private int sendOtp;
-
-	@Autowired
-	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
 	private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
@@ -166,12 +162,9 @@ public class UserService implements UserDetailsService {
 //	---------------------------------------------------------------------------------------------------------------------------------------------
 
 	public Result<User> addUser(UserWithPassword userWithPassword) throws Exception {
-		RowCountCallbackHandler countCallback = new RowCountCallbackHandler();
-		namedParameterJdbcTemplate.query("select * from User WHERE UserName= :username",
-				new BeanPropertySqlParameterSource(userWithPassword), countCallback);
-		int username = countCallback.getRowCount();
-		System.out.println("UserName Count :- " + username);
-		if (username > 0) {
+		int usernameCount = userRepository.getUsersCountByUsername(userWithPassword.getUsername());
+		System.out.println("UserName Count :- " + usernameCount);
+		if (usernameCount > 0) {
 			throw new ResultException(new Result<>(500, "User Already Exists"));
 		} else {
 			int id = userRepository.addUser(userWithPassword);
@@ -248,25 +241,25 @@ public class UserService implements UserDetailsService {
 //	------------------------------------------------- UPDATE PASSWORD SERVICE --------------------------------------------------------------------
 
 	public Result<String> updatePassword(UserWithNewPassword userWithNewPassword) throws Exception {
-		String select_password = "SELECT u.UserName as UserName,u.Password as Password,r.Name as Name FROM User as u INNER JOIN Role as r on u.RoleId=r.RoleId WHERE UserId= :userId";
-		System.out.println(select_password);
-		List<UserWithPassword> userWithOldPassword = namedParameterJdbcTemplate.query(select_password,
-				new BeanPropertySqlParameterSource(userWithNewPassword), new UserWithPasswordRowMapper());
-		System.out.println(userWithOldPassword);
-		if (userWithOldPassword.size() > 0 && bCryptPasswordEncoder.matches(userWithNewPassword.getOldPassword(),
-				userWithOldPassword.get(0).getPassword())) {
-			userWithNewPassword.setNewPassword(bCryptPasswordEncoder.encode(userWithNewPassword.getNewPassword()));
-			int result = userRepository.updateUserPassword(userWithNewPassword);
-			System.out.println(result);
-			if (result > 0) {
-				return new Result<>(200, "password has been succefully updated");
-			} else {
-
-				return new Result<>(500, "Internal Server error!, Unable to update the password");
-			}
-		}
-		return new Result<>(400,"Old Password does not match!");
-
+//		String select_password = "SELECT u.UserName as UserName,u.Password as Password,r.Name as Name FROM User as u INNER JOIN Role as r on u.RoleId=r.RoleId WHERE UserId= :userId";
+//		System.out.println(select_password);
+//		List<UserWithPassword> userWithOldPassword = namedParameterJdbcTemplate.query(select_password,
+//				new BeanPropertySqlParameterSource(userWithNewPassword), new UserWithPasswordRowMapper());
+//		System.out.println(userWithOldPassword);
+//		if (userWithOldPassword.size() > 0 && bCryptPasswordEncoder.matches(userWithNewPassword.getOldPassword(),
+//				userWithOldPassword.get(0).getPassword())) {
+//			userWithNewPassword.setNewPassword(bCryptPasswordEncoder.encode(userWithNewPassword.getNewPassword()));
+//			int result = userRepository.updateUserPassword(userWithNewPassword);
+//			System.out.println(result);
+//			if (result > 0) {
+//				return new Result<>(200, "password has been succefully updated");
+//			} else {
+//
+//				return new Result<>(500, "Internal Server error!, Unable to update the password");
+//			}
+//		}
+//		return new Result<>(400,"Old Password does not match!");
+		return null;
 	}
 
 //	------------------------------------------------- UPDATE FORGOT PASSWORD SERVICE -------------------------------------------------------------

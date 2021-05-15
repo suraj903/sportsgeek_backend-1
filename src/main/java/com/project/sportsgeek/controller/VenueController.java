@@ -78,7 +78,7 @@ public class VenueController {
     )
     @PreAuthorize("hasRole('Admin')")
     @PutMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Venue> updateVenue(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id,@RequestBody(required = true) @Valid Venue Venue) throws Exception {
+    public ResponseEntity<Venue> updateVenue(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id, @RequestBody(required = true) @Valid Venue Venue) throws Exception {
         Result<Venue> VenueResult = venueService.updateVenue(id,Venue);
         return new ResponseEntity(VenueResult.getData(), HttpStatus.valueOf(VenueResult.getCode()));
     }

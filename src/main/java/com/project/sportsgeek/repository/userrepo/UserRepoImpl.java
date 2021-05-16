@@ -3,6 +3,7 @@ package com.project.sportsgeek.repository.userrepo;
 import java.util.List;
 import java.util.Map;
 
+import com.project.sportsgeek.mapper.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowCountCallbackHandler;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -13,10 +14,6 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
-import com.project.sportsgeek.mapper.UserRowMapper;
-import com.project.sportsgeek.mapper.UserWithPasswordRowMapper;
-import com.project.sportsgeek.mapper.UserWithWinningPointsRowMapper;
-import com.project.sportsgeek.mapper.userWithLoosingPointsRowMapper;
 import com.project.sportsgeek.model.profile.User;
 import com.project.sportsgeek.model.profile.UserAtLogin;
 import com.project.sportsgeek.model.profile.UserForLoginState;
@@ -40,15 +37,16 @@ public class UserRepoImpl implements UserRepository {
 
 	@Override
 	public List<User> findAllUsers() {
-		String sql = "SELECT * FROM User";
-		return jdbcTemplate.query(sql, new UserRowMapper());
+//		String sql = "SELECT * FROM User";
+		String sql = "SELECT User.UserId as UserId, FirstName, LastName, GenderId, RoleId, Username, AvailablePoints, ProfilePicture, Status, EmailContact.EmailId as Email, MobileContact.MobileNumber as MobileNumber FROM User inner join EmailContact on User.UserId=EmailContact.UserId inner join MobileContact on User.UserId=MobileContact.UserId";
+		return jdbcTemplate.query(sql, new UserWithContactRowMapper());
 	}
 
 	@Override
 	public User findUserByUserId(int userId) throws Exception {
 		String sql = "SELECT User.UserId as UserId, FirstName, LastName, GenderId, RoleId, Username, AvailablePoints, ProfilePicture, Status, EmailContact.EmailId as Email, MobileContact.MobileNumber as MobileNumber FROM User inner join EmailContact on User.UserId=EmailContact.UserId inner join MobileContact on User.UserId=MobileContact.UserId WHERE User.UserId = :userId";
 		MapSqlParameterSource params = new MapSqlParameterSource("userId", userId);
-		List<User> userList = jdbcTemplate.query(sql, params, new UserRowMapper());
+		List<User> userList = jdbcTemplate.query(sql, params, new UserWithContactRowMapper());
 		if(userList.size() > 0){
 			return userList.get(0);
 		}else{

@@ -11,7 +11,7 @@ public class MyMatchesRowMapper implements RowMapper<MyMatches> {
     public MyMatches mapRow(ResultSet rs, int rowNum) throws SQLException {
         MyMatches myMatches = new MyMatches();
         myMatches.setTeam1Logo(rs.getString("Team1Logo"));
-        myMatches.setContestPoints(rs.getInt("BetPoints"));
+        myMatches.setContestPoints(rs.getInt("ContestPoints"));
         myMatches.setTeam1Short(rs.getString("Team1Short"));
         myMatches.setTeam2Logo(rs.getString("Team2Logo"));
         myMatches.setVenue(rs.getString("Venue"));

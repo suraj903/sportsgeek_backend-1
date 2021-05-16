@@ -34,40 +34,34 @@ public class PlayerService {
     @Autowired
     @Qualifier(value = "playerRepo")
     PlayerRepository playerRepository;
-   @Autowired
-   ImageUploadService imageUploadService;
+    @Autowired
+    ImageUploadService imageUploadService;
+
     public Result<List<PlayerResponse>> findAllPlayer() {
         List<PlayerResponse> playerList = playerRepository.findAllPlayers();
         return new Result<>(200,"Venue Details Retrieved Successfully",playerList);
     }
 
     public Result<PlayerResponse> findPlayerById(int id) throws Exception {
-        List<PlayerResponse> playerList = playerRepository.findPlayerByPlayerId(id);
-        if (playerList.size() > 0) {
-            return new Result<>(200,"Player Details Retrieved Successfully" ,playerList.get(0));
+        PlayerResponse player = playerRepository.findPlayerByPlayerId(id);
+        if (player != null) {
+            return new Result<>(200,"Player Details Retrieved Successfully", player);
         }
         else {
             return new Result<>(404,"No Player's found with Player id=('"+id+"'),please try again");
         }
     }
+
     public Result<List<PlayerResponse>> findPlayerByPlayerType(int id) throws Exception {
         List<PlayerResponse> playerList = playerRepository.findPlayerByPlayerType(id);
-        if (playerList.size() > 0) {
-            return new Result<>(200,"Player's Details Retrieved Successfully" ,playerList);
-        }
-        else {
-            return new Result<>(404,"No Player's found with PlayerType Id=('"+id+"'),please try again");
-        }
+        return new Result<>(200,"Player's Details Retrieved Successfully", playerList);
     }
+
     public Result<List<PlayerResponse>> findPlayerByTeamId(int id) throws Exception {
         List<PlayerResponse> playerList = playerRepository.findPlayerByTeamId(id);
-        if (playerList.size() > 0) {
-            return new Result<>(200,"Player's Details Retrieved Successfully" ,playerList);
-        }
-        else {
-            return new Result<>(404,"No Player's found with Team Id=('"+id+"'),please try again");
-        }
+        return new Result<>(200,"Player's Details Retrieved Successfully", playerList);
     }
+
     public Result<Player> addPlayer(Player player, MultipartFile multipartFile) throws Exception {
         File file = imageUploadService.uploadImage(multipartFile);
         if (file.toString() != "") {
@@ -89,6 +83,7 @@ public class PlayerService {
                     .asList(new Result.SportsGeekSystemError(player.hashCode(), "unable to upload the image")))));
         }
     }
+
     public Result<Player> updatePlayer(int id, Player player, MultipartFile multipartFile) throws Exception {
         File file = imageUploadService.uploadImage(multipartFile);
         if (file.toString() != "") {
@@ -106,12 +101,14 @@ public class PlayerService {
                     .asList(new Result.SportsGeekSystemError(player.hashCode(), "unable to upload the image")))));
         }
     }
+
     public Result<String> updatePlayerType(int id, int PlayerTypeId) throws Exception {
         if (playerRepository.updatePlayerType(id, PlayerTypeId)) {
             return new Result<>(201,"PlayerType Updated Successfully");
         }
-            return new Result<>(400,"Couldn't Update PlayerType with id='"+id+"'");
+        return new Result<>(400,"Couldn't Update PlayerType with id='"+id+"'");
     }
+
     public Result<Integer> deletePlayer(int id) throws Exception{
         int data = playerRepository.deletePlayer(id);
         if (data > 0) {

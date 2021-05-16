@@ -10,7 +10,7 @@ public interface GenderRepository {
 
     List<Gender> findAllGender();
 
-    List<Gender> findGenderById(int genderId) throws Exception;
+    Gender findGenderById(int genderId) throws Exception;
 
     int addGender(Gender gender) throws Exception;
 

@@ -32,9 +32,9 @@ public class RoleController {
 
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Success"), @ApiResponse(code = 500, message = "Internal server error"), @ApiResponse(code = 404, message = "Bad Request")})
     @PreAuthorize("hasRole('Admin')")
-    @GetMapping("/{id}")
-    public ResponseEntity<Role> getRoleById(@PathVariable int id) throws Exception {
-        Result<Role> roleList = roleService.findRoleById(id);
+    @GetMapping("/{roleId}")
+    public ResponseEntity<Role> getRoleById(@PathVariable int roleId) throws Exception {
+        Result<Role> roleList = roleService.findRoleById(roleId);
         return new ResponseEntity<>(roleList.getData(), HttpStatus.valueOf(roleList.getCode()));
     }
 
@@ -48,17 +48,17 @@ public class RoleController {
 
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully updated schema"), @ApiResponse(code = 404, message = "Schema not found"), @ApiResponse(code = 400, message = "Missing or invalid request body"), @ApiResponse(code = 500, message = "Internal error")})
     @PreAuthorize("hasRole('Admin')")
-    @PutMapping("/{id}")
-    public ResponseEntity<Role> updateRole(@PathVariable int id, @RequestBody(required = true) Role role) throws Exception {
-        Result<Role> roleResult = roleService.updateRole(id, role);
+    @PutMapping("/{roleId}")
+    public ResponseEntity<Role> updateRole(@PathVariable int roleId, @RequestBody(required = true) Role role) throws Exception {
+        Result<Role> roleResult = roleService.updateRole(roleId, role);
         return new ResponseEntity(roleResult.getData(), HttpStatus.valueOf(roleResult.getCode()));
     }
 
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully deleted schema"), @ApiResponse(code = 404, message = "Schema not found"), @ApiResponse(code = 409, message = "Schema is in use"), @ApiResponse(code = 500, message = "Error deleting schema")})
     @PreAuthorize("hasRole('Admin')")
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Result<String>> deleteRoleById(@PathVariable int id) throws Exception {
-        Result<String> result = roleService.deleteRole(id);
+    @DeleteMapping("/{roleId}")
+    public ResponseEntity<Result<String>> deleteRoleById(@PathVariable int roleId) throws Exception {
+        Result<String> result = roleService.deleteRole(roleId);
         return new ResponseEntity(result, HttpStatus.valueOf(result.getCode()));
     }
 }

@@ -12,12 +12,12 @@ public interface PublicChatRepository {
 
     List<PublicChatWithUser> findAllPublicChat();
 
-    List<PublicChatWithUser> findPublicChatById(int id) throws Exception;
+    PublicChatWithUser findPublicChatById(int publicChatId) throws Exception;
 
     int addPublicChat(PublicChat publicChat) throws Exception;
 
-    boolean updatePublicChat(int id, PublicChat publicChat) throws Exception;
+    boolean updatePublicChat(int publicChatId, PublicChat publicChat) throws Exception;
 
-    int deletePublicChat(int id) throws Exception;
+    boolean deletePublicChat(int publicChatId) throws Exception;
 
 }

@@ -4,6 +4,7 @@ import com.project.sportsgeek.mapper.TournamentRowMapper;
 import com.project.sportsgeek.model.Tournament;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -21,52 +22,59 @@ public class TournamentRepositoryImpl implements TournamentRepository {
     }
 
     @Override
-    public List<Tournament> findTournamentById(int i) throws Exception {
-            String sql = "SELECT * FROM Tournament WHERE TournamentId =:tournamentId";
-            Tournament tournament = new Tournament();
-            tournament.setTournamentId(i);
-            return jdbcTemplate.query(sql,new BeanPropertySqlParameterSource(tournament),new TournamentRowMapper());
+    public Tournament findTournamentById(int tournamentId) throws Exception {
+        String sql = "SELECT * FROM Tournament WHERE TournamentId = :tournamentId";
+        MapSqlParameterSource params = new MapSqlParameterSource("tournamentId", tournamentId);
+        List<Tournament> tournamentList = jdbcTemplate.query(sql, params, new TournamentRowMapper());
+        if(tournamentList.size() > 0){
+            return tournamentList.get(0);
+        }else{
+            return null;
+        }
     }
 
     @Override
-    public List<Tournament> findTournamentByActive() throws Exception {
-        String tournament_sql = "SELECT * from Tournament WHERE active = true";
-       return jdbcTemplate.query(tournament_sql,new TournamentRowMapper());
+    public Tournament findTournamentByActive() throws Exception {
+        String sql = "SELECT * from Tournament WHERE active = true";
+        List<Tournament> tournamentList = jdbcTemplate.query(sql, new TournamentRowMapper());
+        if(tournamentList.size() > 0){
+            return tournamentList.get(0);
+        }else{
+            return null;
+        }
     }
 
     @Override
     public int addTournament(Tournament tournament) throws Exception {
-       String sql = "INSERT INTO Tournament (Name,active) VALUES(:name,0)";
-       return jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(tournament));
+        String sql = "INSERT INTO Tournament (Name, active) VALUES(:name, 0)";
+        return jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(tournament));
     }
 
     @Override
-    public boolean updateTournament(int id, Tournament tournament) throws Exception {
-        String sql = "UPDATE `" + "Tournament" + "` set "
-                + "`Name` = :name where `TournamentId`=:tournamentId";
-        tournament.setTournamentId(id);
+    public boolean updateTournament(int tournamentId, Tournament tournament) throws Exception {
+        String sql = "UPDATE Tournament SET Name = :name where TournamentId = :tournamentId";
+        tournament.setTournamentId(tournamentId);
         return jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(tournament)) > 0;
     }
 
     @Override
-    public boolean updateActiveTournament(int id) throws Exception {
-        String sql = "UPDATE Tournament SET active=1 WHERE TournamentId=:tournamentId";
-        Tournament tournament = new Tournament();
-        tournament.setTournamentId(id);
-        return jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(tournament)) > 0;
+    public boolean updateActiveTournament(int tournamentId) throws Exception {
+        String sql = "UPDATE Tournament SET active=1 WHERE TournamentId = :tournamentId";
+        MapSqlParameterSource params = new MapSqlParameterSource("tournamentId", tournamentId);
+        return jdbcTemplate.update(sql, params) > 0;
     }
 
     @Override
     public boolean deactivateTournament() throws Exception {
-        String deactive_tournament = "UPDATE Tournament SET active=0 WHERE active=1";
-        return jdbcTemplate.update(deactive_tournament,new BeanPropertySqlParameterSource(deactive_tournament)) > 0;
+        String sql = "UPDATE Tournament SET active=0 WHERE active=1";
+//        return jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(null)) > 0;
+        return jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(sql)) > 0;
     }
 
     @Override
-    public int deleteTournament(int id) throws Exception {
-        String sql = "DELETE FROM Tournament WHERE TournamentId =:tournamentId";
-        Tournament tournament = new Tournament();
-        tournament.setTournamentId(id);
-        return jdbcTemplate.update(sql,new BeanPropertySqlParameterSource(tournament));
+    public boolean deleteTournament(int tournamentId) throws Exception {
+        String sql = "DELETE FROM Tournament WHERE TournamentId = :tournamentId";
+        MapSqlParameterSource params = new MapSqlParameterSource("tournamentId", tournamentId);
+        return jdbcTemplate.update(sql, params) > 0;
     }
 }

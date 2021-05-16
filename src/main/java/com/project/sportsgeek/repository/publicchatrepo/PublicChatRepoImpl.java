@@ -6,6 +6,7 @@ import com.project.sportsgeek.model.PublicChat;
 import com.project.sportsgeek.model.PublicChatWithUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -26,9 +27,15 @@ public class PublicChatRepoImpl implements PublicChatRepository {
     }
 
     @Override
-    public List<PublicChatWithUser> findPublicChatById(int id) throws Exception {
-        String sql = "SELECT PublicChatId, pc.UserId as UserId, u.FirstName as FirstName, u.LastName as LastName, Message, pc.Status as Status, ChatTimestamp FROM PublicChat as pc INNER JOIN User as u on pc.UserId=u.UserId WHERE PublicChatId=" + id;
-        return jdbcTemplate.query(sql,new PublicChatWithUserRowMapper());
+    public PublicChatWithUser findPublicChatById(int publicChatId) throws Exception {
+        String sql = "SELECT PublicChatId, pc.UserId as UserId, u.FirstName as FirstName, u.LastName as LastName, Message, pc.Status as Status, ChatTimestamp FROM PublicChat as pc INNER JOIN User as u on pc.UserId=u.UserId WHERE PublicChatId = :publicChatId";
+        MapSqlParameterSource params = new MapSqlParameterSource("publicChatId", publicChatId);
+        List<PublicChatWithUser> publicChatList = jdbcTemplate.query(sql, params, new PublicChatWithUserRowMapper());
+        if(publicChatList.size() > 0){
+            return publicChatList.get(0);
+        }else{
+            return null;
+        }
     }
 
     @Override
@@ -40,18 +47,17 @@ public class PublicChatRepoImpl implements PublicChatRepository {
     }
 
     @Override
-    public boolean updatePublicChat(int id, PublicChat publicChat) throws Exception {
-        String sql = "UPDATE PublicChat SET UserId=:userId, Message=:message WHERE PublicChatId=:publicChatId";
-        publicChat.setPublicChatId(id);
+    public boolean updatePublicChat(int publicChatId, PublicChat publicChat) throws Exception {
+        String sql = "UPDATE PublicChat SET UserId = :userId, Message=:message WHERE PublicChatId = :publicChatId";
+        publicChat.setPublicChatId(publicChatId);
         return jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(publicChat)) > 0;
     }
 
     @Override
-    public int deletePublicChat(int id) throws Exception {
-        String sql = "DELETE FROM PublicChat WHERE PublicChatId=:publicChatId";
-        PublicChat publicChat = new PublicChat();
-        publicChat.setPublicChatId(id);
-        return  jdbcTemplate.update(sql,new BeanPropertySqlParameterSource(publicChat));
+    public boolean deletePublicChat(int publicChatId) throws Exception {
+        String sql = "DELETE FROM PublicChat WHERE PublicChatId = :publicChatId";
+        MapSqlParameterSource params = new MapSqlParameterSource("publicChatId", publicChatId);
+        return jdbcTemplate.update(sql, params) > 0;
     }
 
 }

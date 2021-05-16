@@ -28,7 +28,7 @@ public class Matches implements Serializable {
     private int team2;
     private int winnerTeamId;
     private boolean resultStatus;
-    private int minimumBet;
+    private int minimumPoints;
     private int tournamentId;
 
 }

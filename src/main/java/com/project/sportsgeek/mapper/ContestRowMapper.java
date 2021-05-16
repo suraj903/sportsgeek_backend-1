@@ -11,10 +11,10 @@ public class ContestRowMapper implements RowMapper<ContestWithUser> {
     @Override
     public ContestWithUser mapRow(ResultSet rs, int rowNum) throws SQLException {
         ContestWithUser contest = new ContestWithUser();
-        contest.setContestId(rs.getInt("BetTeamId"));
+        contest.setContestId(rs.getInt("ContestId"));
         contest.setMatchId(rs.getInt("MatchId"));
         contest.setUserId(rs.getInt(rs.getInt("UserId")));
-        contest.setContestPoints(rs.getInt("BetPoints"));
+        contest.setContestPoints(rs.getInt("ContestPoints"));
         contest.setUsername(rs.getString("Username"));
         contest.setTeamId(rs.getInt("TeamId"));
         contest.setShortName(rs.getString("TeamShortName"));

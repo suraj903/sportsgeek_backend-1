@@ -26,13 +26,18 @@ public class PlayerRepoImpl implements PlayerRepository {
     }
 
     @Override
-    public List<PlayerResponse> findPlayerByPlayerId(int id) throws Exception {
+    public PlayerResponse findPlayerByPlayerId(int id) throws Exception {
 //        String sql = "SELECT PlayerId,TeamId,Name,TypeId,ProfilePicture FROM Player WHERE PlayerId="+id;
         String sql = "SELECT p.Credits as Credits,p.PlayerId as PlayerId, t.Name as TeamName, p.Name as Name,pt.TypeName as PlayerType, p.ProfilePicture as ProfilePicture " +
                 "FROM Player as p INNER JOIN PlayerType as pt on p.TypeId = pt.PlayerTypeId INNER JOIN Team as t on p.TeamId=t.TeamId WHERE p.PlayerId=:playerId";
         Player player = new Player();
         player.setPlayerId(id);
-        return jdbcTemplate.query(sql,new BeanPropertySqlParameterSource(player), new PlayerRowMapper());
+        List<PlayerResponse> playerList = jdbcTemplate.query(sql,new BeanPropertySqlParameterSource(player), new PlayerRowMapper());
+        if(playerList.size() > 0){
+            return playerList.get(0);
+        }else{
+            return null;
+        }
     }
 
     @Override

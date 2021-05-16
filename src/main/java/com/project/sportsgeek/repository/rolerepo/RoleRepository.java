@@ -10,12 +10,12 @@ public interface RoleRepository {
 
     List<Role> findAllRole();
 
-    List<Role> findRoleById(int id) throws Exception;
+    Role findRoleById(int roleId) throws Exception;
 
     int addRole(Role role) throws Exception;
 
-    boolean updateRole(int id, Role role) throws Exception;
+    boolean updateRole(int roleId, Role role) throws Exception;
 
-    boolean deleteRole(int id) throws Exception;
+    boolean deleteRole(int roleId) throws Exception;
 
 }

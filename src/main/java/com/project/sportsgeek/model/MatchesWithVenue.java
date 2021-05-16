@@ -40,6 +40,6 @@ public class MatchesWithVenue implements Serializable {
     private int winnerTeamId;
     private int resultStatus;
     @NotNull
-    private int minimumBet;
+    private int minimumPoints;
     private Timestamp startDatetime;
 }

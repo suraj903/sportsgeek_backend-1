@@ -51,9 +51,9 @@ public class UserController {
             @ApiResponse(code = 500, message = "Internal server error"),
             @ApiResponse(code = 404, message = "Bad Request")})
     @PreAuthorize("hasAnyRole('Admin','User')")
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable int id) throws Exception {
-        Result<User> userResult = userService.findUserByUserId(id);
+    @GetMapping("/{userId}")
+    public ResponseEntity<User> getUserById(@PathVariable int userId) throws Exception {
+        Result<User> userResult = userService.findUserByUserId(userId);
         return new ResponseEntity<>(userResult.getData(), HttpStatus.valueOf(userResult.getCode()));
     }
 
@@ -71,7 +71,7 @@ public class UserController {
             @ApiResponse(code = 500, message = "Internal server error"),
             @ApiResponse(code = 404, message = "Bad Request")})
     @PreAuthorize("hasAnyRole('Admin','User')")
-    @GetMapping("/{userId}/loosing-point")
+    @GetMapping("/{userId}/loosing-points")
     public ResponseEntity<UserWinningAndLossingPoints> getUserLoosingPoints(@PathVariable int userId)
             throws Exception {
         Result<UserWinningAndLossingPoints> userResult = userService.findUserLoosingPoints(userId);
@@ -82,7 +82,7 @@ public class UserController {
             @ApiResponse(code = 500, message = "Internal server error"),
             @ApiResponse(code = 404, message = "Bad Request")})
     @PreAuthorize("hasAnyRole('Admin','User')")
-    @GetMapping("/{userId}/winning-point")
+    @GetMapping("/{userId}/winning-points")
     public ResponseEntity<UserWinningAndLossingPoints> getUserWinningPoints(@PathVariable int userId)
             throws Exception {
         Result<UserWinningAndLossingPoints> userResult = userService.findUserWinningPoints(userId);
@@ -135,13 +135,11 @@ public class UserController {
             @ApiResponse(code = 500, message = "Internal error")})
     @PreAuthorize("hasAnyRole('Admin','User')")
     @PutMapping("/update-password")
-    public ResponseEntity<String> updatePassword(
-            @RequestBody(required = true) UserWithNewPassword userWithNewPassword) throws Exception {
+    public ResponseEntity<String> updatePassword(@RequestBody(required = true) UserWithNewPassword userWithNewPassword) throws Exception {
         System.out.println(userWithNewPassword);
         Result<String> userResult = userService.updatePassword(userWithNewPassword);
         return new ResponseEntity<>(userResult.getData(), HttpStatus.valueOf(userResult.getCode()));
     }
-
 
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully updated schema"),
             @ApiResponse(code = 404, message = "Schema not found"),
@@ -149,12 +147,10 @@ public class UserController {
             @ApiResponse(code = 500, message = "Internal error")})
     @PreAuthorize("hasRole('Admin')")
     @PutMapping("/{userId}/update-status/{status}")
-    public ResponseEntity<User> updateStatus(@PathVariable int userId, @PathVariable boolean status)
-            throws Exception {
+    public ResponseEntity<User> updateStatus(@PathVariable int userId, @PathVariable boolean status) throws Exception {
         Result<User> userResult = userService.updateStatus(userId, status);
         return new ResponseEntity<>(userResult.getData(), HttpStatus.valueOf(userResult.getCode()));
     }
-
 
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully updated schema"),
             @ApiResponse(code = 404, message = "Schema not found"),
@@ -173,14 +169,14 @@ public class UserController {
             @ApiResponse(code = 400, message = "Missing or invalid request body"),
             @ApiResponse(code = 500, message = "Internal error")})
     @PreAuthorize("hasRole('Admin')")
-    @PutMapping("/{userId}/update-user-role/{role}")
-    public ResponseEntity<String> updateUserRole(@PathVariable int userId, @PathVariable int role)
+    @PutMapping("/{userId}/update-user-role/{roleId}")
+    public ResponseEntity<String> updateUserRole(@PathVariable int userId, @PathVariable int roleId)
             throws Exception {
-        Result<String> userResult = userService.updateUserRole(userId, role);
+        Result<String> userResult = userService.updateUserRole(userId, roleId);
         return new ResponseEntity<>(userResult.getData(), HttpStatus.valueOf(userResult.getCode()));
     }
 
-//	------------------------------------------------- FORGOT PASSWORD CONTROLLER -----------------------------------------------------------------
+//	------------------------------------------------- FORGET PASSWORD CONTROLLER -----------------------------------------------------------------
 
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully updated schema"),
             @ApiResponse(code = 404, message = "Schema not found"),
@@ -188,8 +184,8 @@ public class UserController {
             @ApiResponse(code = 500, message = "Internal error")})
     @PreAuthorize("hasAnyRole('Admin','User')")
     @PostMapping("/forget-password")
-    public ResponseEntity<User> getUserByEmailId(@RequestBody(required = true) User user) throws Exception {
-        Result<User> userResult = userService.findUserByEmailId(user);
+    public ResponseEntity<User> getUserByEmailIdAndMobileNumber(@RequestBody(required = true) User user) throws Exception {
+        Result<User> userResult = userService.findUserByEmailIdAndMobileNumber(user);
         return new ResponseEntity<>(userResult.getData(), HttpStatus.valueOf(userResult.getCode()));
     }
 
@@ -214,7 +210,7 @@ public class UserController {
             @ApiResponse(code = 409, message = "Schema is in use"),
             @ApiResponse(code = 500, message = "Error deleting schema")})
     @PreAuthorize("hasRole('Admin')")
-    @DeleteMapping("/{userId}/delete-user")
+    @DeleteMapping("/{userId}")
     public ResponseEntity<Result<User>> deleteUser(@PathVariable int userId) throws Exception {
         Result<User> userResult = userService.deleteUser(userId);
         return new ResponseEntity<>(userResult, HttpStatus.valueOf(userResult.getCode()));

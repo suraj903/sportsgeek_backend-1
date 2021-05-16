@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 public class ContestService {
     @Autowired
-    @Qualifier("betOnTeamsRepo")
+    @Qualifier("contestRepo")
     ContestRepository contestRepository;
     @Autowired
     @Qualifier("userRepo")
@@ -37,35 +37,37 @@ public class ContestService {
 //        throw new ResultException(new Result<>(400, "Error!, please try again!", new ArrayList<>(Arrays.asList(new Result.SportsGeekSystemError(betonteam.hashCode(), "unable to add the given Contest")))));
     }
 
-    public Result<List<ContestWithUser>> findContestByMatchId(int contestId) throws Exception {
+    public Result<List<ContestWithUser>> findContestByMatchId(int matchId) throws Exception {
 //	    System.out.println("Service : " + id);
-        List<ContestWithUser> contestList = contestRepository.findAllContestByMatchId(contestId);
-        if (contestList.size() > 0) {
-            System.out.println("Contest Service Called");
-            return new Result<>(200, contestList);
-        }
-        else {
-            return new Result(404,"No Contest's found,please try again","Match with id=('"+ contestId +"') not found");
-        }
+        List<ContestWithUser> contestList = contestRepository.findAllContestByMatchId(matchId);
+        return new Result<>(200, contestList);
+//        if (contestList.size() > 0) {
+//            return new Result<>(200, contestList);
+//        }
+//        else {
+//            return new Result(404,"No Contest's found,please try again","Match with id=('"+ contestId +"') not found");
+//        }
     }
+
     public Result<List<ContestWithResult>> findContestResultByMatchId(int matchId) throws Exception {
 //	    System.out.println("Service : " + id);
         List<ContestWithResult> contestList = contestRepository.findContestResultByMatchId(matchId);
-        if (contestList.size() > 0) {
-            return new Result<>(200, contestList);
-        }
-        else {
-            return new Result(404,"No Contest's found,please try again","Match with id=('"+ matchId +"') not found");
-        }
+        return new Result<>(200, contestList);
+//        if (contestList.size() > 0) {
+//            return new Result<>(200, contestList);
+//        }
+//        else {
+//            return new Result(404,"No Contest's found,please try again","Match with id=('"+ matchId +"') not found");
+//        }
     }
     public Result<Contest> findContestByUserAndMatch(int userId, int matchId) throws Exception {
-        List<Contest> contestList = contestRepository.findContestByUserAndMatch(userId, matchId);
-        if (contestList.size() > 0) {
-            return new Result<>(200, contestList.get(0));
+        Contest contest = contestRepository.findContestByUserAndMatch(userId, matchId);
+        if (contest != null) {
+            return new Result<>(200, contest);
         }
         else {
 //            throw new ResultException((new Result<>(404,"No Contest's found,please try again","Contest with id=('"+ userid +"') not found")));
-            return new Result<>(500, "No Data Found!");
+            return new Result<>(404, "No Data Found!");
         }
     }
     public Result<Contest> updateContest(int contestId, Contest contest) throws Exception {

@@ -10,18 +10,18 @@ public interface TournamentRepository {
 
     List<Tournament> findAllTournament();
 
-    List<Tournament> findTournamentById(int i) throws  Exception;
+    Tournament findTournamentById(int tournamentId) throws  Exception;
 
-    List<Tournament> findTournamentByActive() throws Exception;
+    Tournament findTournamentByActive() throws Exception;
 
     int addTournament(Tournament tournament) throws Exception;
 
-    boolean updateTournament(int id, Tournament tournament) throws Exception;
+    boolean updateTournament(int tournamentId, Tournament tournament) throws Exception;
 
-    boolean updateActiveTournament(int id) throws Exception;
+    boolean updateActiveTournament(int tournamentId) throws Exception;
 
     boolean deactivateTournament() throws Exception;
 
-    int deleteTournament(int id) throws Exception;
+    boolean deleteTournament(int tournamentId) throws Exception;
 
 }

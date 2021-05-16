@@ -10,12 +10,12 @@ public interface TeamRepository {
 
     List<Team> findAllTeam();
 
-    List<Team> findTeamById(int i) throws Exception;
+    Team findTeamById(int teamId) throws Exception;
 
     int addTeam(Team team) throws Exception;
 
-    boolean updateTeam(int id, Team team) throws Exception;
+    boolean updateTeam(int teamId, Team team) throws Exception;
 
-    int deleteTeam(int id) throws Exception;
+    boolean deleteTeam(int teamId) throws Exception;
 
 }

@@ -43,9 +43,9 @@ public class TeamService {
     }
 
     public Result<Team> findTeamById(int id) throws Exception {
-        List<Team> teamList = teamRepository.findTeamById(id);
-        if (teamList.size() > 0) {
-            return new Result<>(200,"Team Details Retrieved Successfully", teamList.get(0));
+        Team team = teamRepository.findTeamById(id);
+        if (team != null) {
+            return new Result<>(200,"Team Details Retrieved Successfully", team);
         }
         else {
             throw new ResultException((new Result<>(404,"No team's found,please try again","Team with id=('"+ id +"') not found")));
@@ -95,9 +95,8 @@ public class TeamService {
         }
     }
     public Result<Integer> deleteTeam(int id) throws Exception{
-        int data = teamRepository.deleteTeam(id);
-        if (data > 0) {
-            return new Result<>(200,"Team Deleted Successfully",data);
+        if (teamRepository.deleteTeam(id)) {
+            return new Result<>(200,"Team Deleted Successfully");
         }
         else {
             throw new ResultException((new Result<>(404,"No Team's found to delete,please try again","Teams with id=('"+ id +"') not found")));

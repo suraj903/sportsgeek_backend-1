@@ -19,43 +19,45 @@ public class GenderService {
     @Qualifier("genderRepo")
     GenderRepository genderRepository;
 
-    public Result<List<Gender>> findAllGender() {
+    public Result<List<Gender>> findAllGender(){
         List<Gender> genderList = genderRepository.findAllGender();
         return new Result<>(200, genderList);
     }
 
     public Result<Gender> findGenderById(int genderId) throws Exception {
-        List<Gender> genderList = genderRepository.findGenderById(genderId);
-        if (genderList.size() > 0) {
-            return new Result<>(200, genderList.get(0));
+        Gender gender = genderRepository.findGenderById(genderId);
+        if (gender != null) {
+            return new Result<>(200, gender);
         } else {
             throw new ResultException((new Result<>(404, "No Gender's found,please try again", "Gender with id=('" + genderId + "') not found")));
         }
     }
 
     public Result<Gender> addGender(Gender gender) throws Exception {
-        int id = genderRepository.addGender(gender);
-        gender.setGenderId(id);
-        if (id > 0) {
+        int genderId = genderRepository.addGender(gender);
+        gender.setGenderId(genderId);
+        if (genderId > 0) {
             return new Result<>(201, gender);
+        }else{
+            throw new ResultException(new Result<>(400, "Error!, please try again!", new ArrayList<>(Arrays
+                    .asList(new Result.SportsGeekSystemError(gender.hashCode(), "unable to add the given gender")))));
         }
-        throw new ResultException(new Result<>(400, "Error!, please try again!", new ArrayList<>(Arrays
-                .asList(new Result.SportsGeekSystemError(gender.hashCode(), "unable to add the given gender")))));
     }
 
     public Result<Gender> updateGender(int genderId, Gender gender) throws Exception {
         if (genderRepository.updateGender(genderId, gender)) {
             return new Result<>(201, gender);
+        }else{
+            throw new ResultException(new Result<>(400, "Unable to update the given gender details! Please try again!", new ArrayList<>(Arrays
+                    .asList(new Result.SportsGeekSystemError(gender.hashCode(), "given genderId('" + genderId + "') does not exists")))));
         }
-        throw new ResultException(new Result<>(400, "Unable to update the given gender details! Please try again!", new ArrayList<>(Arrays
-                .asList(new Result.SportsGeekSystemError(gender.hashCode(), "given genderId('" + genderId + "') does not exists")))));
     }
 
     public Result<String> deleteGender(int genderId) throws Exception {
         if (genderRepository.deleteGender(genderId)) {
             return new Result<>(200, "Gender deleted successfully.");
         } else {
-            throw new ResultException((new Result<>(404, "No Gender's found to delete,please try again", "Gender with id=('" + genderId + "') not found")));
+            throw new ResultException((new Result<>(404, "No Gender's found to delete, please try again", "Gender with id=('" + genderId + "') not found")));
         }
     }
 }

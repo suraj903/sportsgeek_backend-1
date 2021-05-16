@@ -10,7 +10,7 @@ public interface PlayerTypeRepository {
 
     List<PlayerType> findAllPlayerType();
 
-    List<PlayerType> findPlayerTypeById(int i) throws Exception;
+    PlayerType findPlayerTypeById(int i) throws Exception;
 
     int addPlayerType(PlayerType PlayerType) throws Exception;
 

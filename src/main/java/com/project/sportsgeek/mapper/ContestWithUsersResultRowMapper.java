@@ -11,8 +11,8 @@ public class ContestWithUsersResultRowMapper implements RowMapper<ContestWithRes
     public ContestWithResult mapRow(ResultSet rs, int rowNum) throws SQLException {
 
         ContestWithResult contestWithResult = new ContestWithResult();
-        contestWithResult.setContestId(rs.getInt("BetTeamId"));
-        contestWithResult.setContestPoints(rs.getInt("BetPoints"));
+        contestWithResult.setContestId(rs.getInt("ContestId"));
+        contestWithResult.setContestPoints(rs.getInt("ContestPoints"));
         contestWithResult.setFirstName(rs.getString("FirstName"));
         contestWithResult.setLastName(rs.getString("LastName"));
         contestWithResult.setTeamShortName(rs.getString("TeamShortName"));

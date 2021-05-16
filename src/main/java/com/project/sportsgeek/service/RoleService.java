@@ -22,13 +22,12 @@ public class RoleService {
         return new Result<>(200, roleList);
     }
 
-    public Result<Role> findRoleById(int id) throws Exception {
-        List<Role> roleList = roleRepository.findRoleById(id);
-        if (roleList.size() > 0) {
-            return new Result<>(200, roleList.get(0));
-        } else {
-            return new Result<>(400, "Role with Role Id=(" + id + ") not found");
+    public Result<Role> findRoleById(int roleId) throws Exception {
+        Role role = roleRepository.findRoleById(roleId);
+        if (role != null) {
+            return new Result<>(200, role);
         }
+        throw new ResultException((new Result<>(404, "No Role's found,please try again", "Role with id=('" + roleId + "') not found")));
     }
 
     public Result<Role> addRole(Role role) throws Exception {
@@ -37,21 +36,20 @@ public class RoleService {
         if (id > 0) {
             return new Result<>(201, role);
         }
-        return new Result<>(400, "Error in adding the Role");
+        throw new ResultException(new Result<>(400, "Error in adding the Role"));
     }
 
-    public Result<Role> updateRole(int id, Role role) throws Exception {
-        if (roleRepository.updateRole(id, role)) {
+    public Result<Role> updateRole(int roleId, Role role) throws Exception {
+        if (roleRepository.updateRole(roleId, role)) {
             return new Result<>(201, role);
         }
-        return new Result<>(400, "Error in updating the Role!!. Role with Role Id=(" + id + ") not found");
+        throw new ResultException(new Result<>(400, "Error in updating the Role!!. Role with Role Id=(" + roleId + ") not found"));
     }
 
-    public Result<String> deleteRole(int id) throws Exception {
-        if (roleRepository.deleteRole(id)) {
+    public Result<String> deleteRole(int roleId) throws Exception {
+        if (roleRepository.deleteRole(roleId)) {
             return new Result<>(200, "Role deleted successfully.");
-        } else {
-            return new Result<>(400, "Error in deleting the Role!!. Role with Role Id=(" + id + ") not found");
         }
+        throw new ResultException(new Result<>(404, "Error in deleting the Role!!. Role with Role Id=(" + roleId + ") not found"));
     }
 }

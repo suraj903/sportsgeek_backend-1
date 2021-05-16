@@ -7,11 +7,15 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import com.project.sportsgeek.model.Email;
+import com.project.sportsgeek.model.EmailContact;
+import com.project.sportsgeek.model.MobileContact;
+import com.project.sportsgeek.repository.contestrepo.ContestRepository;
+import com.project.sportsgeek.repository.emailcontactrepo.EmailContactRepository;
+import com.project.sportsgeek.repository.mobilecontactrepo.MobileContactRepository;
+import com.project.sportsgeek.repository.rechargerepo.RechargeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.RowCountCallbackHandler;
-import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,8 +24,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.project.sportsgeek.exception.ResultException;
-import com.project.sportsgeek.mapper.UserWithPasswordRowMapper;
-import com.project.sportsgeek.model.Email;
 import com.project.sportsgeek.model.profile.User;
 import com.project.sportsgeek.model.profile.UserAtLogin;
 import com.project.sportsgeek.model.profile.UserForLoginState;
@@ -38,13 +40,32 @@ import lombok.SneakyThrows;
 public class UserService implements UserDetailsService {
 
 	@Autowired
+	@Qualifier(value = "userRepo")
 	UserRepository userRepository;
+
+	@Autowired
+	@Qualifier(value = "emailContactRepo")
+	EmailContactRepository emailContactRepository;
+
+	@Autowired
+	@Qualifier(value = "mobileContactRepo")
+	MobileContactRepository mobileContactRepository;
+
+	@Autowired
+	@Qualifier(value = "rechargeRepo")
+	RechargeRepository rechargeRepository;
+
+	@Autowired
+	@Qualifier(value = "contestRepo")
+	ContestRepository contestRepository;
+
 	@Autowired
 	EmailService emailService;
+
 	private int otp;
 	private int sendOtp;
 
-	private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+//	private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
 //	---------------------------------------------------------------------------------------------------------------------------------------------
 //	------------------------------------------------- SELECT SERVICE ----------------------------------------------------------------------------
@@ -55,47 +76,47 @@ public class UserService implements UserDetailsService {
 		return new Result<>(200, userList);
 	}
 
-	public Result<User> findUserByUserId(int id) throws Exception {
-		List<User> userList = userRepository.findUserByUserId(id);
-		if (userList.size() > 0) {
-			return new Result<>(200, userList.get(0));
+	public Result<User> findUserByUserId(int userId) throws Exception {
+		User user = userRepository.findUserByUserId(userId);
+		if (user != null) {
+			return new Result<>(200, user);
 		} else {
 			throw new ResultException(new Result<>(404, "no user's found, please try again!",
-					new ArrayList<>(Arrays.asList(new Result.SportsGeekSystemError((id + "").hashCode(),
-							"user with given id('" + id + "') does not exists")))));
+					new ArrayList<>(Arrays.asList(new Result.SportsGeekSystemError((userId + "").hashCode(),
+							"user with given id('" + userId + "') does not exists")))));
 		}
 	}
 
-	public Result<UserWinningAndLossingPoints> findUserLoosingPoints(int id) throws Exception {
-		List<UserWinningAndLossingPoints> userList = userRepository.findLoosingPointsByUserId(id);
+	public Result<UserWinningAndLossingPoints> findUserLoosingPoints(int userId) throws Exception {
+		List<UserWinningAndLossingPoints> userList = userRepository.findLoosingPointsByUserId(userId);
 		if (userList.size() > 0) {
 			return new Result<>(200, userList.get(0));
 		} else {
 			throw new ResultException(new Result<>(404, "no user's found, please try again!",
-					new ArrayList<>(Arrays.asList(new Result.SportsGeekSystemError((id + "").hashCode(),
-							"user with given id('" + id + "') does not exists")))));
+					new ArrayList<>(Arrays.asList(new Result.SportsGeekSystemError((userId + "").hashCode(),
+							"user with given id('" + userId + "') does not exists")))));
 		}
 	}
 
-	public Result<UserWinningAndLossingPoints> findUserWinningPoints(int id) throws Exception {
-		List<UserWinningAndLossingPoints> userList = userRepository.findWinningPointsByUserId(id);
+	public Result<UserWinningAndLossingPoints> findUserWinningPoints(int userId) throws Exception {
+		List<UserWinningAndLossingPoints> userList = userRepository.findWinningPointsByUserId(userId);
 		if (userList.size() > 0) {
 			return new Result<>(200, userList.get(0));
 		} else {
 			throw new ResultException(new Result<>(404, "no user's found, please try again!",
-					new ArrayList<>(Arrays.asList(new Result.SportsGeekSystemError((id + "").hashCode(),
-							"user with given id('" + id + "') does not exists")))));
+					new ArrayList<>(Arrays.asList(new Result.SportsGeekSystemError((userId + "").hashCode(),
+							"user with given id('" + userId + "') does not exists")))));
 		}
 	}
 
-	public Result<UserWithPassword> findUserByUserName(String userName) throws Exception {
-		List<UserWithPassword> userList = userRepository.findUserByUserName(userName);
+	public Result<UserWithPassword> findUserByUserName(String username) throws Exception {
+		List<UserWithPassword> userList = userRepository.findUserByUserName(username);
 		if (userList.size() > 0) {
 			return new Result<>(200, userList.get(0));
 		} else {
 			throw new ResultException(new Result<>(404, "no user's found, please try again!",
-					new ArrayList<>(Arrays.asList(new Result.SportsGeekSystemError((userName + "").hashCode(),
-							"user with given Username('" + userName + "') does not exists")))));
+					new ArrayList<>(Arrays.asList(new Result.SportsGeekSystemError((username + "").hashCode(),
+							"user with given Username('" + username + "') does not exists")))));
 		}
 	}
 
@@ -121,12 +142,12 @@ public class UserService implements UserDetailsService {
 
 	@SneakyThrows
 	@Override
-	public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-		List<UserWithPassword> userList = userRepository.findUserByUserName(s);
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		List<UserWithPassword> userList = userRepository.findUserByUserName(username);
 		Set<SimpleGrantedAuthority> authorities = new HashSet<>();
 		authorities.add(new SimpleGrantedAuthority("ROLE_" + userList.get(0).getRole()));
 		if (userList == null) {
-			throw new UsernameNotFoundException("User not found with username: " + s);
+			throw new UsernameNotFoundException("User not found with username: " + username);
 		} else {
 			return new org.springframework.security.core.userdetails.User(userList.get(0).getUsername(),
 					userList.get(0).getPassword(), authorities);
@@ -163,16 +184,28 @@ public class UserService implements UserDetailsService {
 
 	public Result<User> addUser(UserWithPassword userWithPassword) throws Exception {
 		int usernameCount = userRepository.getUsersCountByUsername(userWithPassword.getUsername());
-		System.out.println("UserName Count :- " + usernameCount);
+		int emailCount = emailContactRepository.getCountByEmailId(userWithPassword.getEmail());
 		if (usernameCount > 0) {
-			throw new ResultException(new Result<>(500, "User Already Exists"));
-		} else {
-			int id = userRepository.addUser(userWithPassword);
-			userWithPassword.setUserId(id);
-			System.out.println(id);
-			if (id > 0) {
-				userRepository.addEmail(userWithPassword);
-				userRepository.addMobile(userWithPassword);
+			throw new ResultException(new Result<>(404, "Username already exists."));
+		}
+		else if(emailCount > 0){
+			throw new ResultException(new Result<>(400, "Email already exists."));
+		}
+		else {
+			int userId = userRepository.addUser(userWithPassword);
+			userWithPassword.setUserId(userId);
+			if (userId > 0) {
+				// Add Email
+				EmailContact emailContact = new EmailContact();
+				emailContact.setUserId(userId);
+				emailContact.setEmailId(userWithPassword.getEmail());
+				emailContactRepository.addEmailContact(emailContact);
+				// Add Mobile Number
+				MobileContact mobileContact = new MobileContact();
+				mobileContact.setUserId(userId);
+				mobileContact.setMobileNumber(userWithPassword.getMobileNumber());
+				mobileContactRepository.addMobileContact(mobileContact);
+
 				// Send Email to User
 				String subject = "New User Registration!!";
 				String msg = "Hello " + userWithPassword.getFirstName() + " " + userWithPassword.getLastName()
@@ -194,7 +227,7 @@ public class UserService implements UserDetailsService {
 				emailService.sendEmail(adm_sendemail);
 				return new Result<>(200, userWithPassword);
 			} else {
-				throw new ResultException(new Result<>(500, "User Already Exists"));
+				throw new ResultException(new Result<>(500, "Unable to add User"));
 			}
 		}
 	}
@@ -203,34 +236,42 @@ public class UserService implements UserDetailsService {
 //	------------------------------------------------- UPDATE SERVICE ----------------------------------------------------------------------------
 //	---------------------------------------------------------------------------------------------------------------------------------------------
 
-	public Result<User> updateUser(int id, User user) throws Exception {
-		if (userRepository.updateUser(id, user)) {
-			userRepository.updateEmail(id, user);
-			userRepository.updateMobile(id, user);
-			return new Result<>(201, (User) user);
+	public Result<User> updateUser(int userId, User user) throws Exception {
+		// Update User
+		if (userRepository.updateUser(userId, user)) {
+			// Update Email
+			EmailContact emailContact = new EmailContact();
+			emailContact.setEmailId(user.getEmail());
+			emailContactRepository.updateEmailContactByUserId(userId, emailContact);
+			// Add Mobile Number
+			MobileContact mobileContact = new MobileContact();
+			mobileContact.setMobileNumber(user.getMobileNumber());
+			mobileContactRepository.updateMobileContactByUserId(userId, mobileContact);
+			return new Result<>(201, user);
 		}
-		return new Result<>(400, "Given User Id does not exists");
+//		return new Result<>(400, "Given User Id does not exists");
+		throw new ResultException((new Result<>(404, "No User's found,please try again", "User with id=('" + userId + "') not found")));
 	}
 
-	public Result<User> updateStatus(int id, boolean status) throws Exception {
-		if (userRepository.updateStatus(id, status)) {
-			List<User> userList = userRepository.findUserByUserId(id);
+	public Result<User> updateStatus(int userId, boolean status) throws Exception {
+		if (userRepository.updateStatus(userId, status)) {
+			User user = userRepository.findUserByUserId(userId);
 			String sub = "Account Approved!!";
-			String updateStatus_msg = "Congratulations " + userList.get(0).getFirstName() + " "
-					+ userList.get(0).getLastName() + ",\n\n" + "Your account is approved by the Admin. \n"
-					+ "Your username is \"" + userList.get(0).getUsername() + "\".\n"
+			String updateStatus_msg = "Congratulations " + user.getFirstName() + " "
+					+ user.getLastName() + ",\n\n" + "Your account is approved by the Admin. \n"
+					+ "Your username is \"" + user.getUsername() + "\".\n"
 					+ "Now, You can login to the app and enjoy SportsGeek.\n" + "\n" + "Thanking you\n"
 					+ "SportsGeek Team";
-			String user_email = userList.get(0).getEmail();
+			String user_email = user.getEmail();
 			Email email = Email.builder().setSubject(sub).setTo(user_email).message(updateStatus_msg).build();
 			emailService.sendEmail(email);
-			return new Result<>(201, "status of given id(" + id + ") has been succefully updated");
+			return new Result<>(201, "status of given id(" + userId + ") has been successfully updated");
 		}
 		return new Result<>(400, "No User's Found, Please try again!");
 	}
 
-	public Result<String> updateUserRole(int userId, int role) throws Exception {
-		int result = userRepository.updateUserRole(userId, role);
+	public Result<String> updateUserRole(int userId, int roleId) throws Exception {
+		int result = userRepository.updateUserRole(userId, roleId);
 		if (result > 0) {
 			return new Result<>(201, "Successfully Assigned Role to User");
 		} else {
@@ -271,8 +312,8 @@ public class UserService implements UserDetailsService {
 		return otp;
 	}
 
-	public Result<User> findUserByEmailId(User user) throws Exception {
-		List<User> userList = userRepository.findUserByEmailId(user);
+	public Result<User> findUserByEmailIdAndMobileNumber(User user) throws Exception {
+		List<User> userList = userRepository.findUserByEmailIdAndMobileNumber(user);
 		System.out.println(userList);
 		if (userList.size() > 0) {
 			sendOtp = generateOTP();
@@ -297,7 +338,6 @@ public class UserService implements UserDetailsService {
 			if (result > 0) {
 				return new Result<>(200, "password has been successfully Changed");
 			} else {
-
 				return new Result<>(500, "Internal Server error!, Unable to update the password");
 			}
 		} else {
@@ -309,17 +349,17 @@ public class UserService implements UserDetailsService {
 //	------------------------------------------------- DELETE SERVICE ----------------------------------------------------------------------------
 //	---------------------------------------------------------------------------------------------------------------------------------------------
 
-	public Result<User> deleteUser(int id) throws Exception {
-		int result = userRepository.deleteEmail(id);
-		if (result > 0) {
-			userRepository.deleteMobile(id);
-			userRepository.deleteRecharge(id);
-			userRepository.deleteBOT(id);
-			userRepository.deleteUser(id);
+	public Result<User> deleteUser(int userId) throws Exception {
+		boolean result = emailContactRepository.deleteEmailContactByUserId(userId);
+		if (result) {
+			mobileContactRepository.deleteMobileContactByUserId(userId);
+			rechargeRepository.deleteRechargeByUserId(userId);
+			contestRepository.deleteContestByUserId(userId);
+			userRepository.deleteUser(userId);
 			return new Result<>(201, "User Deleted Successfully!!");
 		}
 
-		return new Result<>(400, "Given User Id does not exists");
+		return new Result<>(404, "Given User Id does not exists");
 	}
 
 }

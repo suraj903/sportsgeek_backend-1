@@ -22,11 +22,16 @@ public class PlayerTypeRepoImpl implements PlayerTypeRepository{
     }
 
     @Override
-    public List<PlayerType> findPlayerTypeById(int i) throws Exception {
+    public PlayerType findPlayerTypeById(int i) throws Exception {
         String sql = "SELECT * FROM PlayerType WHERE PlayerTypeId=:playerTypeId";
         PlayerType playerType = new PlayerType();
         playerType.setPlayerTypeId(i);
-        return jdbcTemplate.query(sql,new BeanPropertySqlParameterSource(playerType),new PlayerTypeRowMapper());
+        List<PlayerType> playerTypeList = jdbcTemplate.query(sql,new BeanPropertySqlParameterSource(playerType),new PlayerTypeRowMapper());
+        if(playerTypeList.size() > 0){
+            return playerTypeList.get(0);
+        }else{
+            return null;
+        }
     }
 
     @Override

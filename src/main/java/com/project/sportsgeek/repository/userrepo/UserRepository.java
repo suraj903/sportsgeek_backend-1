@@ -10,13 +10,13 @@ public interface UserRepository {
 
     List<User> findAllUsers() ;
 
-    List<User> findUserByUserId(int id) throws Exception;
+    User findUserByUserId(int id) throws Exception;
 
     List<UserWithPassword> findUserByUserName(String userName) throws Exception;
 
     List<User> findAllUsersByRole(int roleId) throws Exception;
 
-    List<User> findUserByEmailId(User user) throws Exception;
+    List<User> findUserByEmailIdAndMobileNumber(User user) throws Exception;
 
     List<UserWinningAndLossingPoints> findLoosingPointsByUserId(int userId) throws Exception;
 
@@ -26,9 +26,6 @@ public interface UserRepository {
 
     int addUser(UserWithPassword userWithPassword) throws Exception;
 
-    int addEmail(UserWithPassword userWithPassword) throws Exception;
-
-    int addMobile(UserWithPassword userWithPassword) throws Exception;
 
     boolean updateUser(int id, User user) throws Exception;
 
@@ -38,7 +35,7 @@ public interface UserRepository {
 
     int updateForgetPassword(UserWithOtp userWithOtp) throws Exception;
 
-    int updateUserRole(int userId, int role) throws Exception;
+    int updateUserRole(int userId, int roleId) throws Exception;
 
     boolean updateUserProfilePicture(int userId, String profilePicture) throws Exception;
 
@@ -46,19 +43,7 @@ public interface UserRepository {
 
     UserForLoginState authenticate(UserAtLogin userAtLogin) throws Exception;
 
-    int deleteUser(int id) throws Exception;
-
-    int deleteEmail(int id) throws Exception;
-
-    int deleteMobile(int id) throws Exception;
-
-    int deleteBOT(int id) throws Exception;
-
-    int deleteRecharge(int id) throws Exception;
-
-    boolean updateEmail(int id, User user) throws Exception;
-
-    boolean updateMobile(int id, User user) throws Exception;
+    boolean deleteUser(int id) throws Exception;
 
     int addAvailablePoints(int userId, int points) throws Exception;
 

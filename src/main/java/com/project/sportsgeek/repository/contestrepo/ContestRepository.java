@@ -7,10 +7,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository(value = "betOnTeamsRepo")
+@Repository(value = "contestRepo")
 public interface ContestRepository {
 
-    List<Contest> findContestByUserAndMatch(int userid, int matchid) throws Exception;
+    Contest findContestByUserAndMatch(int userId, int matchId) throws Exception;
 
     List<ContestWithUser> findAllContestByMatchId(int matchId) throws Exception;
 
@@ -18,8 +18,10 @@ public interface ContestRepository {
 
     int addContest(Contest contest) throws Exception;
 
-    boolean updateContest(int id, Contest contest) throws Exception;
+    boolean updateContest(int contestId, Contest contest) throws Exception;
 
-    int getContestPoints(int betTeamId) throws Exception;
+    int getContestPoints(int contestId) throws Exception;
+
+    boolean deleteContestByUserId(int userId) throws Exception;
 
 }

@@ -23,11 +23,16 @@ public class TeamRepositoryImpl implements TeamRepository {
     }
 
     @Override
-    public List<Team> findTeamById(int i) throws Exception{
+    public Team findTeamById(int teamId) throws Exception{
         String sql = "SELECT * FROM Team WHERE TeamId =:teamId";
         Team team = new Team();
-        team.setTeamId(i);
-        return jdbcTemplate.query(sql,new BeanPropertySqlParameterSource(team),new TeamRowMapper());
+        team.setTeamId(teamId);
+        List<Team> teamList = jdbcTemplate.query(sql,new BeanPropertySqlParameterSource(team),new TeamRowMapper());
+        if(teamList.size() > 0){
+            return teamList.get(0);
+        }else{
+            return null;
+        }
     }
 
     @Override
@@ -37,18 +42,18 @@ public class TeamRepositoryImpl implements TeamRepository {
     }
 
     @Override
-    public boolean updateTeam(int id, Team team) throws Exception {
+    public boolean updateTeam(int teamId, Team team) throws Exception {
         String sql = "UPDATE `" + "Team" + "` set "
                 + "`Name` = :name,`ShortName` = :shortName, TeamLogo = :teamLogo where `TeamId`=:teamId";
-        team.setTeamId(id);
+        team.setTeamId(teamId);
         return jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(team)) > 0;
     }
 
     @Override
-    public int deleteTeam(int id) throws Exception {
+    public boolean deleteTeam(int teamId) throws Exception {
         String sql = "DELETE FROM Team WHERE TeamId =:teamId";
         Team team = new Team();
-        team.setTeamId(id);
-        return jdbcTemplate.update(sql,new BeanPropertySqlParameterSource(team));
+        team.setTeamId(teamId);
+        return jdbcTemplate.update(sql,new BeanPropertySqlParameterSource(team)) > 0;
     }
 }

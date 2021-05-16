@@ -36,9 +36,9 @@ public class MyMatchesController {
             }
     )
     @PreAuthorize("hasAnyRole('Admin','User')")
-    @GetMapping(value = "/users/{id}/upcoming",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<MyMatches>> getUpcomingContestByUserId(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id) throws Exception {
-        Result<List<MyMatches>> matchesList = myMatchesService.findUpcomingMatchesByUserId(id);
+    @GetMapping(value = "/users/{userId}/upcoming",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<MyMatches>> getUpcomingContestByUserId(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int userId) throws Exception {
+        Result<List<MyMatches>> matchesList = myMatchesService.findUpcomingMatchesByUserId(userId);
         return new ResponseEntity<>(matchesList.getData(), HttpStatus.valueOf(matchesList.getCode()));
     }
 
@@ -51,9 +51,9 @@ public class MyMatchesController {
             }
     )
     @PreAuthorize("hasAnyRole('Admin','User')")
-    @GetMapping(value = "/users/{id}/live",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<MyMatches>> getLiveContestByUserId(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id) throws Exception {
-        Result<List<MyMatches>> matchesList = myMatchesService.findLiveMatchesByUserId(id);
+    @GetMapping(value = "/users/{userId}/live",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<MyMatches>> getLiveContestByUserId(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int userId) throws Exception {
+        Result<List<MyMatches>> matchesList = myMatchesService.findLiveMatchesByUserId(userId);
         return new ResponseEntity<>(matchesList.getData(), HttpStatus.valueOf(matchesList.getCode()));
     }
 
@@ -66,9 +66,9 @@ public class MyMatchesController {
             }
     )
     @PreAuthorize("hasAnyRole('Admin','User')")
-    @GetMapping(value = "/users/{id}/result",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<MyMatches>> getResultContestByUserId(@PathVariable @Valid @Pattern(regexp = "[0-9]*")  int id) throws Exception {
-        Result<List<MyMatches>> matchesList = myMatchesService.findResultMatchesByUserId(id);
+    @GetMapping(value = "/users/{userId}/result",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<MyMatches>> getResultContestByUserId(@PathVariable @Valid @Pattern(regexp = "[0-9]*")  int userId) throws Exception {
+        Result<List<MyMatches>> matchesList = myMatchesService.findResultMatchesByUserId(userId);
         return new ResponseEntity<>(matchesList.getData(), HttpStatus.valueOf(matchesList.getCode()));
     }
 }

@@ -22,7 +22,7 @@ public class MatchesRowMapper implements RowMapper<MatchesWithVenue> {
       matches.setTeam2Short(rs.getString("team2short"));
       matches.setTeam2Logo(rs.getString("team2logo"));
       matches.setVenue(rs.getString("venue"));
-      matches.setMinimumBet(rs.getInt("MinimumBet"));
+      matches.setMinimumPoints(rs.getInt("MinimumPoints"));
       matches.setWinnerTeamId(rs.getInt("WinnerTeamId"));
       matches.setResultStatus(rs.getInt("ResultStatus"));
       matches.setTournamentId(rs.getInt("TournamentId"));

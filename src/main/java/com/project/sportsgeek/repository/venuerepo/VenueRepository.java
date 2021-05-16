@@ -1,4 +1,4 @@
-package com.project.sportsgeek.repository.venue;
+package com.project.sportsgeek.repository.venuerepo;
 
 import com.project.sportsgeek.model.Venue;
 import org.springframework.stereotype.Repository;
@@ -10,12 +10,12 @@ public interface VenueRepository {
 
     List<Venue> findAllVenue();
 
-    List<Venue> findVenueById(int id) throws Exception;
+    Venue findVenueById(int venueId) throws Exception;
 
     int addVenue(Venue venue) throws Exception;
 
-    boolean updateVenue(int id, Venue venue) throws Exception;
+    boolean updateVenue(int venueId, Venue venue) throws Exception;
 
-    int deleteVenue(int id) throws Exception;
+    boolean deleteVenue(int venueId) throws Exception;
 
 }

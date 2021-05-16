@@ -96,9 +96,9 @@ public class MatchesController {
             }
     )
     @PreAuthorize("hasRole('Admin')")
-    @GetMapping(value = "/minimum-bet/{minBet}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<MatchesWithVenue>> getMatchesByMinBet(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int minBet) throws Exception {
-        Result<List<MatchesWithVenue>> matchesList = matchesService.findMatchesByMinBet(minBet);
+    @GetMapping(value = "/minimum-bet/{minPoints}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<MatchesWithVenue>> getMatchesByMinBet(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int minPoints) throws Exception {
+        Result<List<MatchesWithVenue>> matchesList = matchesService.findMatchesByMinPoints(minPoints);
         return new ResponseEntity<>(matchesList.getData(), HttpStatus.valueOf(matchesList.getCode()));
     }
 

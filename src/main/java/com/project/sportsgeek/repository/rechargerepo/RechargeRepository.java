@@ -10,14 +10,16 @@ public interface RechargeRepository {
 
     List<Recharge> findAllRecharge();
 
-    List<Recharge> findRechargeByRechargeId(int i) throws Exception;
+    Recharge findRechargeByRechargeId(int rechargeId) throws Exception;
 
-    List<Recharge> findRechargeByUserId(int i) throws Exception;
+    List<Recharge> findRechargeByUserId(int userId) throws Exception;
 
     int addRecharge(Recharge Recharge) throws Exception;
 
-    boolean updateRecharge(int id, Recharge Recharge) throws Exception;
+    boolean updateRecharge(int rechargeId, Recharge Recharge) throws Exception;
 
-    int deleteRecharge(int id) throws Exception;
+    boolean deleteRecharge(int rechargeId) throws Exception;
+
+    boolean deleteRechargeByUserId(int userId) throws Exception;
 
 }

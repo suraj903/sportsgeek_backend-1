@@ -47,9 +47,9 @@ public class VenueController {
             }
     )
     @PreAuthorize("hasRole('Admin')")
-    @GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Venue> getVenueById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id) throws Exception {
-        Result<Venue> VenueList = venueService.findVenueById(id);
+    @GetMapping(value = "/{venueId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Venue> getVenueById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int venueId) throws Exception {
+        Result<Venue> VenueList = venueService.findVenueById(venueId);
         return new ResponseEntity<>(VenueList.getData(), HttpStatus.valueOf(VenueList.getCode()));
     }
 
@@ -77,9 +77,9 @@ public class VenueController {
             }
     )
     @PreAuthorize("hasRole('Admin')")
-    @PutMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Venue> updateVenue(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id, @RequestBody(required = true) @Valid Venue Venue) throws Exception {
-        Result<Venue> VenueResult = venueService.updateVenue(id,Venue);
+    @PutMapping(value = "/{venueId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Venue> updateVenue(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int venueId, @RequestBody(required = true) @Valid Venue venue) throws Exception {
+        Result<Venue> VenueResult = venueService.updateVenue(venueId, venue);
         return new ResponseEntity(VenueResult.getData(), HttpStatus.valueOf(VenueResult.getCode()));
     }
 
@@ -92,9 +92,9 @@ public class VenueController {
             }
     )
     @PreAuthorize("hasRole('Admin')")
-    @DeleteMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Result<Venue>> deleteVenueById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id) throws Exception {
-        Result<Integer> integerResult =  venueService.deleteVenue(id);
+    @DeleteMapping(value = "/{venueId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Result<Venue>> deleteVenueById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int venueId) throws Exception {
+        Result<Integer> integerResult =  venueService.deleteVenue(venueId);
         return new ResponseEntity(integerResult, HttpStatus.valueOf(integerResult.getCode()));
     }
 }

@@ -11,7 +11,7 @@ public interface PlayerRepository {
 
     List<PlayerResponse> findAllPlayers();
 
-    List<PlayerResponse> findPlayerByPlayerId(int id) throws Exception;
+    PlayerResponse findPlayerByPlayerId(int id) throws Exception;
 
     List<PlayerResponse> findPlayerByPlayerType(int id) throws Exception;
 

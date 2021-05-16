@@ -18,8 +18,8 @@ public class PrivateChatService {
     @Qualifier(value = "privateChatRepo")
     PrivateChatRepository privateChatRepository;
 
-    public Result<List<PrivateChat>> findPrivateChatByUserId(int userid1, int userid2) throws Exception {
-        List<PrivateChat> privateChatList = privateChatRepository.findPrivateChatByUserId(userid1, userid2);
+    public Result<List<PrivateChat>> findPrivateChatByUserId(int userId1, int userId2) throws Exception {
+        List<PrivateChat> privateChatList = privateChatRepository.findPrivateChatByUserId(userId1, userId2);
         return new Result<>(200,"Private Chat Details Retrieved Successfully",privateChatList);
     }
 
@@ -33,21 +33,20 @@ public class PrivateChatService {
                 .asList(new Result.SportsGeekSystemError(privateChat.hashCode(), "unable to add the given Private Chat")))));
     }
 
-    public Result<PrivateChat> updatePrivateChat(int id, PrivateChat privateChat) throws Exception {
-        if (privateChatRepository.updatePrivateChat(id,privateChat)) {
+    public Result<PrivateChat> updatePrivateChat(int privateChatId, PrivateChat privateChat) throws Exception {
+        if (privateChatRepository.updatePrivateChat(privateChatId, privateChat)) {
             return new Result<>(201,"Private Chat Details Updated Successfully", privateChat);
         }
         throw new ResultException(new Result<>(400, "Unable to update the given Private Chat details! Please try again!", new ArrayList<>(Arrays
-                .asList(new Result.SportsGeekSystemError(privateChat.hashCode(), "given PrivateChatId('"+id+"') does not exists")))));
+                .asList(new Result.SportsGeekSystemError(privateChat.hashCode(), "given PrivateChatId('"+privateChatId+"') does not exists")))));
     }
 
-    public Result<Integer> deletePrivateChat(int id) throws Exception{
-        int data = privateChatRepository.deletePrivateChat(id);
-        if (data > 0) {
-            return new Result<>(200,"Private Chat Deleted Successfully",data);
+    public Result<Integer> deletePrivateChat(int privateChatId) throws Exception{
+        if (privateChatRepository.deletePrivateChat(privateChatId)) {
+            return new Result<>(200,"Private Chat Deleted Successfully");
         }
         else {
-            throw new ResultException((new Result<>(404,"No Private Chat found to delete,please try again","PrivateChat with id=('"+ id +"') not found")));
+            throw new ResultException((new Result<>(404,"No Private Chat found to delete,please try again","PrivateChat with id=('"+ privateChatId +"') not found")));
         }
     }
 }

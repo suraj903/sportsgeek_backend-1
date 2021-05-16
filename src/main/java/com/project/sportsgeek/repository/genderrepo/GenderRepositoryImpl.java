@@ -21,20 +21,17 @@ public class GenderRepositoryImpl implements GenderRepository {
     @Override
     public List<Gender> findAllGender() {
         String sql = "SELECT * FROM Gender";
-        try{
-            return jdbcTemplate.query(sql, new GenderRowMapper());
-        }catch(Exception e){
-            return null;
-        }
+        return jdbcTemplate.query(sql, new GenderRowMapper());
     }
 
     @Override
-    public List<Gender> findGenderById(int genderId) throws Exception {
+    public Gender findGenderById(int genderId) throws Exception {
         String sql = "SELECT * FROM Gender WHERE GenderId = :genderId";
         MapSqlParameterSource params = new MapSqlParameterSource("genderId", genderId);
-        try{
-            return jdbcTemplate.query(sql, params, new GenderRowMapper());
-        }catch(Exception e){
+        List<Gender> genderList = jdbcTemplate.query(sql, params, new GenderRowMapper());
+        if(genderList.size() > 0){
+            return genderList.get(0);
+        }else{
             return null;
         }
     }
@@ -43,14 +40,10 @@ public class GenderRepositoryImpl implements GenderRepository {
     public int addGender(Gender gender) throws Exception {
         KeyHolder holder = new GeneratedKeyHolder();
         String sql = "INSERT INTO Gender (Name) values(:name)";
-        try {
-            int n = jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(gender));
-            if(n > 0) {
-                return holder.getKey().intValue();
-            }else {
-                return 0;
-            }
-        }catch (Exception e) {
+        int n = jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(gender), holder);
+        if(n > 0) {
+            return holder.getKey().intValue();
+        }else {
             return 0;
         }
     }
@@ -59,22 +52,14 @@ public class GenderRepositoryImpl implements GenderRepository {
     public boolean updateGender(int genderId, Gender gender) throws Exception {
         String sql = "UPDATE Gender SET Name = :name WHERE GenderId = :genderId";
         gender.setGenderId(genderId);
-        try{
-            return jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(gender)) > 0;
-        }catch(Exception e){
-            return false;
-        }
+        return jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(gender)) > 0;
     }
 
     @Override
     public boolean deleteGender(int genderId) throws Exception {
         String sql = "DELETE FROM Gender WHERE GenderId = :genderId";
         MapSqlParameterSource params = new MapSqlParameterSource("genderId", genderId);
-        try{
-            return jdbcTemplate.update(sql, params) > 0;
-        }catch(Exception e){
-            return false;
-        }
+        return jdbcTemplate.update(sql, params) > 0;
     }
 
 }

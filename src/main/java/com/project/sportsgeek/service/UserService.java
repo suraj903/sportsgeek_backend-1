@@ -293,7 +293,7 @@ public class UserService implements UserDetailsService {
 //			int result = userRepository.updateUserPassword(userWithNewPassword);
 //			System.out.println(result);
 //			if (result > 0) {
-//				return new Result<>(200, "password has been succefully updated");
+//				return new Result<>(200, "password has been successfully updated");
 //			} else {
 //
 //				return new Result<>(500, "Internal Server error!, Unable to update the password");

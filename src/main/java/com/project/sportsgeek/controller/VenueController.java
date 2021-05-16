@@ -1,6 +1,5 @@
 package com.project.sportsgeek.controller;
 
-import com.project.sportsgeek.exception.ResultException;
 import com.project.sportsgeek.exception.VenueException;
 import com.project.sportsgeek.model.Venue;
 import com.project.sportsgeek.response.Result;

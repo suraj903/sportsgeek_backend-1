@@ -82,13 +82,13 @@ public class MatchesRepoImpl implements MatchesRepository {
     }
 
     @Override
-    public List<MatchesWithVenue> findAllMatchesByMinimumPoints(int minBet) throws Exception {
+    public List<MatchesWithVenue> findAllMatchesByMinimumPoints(int minPoints) throws Exception {
         String sql = "SELECT MatchId , StartDatetime, Team1,Team2, t1.Name as team1long, t1.ShortName as team1short, " +
                 "t1.TeamLogo as team1logo, t2.Name as team2long, t2.ShortName as team2short, t2.TeamLogo as team2logo, v.Name as venue, MinimumPoints, WinnerTeamId, ResultStatus, TournamentId  " +
                 "FROM Matches as m INNER JOIN Venue as v on m.VenueId=v.VenueId left JOIN Team as t1 on m.Team1=t1.TeamId left JOIN Team as t2 on m.Team2=t2.TeamId " +
                 "where m.MinimumPoints=:MinimumPoints";
         Matches matches = new Matches();
-        matches.setMinimumPoints(minBet);
+        matches.setMinimumPoints(minPoints);
         return namedParameterJdbcTemplate.query(sql,new BeanPropertySqlParameterSource(matches),new MatchesRowMapper());
     }
 //Pending
@@ -144,11 +144,11 @@ public class MatchesRepoImpl implements MatchesRepository {
     }
 
     @Override
-    public int updateMinimumPoints(int matchId, int minBet) throws Exception {
+    public int updateMinimumPoints(int matchId, int minPoints) throws Exception {
        String sql = "UPDATE Matches SET MinimumPoints=:MinimumPoints WHERE MatchId=:matchId";
        Matches matches = new Matches();
        matches.setMatchId(matchId);
-       matches.setMinimumPoints(minBet);
+       matches.setMinimumPoints(minPoints);
        return namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(matches));
     }
 

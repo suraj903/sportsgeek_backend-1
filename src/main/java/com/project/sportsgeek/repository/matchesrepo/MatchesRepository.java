@@ -24,7 +24,7 @@ public interface MatchesRepository {
 
     List<MatchesWithVenue> findAllMatchesByPreviousDateAndResultStatus(int tournamentId) throws Exception;
 
-    List<MatchesWithVenue> findAllMatchesByMinimumPoints(int minBet) throws Exception;
+    List<MatchesWithVenue> findAllMatchesByMinimumPoints(int minPoints) throws Exception;
 
     int addMatch(Matches matches) throws Exception;
 
@@ -36,7 +36,7 @@ public interface MatchesRepository {
 
     int updateResultStatus(int id, boolean status) throws Exception;
 
-    int updateMinimumPoints(int matchId, int minBet) throws Exception;
+    int updateMinimumPoints(int matchId, int minPoints) throws Exception;
 
     int updateMatchScheduleDate(int id, Timestamp date) throws Exception;
 

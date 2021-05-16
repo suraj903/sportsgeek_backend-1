@@ -1,7 +1,7 @@
 package com.project.sportsgeek.repository.statisticsrepo;
 
 
-import com.project.sportsgeek.mapper.FutureBetsRowMapper;
+import com.project.sportsgeek.mapper.FutureContestsRowMapper;
 import com.project.sportsgeek.mapper.StatisticsRowMapper;
 import com.project.sportsgeek.model.Contest;
 import com.project.sportsgeek.model.Statistics;
@@ -29,12 +29,12 @@ public class StatisticsRepoImpl implements  StatisticsRepository {
     }
 
     @Override
-    public List<Contest> findFutureBetPoints() {
-//        String sql = "SELECT BetPoints FROM Contest WHERE UserId="+userId+" AND ResultStatus IS NULL "
+    public List<Contest> findFutureContestPoints() {
+//        String sql = "SELECT ContestPoints FROM Contest WHERE UserId="+userId+" AND ResultStatus IS NULL "
         String sql = "SELECT UserId, SUM(ContestPoints) as TotalContestPoints\n" +
                 "FROM Contest as c inner join Matches as m on c.MatchId=m.MatchId\n" +
                 "WHERE ResultStatus IS NULL \n" +
                 "GROUP BY UserId ORDER BY UserId";
-       return jdbcTemplate.query(sql , new FutureBetsRowMapper());
+       return jdbcTemplate.query(sql , new FutureContestsRowMapper());
     }
 }

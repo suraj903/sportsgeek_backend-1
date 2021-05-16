@@ -47,9 +47,9 @@ public class StatisticsController {
             }
     )
     @PreAuthorize("hasAnyRole('Admin','User')")
-    @GetMapping(value = "/users/future-bet", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Contest>> getAllFutureBets() {
-        Result<List<Contest>> contestList = statisticsService.findFutureBets();
+    @GetMapping(value = "/users/future-contest", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Contest>> getAllFutureContests() {
+        Result<List<Contest>> contestList = statisticsService.findFutureContests();
         return new ResponseEntity<>(contestList.getData(), HttpStatus.valueOf(contestList.getCode()));
     }
 }

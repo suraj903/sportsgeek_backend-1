@@ -22,8 +22,8 @@ public class StatisticsService {
         List<Statistics> statList = statisticsRepository.findUserStatistics();
         return new Result<>(200,"Statistics Retrieved Successfully",statList);
     }
-    public Result<List<Contest>> findFutureBets() {
-        List<Contest> betList = statisticsRepository.findFutureBetPoints();
-        return new Result<>(200,"Future Bets Retrieved Successfully",betList);
+    public Result<List<Contest>> findFutureContests() {
+        List<Contest> contestList = statisticsRepository.findFutureContestPoints();
+        return new Result<>(200,"Future Contests Retrieved Successfully", contestList);
     }
 }

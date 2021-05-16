@@ -102,7 +102,7 @@ public class MatchesService {
 //            return new Result<>(200,"Matches Detail Retrieved Successfully", matchesList);
 //        }
 //        else {
-//            throw new ResultException((new Result<>(404,"No Match's found,please try again","MinBet=('"+ minBet +"') not found")));
+//            throw new ResultException((new Result<>(404,"No Match's found,please try again","MinPoints=('"+ minPoints +"') not found")));
 //        }
     }
 
@@ -147,13 +147,13 @@ public class MatchesService {
             }
     }
 
-    public Result<String> updateMinimumBet(int matchId,int minBet) throws Exception {
-        int result = matchesRepository.updateMinimumPoints(matchId,minBet);
+    public Result<String> updateMinimumPoints(int matchId,int minPoints) throws Exception {
+        int result = matchesRepository.updateMinimumPoints(matchId, minPoints);
         if(result > 0) {
-            return new Result<>(201, "Successfully Updated Minimum Bet for Match");
+            return new Result<>(201, "Successfully Updated Minimum Points for Match");
         }
         else {
-            return new Result<>(500, "Internal Server error!, Unable to update the Minimum Bet");
+            return new Result<>(500, "Internal Server error!, Unable to update the Minimum Points");
         }
     }
 
@@ -187,13 +187,13 @@ public class MatchesService {
         }
     }
 
-    public Result<Integer> deleteMatch(int id) throws Exception{
-        int data = matchesRepository.deleteMatches(id);
+    public Result<Integer> deleteMatch(int matchId) throws Exception{
+        int data = matchesRepository.deleteMatches(matchId);
         if (data > 0) {
             return new Result<>(200,"Match Deleted Successfully",data);
         }
         else {
-            throw new ResultException((new Result<>(404,"No Match found to delete,please try again","Match with id=('"+ id +"') not found")));
+            throw new ResultException((new Result<>(404,"No Match found to delete,please try again","Match with id=('"+ matchId +"') not found")));
         }
     }
 }

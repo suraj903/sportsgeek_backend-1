@@ -11,6 +11,6 @@ public interface StatisticsRepository {
 
     List<Statistics> findUserStatistics();
 
-    List<Contest> findFutureBetPoints();
+    List<Contest> findFutureContestPoints();
 
 }

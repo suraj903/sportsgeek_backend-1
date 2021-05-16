@@ -82,8 +82,8 @@ public class UserRepoImpl implements UserRepository {
 
 	@Override
 	public List<UserWinningAndLossingPoints> findLoosingPointsByUserId(int userId) throws Exception {
-		String sql = "SELECT SUM(BetPoints) as LoosingPoints,bot.UserId \n"
-				+ "FROM Contest as bot INNER JOIN Matches as m ON bot.MatchId = m.MatchId\n"
+		String sql = "SELECT SUM(ContestPoints) as LoosingPoints,c.UserId \n"
+				+ "FROM Contest as c INNER JOIN Matches as m ON c.MatchId = m.MatchId\n"
 				+ "WHERE WinningPoints=0 AND m.ResultStatus=1 AND UserId = :userId";
 		MapSqlParameterSource params = new MapSqlParameterSource("userId", userId);
 		return jdbcTemplate.query(sql, params, new userWithLoosingPointsRowMapper());

@@ -96,8 +96,8 @@ public class MatchesController {
             }
     )
     @PreAuthorize("hasRole('Admin')")
-    @GetMapping(value = "/minimum-bet/{minPoints}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<MatchesWithVenue>> getMatchesByMinBet(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int minPoints) throws Exception {
+    @GetMapping(value = "/minimum-points/{minPoints}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<MatchesWithVenue>> getMatchesByMinPoints(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int minPoints) throws Exception {
         Result<List<MatchesWithVenue>> matchesList = matchesService.findMatchesByMinPoints(minPoints);
         return new ResponseEntity<>(matchesList.getData(), HttpStatus.valueOf(matchesList.getCode()));
     }
@@ -156,7 +156,7 @@ public class MatchesController {
     )
     @PreAuthorize("hasRole('Admin')")
     @PutMapping(value = "/{id}/update-match-detail",produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<Matches> updateMatch(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id,@ApiParam(value = "tournamentId") @RequestParam("tournamentId") int tournamentId, @ApiParam(value = "name") @RequestParam("name") String name,@ApiParam(value = "startDateTime") @RequestParam("startDateTime") Timestamp startDateTime,@ApiParam(value = "venueId") @RequestParam("venueId") int venueId,@ApiParam(value = "team1") @RequestParam("team1") int team1,@ApiParam(value = "team2") @RequestParam("team2") int team2,@ApiParam(value = "winnerTeamId") @RequestParam("winnerTeamId") int winnerTeamId,@ApiParam(value = "resultStatus") @RequestParam("resultStatus") boolean resultStatus,@ApiParam(value = "minimumBet") @RequestParam("minimumBet") int minimumBet) throws Exception {
+//    public ResponseEntity<Matches> updateMatch(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id,@ApiParam(value = "tournamentId") @RequestParam("tournamentId") int tournamentId, @ApiParam(value = "name") @RequestParam("name") String name,@ApiParam(value = "startDateTime") @RequestParam("startDateTime") Timestamp startDateTime,@ApiParam(value = "venueId") @RequestParam("venueId") int venueId,@ApiParam(value = "team1") @RequestParam("team1") int team1,@ApiParam(value = "team2") @RequestParam("team2") int team2,@ApiParam(value = "winnerTeamId") @RequestParam("winnerTeamId") int winnerTeamId,@ApiParam(value = "resultStatus") @RequestParam("resultStatus") boolean resultStatus,@ApiParam(value = "minimumPoints") @RequestParam("minimumPoints") int minimumPoints) throws Exception {
 //        Matches  matches = Matches.builder()
 //                .tournamentId(tournamentId)
 //                .name(name)
@@ -166,7 +166,7 @@ public class MatchesController {
 //                .team2(team2)
 //                .winnerTeamId(winnerTeamId)
 //                .resultStatus(resultStatus)
-//                .minimumBet(minimumBet).build();
+//                .minimumPoints(minimumPoints).build();
 //        Result<Matches> matchResult = matchesService.updateMatch(id, matches);
 //        return new ResponseEntity(matchResult.getData(), HttpStatus.valueOf(matchResult.getCode()));
 //    }
@@ -229,9 +229,9 @@ public class MatchesController {
             }
     )
     @PreAuthorize("hasRole('Admin')")
-    @PutMapping(value = "/{matchId}/update-min-bet/{minBet}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> updateMinimumBet(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int matchId, @PathVariable @Valid @Pattern(regexp = "[0-9]*") int minBet) throws  Exception {
-        Result<String> userResult = matchesService.updateMinimumBet(matchId,minBet);
+    @PutMapping(value = "/{matchId}/update-min-points/{minPoints}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> updateMinimumPoints(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int matchId, @PathVariable @Valid @Pattern(regexp = "[0-9]*") int minPoints) throws  Exception {
+        Result<String> userResult = matchesService.updateMinimumPoints(matchId,minPoints);
         return new ResponseEntity(userResult.getData(), HttpStatus.valueOf(userResult.getCode()));
     }
 
@@ -245,7 +245,7 @@ public class MatchesController {
     )
     @PreAuthorize("hasRole('Admin')")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<Matches> addMatches(@ApiParam(value = "matchId") @RequestParam("matchId") int matchId,@ApiParam(value = "tournamentId") @RequestParam("tournamentId") int tournamentId, @ApiParam(value = "name") @RequestParam("name") String name,@ApiParam(value = "startDateTime") @RequestParam("startDateTime") Timestamp startDateTime,@ApiParam(value = "venueId") @RequestParam("venueId") int venueId,@ApiParam(value = "team1") @RequestParam("team1") int team1,@ApiParam(value = "team2") @RequestParam("team2") int team2,@ApiParam(value = "minimumBet") @RequestParam("minimumBet") int minimumBet) throws  Exception {
+//    public ResponseEntity<Matches> addMatches(@ApiParam(value = "matchId") @RequestParam("matchId") int matchId,@ApiParam(value = "tournamentId") @RequestParam("tournamentId") int tournamentId, @ApiParam(value = "name") @RequestParam("name") String name,@ApiParam(value = "startDateTime") @RequestParam("startDateTime") Timestamp startDateTime,@ApiParam(value = "venueId") @RequestParam("venueId") int venueId,@ApiParam(value = "team1") @RequestParam("team1") int team1,@ApiParam(value = "team2") @RequestParam("team2") int team2,@ApiParam(value = "minimumPoints") @RequestParam("minimumPoints") int minimumPoints) throws  Exception {
 //        Matches matches = Matches.builder()
 //                .matchId(matchId)
 //                .tournamentId(tournamentId)
@@ -254,7 +254,7 @@ public class MatchesController {
 //                .venueId(venueId)
 //                .team1(team1)
 //                .team2(team2)
-//                .minimumBet(minimumBet).build();
+//                .minimumPoints(minimumPoints).build();
 //        Result<Matches> matchesResult = matchesService.addMatches(matches);
 //        return new ResponseEntity(matchesResult.getData(), HttpStatus.valueOf(matchesResult.getCode()));
 //    }

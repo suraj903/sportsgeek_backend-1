@@ -43,9 +43,9 @@ public class ContestRepoImpl implements ContestRepository {
                 "WHERE c.TeamId=t.TeamId AND c.UserId=u.UserId AND MatchId = :matchId";
         MapSqlParameterSource params = new MapSqlParameterSource("matchId", matchId);
         return jdbcTemplate.query(sql, params, new ContestRowMapper());
-//        List<ContestWithUser> betOnTeamWithUsers = jdbcTemplate.query(sql, params, new ContestRowMapper());
-//        System.out.println(betOnTeamWithUsers);
-//        return betOnTeamWithUsers;
+//        List<ContestWithUser> contestOnTeamWithUsers = jdbcTemplate.query(sql, params, new ContestRowMapper());
+//        System.out.println(contetsOnTeamWithUsers);
+//        return contestOnTeamWithUsers;
     }
 
     @Override

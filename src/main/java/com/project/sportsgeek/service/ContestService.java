@@ -34,7 +34,7 @@ public class ContestService {
             }
         }
         return new Result<>(500, "Unable to add Contest");
-//        throw new ResultException(new Result<>(400, "Error!, please try again!", new ArrayList<>(Arrays.asList(new Result.SportsGeekSystemError(betonteam.hashCode(), "unable to add the given Contest")))));
+//        throw new ResultException(new Result<>(400, "Error!, please try again!", new ArrayList<>(Arrays.asList(new Result.SportsGeekSystemError(contest.hashCode(), "unable to add the given Contest")))));
     }
 
     public Result<List<ContestWithUser>> findContestByMatchId(int matchId) throws Exception {
@@ -72,11 +72,11 @@ public class ContestService {
     }
     public Result<Contest> updateContest(int contestId, Contest contest) throws Exception {
         contest.setContestId(contestId);
-        // Get old Bet Points
-        int oldBetPoints = contestRepository.getContestPoints(contestId);
+        // Get old Contest Points
+        int oldContestPoints = contestRepository.getContestPoints(contestId);
         if (contestRepository.updateContest(contestId, contest)) {
             // Update User Available Points
-            int n = userRepository.addAvailablePoints(contest.getUserId(), oldBetPoints- contest.getContestPoints());
+            int n = userRepository.addAvailablePoints(contest.getUserId(), oldContestPoints- contest.getContestPoints());
             if(n > 0){
                 return new Result<>(201, contest);
             }

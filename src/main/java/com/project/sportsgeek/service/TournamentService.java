@@ -47,7 +47,7 @@ public class TournamentService {
 
     public Result<Tournament> updateTournament(int tournamentId, Tournament tournament) throws Exception {
         if (tournamentRepository.updateTournament(tournamentId,tournament)) {
-            return new Result<>(201,"Tournament Updated Successfully",tournament);
+            return new Result<>(200,"Tournament Updated Successfully",tournament);
         }
         throw new ResultException(new Result<>(400, "Unable to update the given tournament details! Please try again!", new ArrayList<>(Arrays
                 .asList(new Result.SportsGeekSystemError(tournament.hashCode(), "given tournamentId('"+tournamentId+"') does not exists")))));
@@ -58,7 +58,7 @@ public class TournamentService {
         if(tournamentRepository.deactivateTournament())
         {
             if (tournamentRepository.updateActiveTournament(tournamentId)) {
-                return new Result<>(201,"Tournament Activated Successfully");
+                return new Result<>(200,"Tournament Activated Successfully");
             }
             else
             {

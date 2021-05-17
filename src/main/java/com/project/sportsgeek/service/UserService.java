@@ -225,7 +225,7 @@ public class UserService implements UserDetailsService {
 				Email adm_sendemail = Email.builder().setSubject(admin_subject).setTo(admin_email).message(adm_msg)
 						.build();
 				emailService.sendEmail(adm_sendemail);
-				return new Result<>(200, userWithPassword);
+				return new Result<>(201, userWithPassword);
 			} else {
 				throw new ResultException(new Result<>(500, "Unable to add User"));
 			}
@@ -247,7 +247,7 @@ public class UserService implements UserDetailsService {
 			MobileContact mobileContact = new MobileContact();
 			mobileContact.setMobileNumber(user.getMobileNumber());
 			mobileContactRepository.updateMobileContactByUserId(userId, mobileContact);
-			return new Result<>(201, user);
+			return new Result<>(200, user);
 		}
 //		return new Result<>(400, "Given User Id does not exists");
 		throw new ResultException((new Result<>(404, "No User's found,please try again", "User with id=('" + userId + "') not found")));
@@ -265,7 +265,7 @@ public class UserService implements UserDetailsService {
 			String user_email = user.getEmail();
 			Email email = Email.builder().setSubject(sub).setTo(user_email).message(updateStatus_msg).build();
 			emailService.sendEmail(email);
-			return new Result<>(201, "status of given id(" + userId + ") has been successfully updated");
+			return new Result<>(200, "status of given id(" + userId + ") has been successfully updated");
 		}
 		return new Result<>(400, "No User's Found, Please try again!");
 	}
@@ -273,7 +273,7 @@ public class UserService implements UserDetailsService {
 	public Result<String> updateUserRole(int userId, int roleId) throws Exception {
 		int result = userRepository.updateUserRole(userId, roleId);
 		if (result > 0) {
-			return new Result<>(201, "Successfully Assigned Role to User");
+			return new Result<>(200, "Successfully Assigned Role to User");
 		} else {
 			return new Result<>(500, "Internal Server error!, Unable to update the Role");
 		}
@@ -356,7 +356,7 @@ public class UserService implements UserDetailsService {
 			rechargeRepository.deleteRechargeByUserId(userId);
 			contestRepository.deleteContestByUserId(userId);
 			userRepository.deleteUser(userId);
-			return new Result<>(201, "User Deleted Successfully!!");
+			return new Result<>(200, "User Deleted Successfully!!");
 		}
 
 		return new Result<>(404, "Given User Id does not exists");

@@ -45,7 +45,7 @@ public class VenueService {
 
     public Result<Venue> updateVenue(int venueId, Venue Venue) throws Exception {
         if (venueRepository.updateVenue(venueId,Venue)) {
-            return new Result<>(201,"Venue Details Updated Successfully",Venue);
+            return new Result<>(200,"Venue Details Updated Successfully",Venue);
         }
         throw new ResultException(new Result<>(400, "Unable to update the given Venue details! Please try again!", new ArrayList<>(Arrays
                 .asList(new Result.SportsGeekSystemError(Venue.hashCode(), "given VenueId('"+venueId+"') does not exists")))));

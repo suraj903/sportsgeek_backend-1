@@ -48,7 +48,7 @@ public class PublicChatService {
 
     public Result<PublicChat> updatePublicChat(int publicChatId, PublicChat publicChat) throws Exception {
         if (publicChatRepository.updatePublicChat(publicChatId,publicChat)) {
-            return new Result<>(201,"Public Chat Details Updated Successfully",publicChat);
+            return new Result<>(200,"Public Chat Details Updated Successfully",publicChat);
         }
         throw new ResultException(new Result<>(400, "Unable to update the given Public Chat details! Please try again!", new ArrayList<>(Arrays
                 .asList(new Result.SportsGeekSystemError(publicChat.hashCode(), "given PublicChatId('"+publicChatId+"') does not exists")))));

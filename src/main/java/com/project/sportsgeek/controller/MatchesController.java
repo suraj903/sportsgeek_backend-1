@@ -143,7 +143,7 @@ public class MatchesController {
     @PutMapping(value = "/update-match/{matchId}/{resultStatus}/{winnerTeamId}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Matches> updateMatchResult(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int matchId,@PathVariable @Valid @Pattern(regexp = "[0-9]*") int resultStatus, @PathVariable @Valid @Pattern(regexp = "[0-9]*") int winnerTeamId) throws Exception {
         Result<String> updateResult = matchesService.updateMatchWinningTeam(matchId,resultStatus,winnerTeamId);
-        return new ResponseEntity(updateResult.getData(),HttpStatus.valueOf(updateResult.getCode()));
+        return new ResponseEntity(updateResult.getMessage(),HttpStatus.valueOf(updateResult.getCode()));
     }
 
     @ApiResponses(value =

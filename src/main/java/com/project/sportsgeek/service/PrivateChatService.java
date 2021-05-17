@@ -35,7 +35,7 @@ public class PrivateChatService {
 
     public Result<PrivateChat> updatePrivateChat(int privateChatId, PrivateChat privateChat) throws Exception {
         if (privateChatRepository.updatePrivateChat(privateChatId, privateChat)) {
-            return new Result<>(201,"Private Chat Details Updated Successfully", privateChat);
+            return new Result<>(200,"Private Chat Details Updated Successfully", privateChat);
         }
         throw new ResultException(new Result<>(400, "Unable to update the given Private Chat details! Please try again!", new ArrayList<>(Arrays
                 .asList(new Result.SportsGeekSystemError(privateChat.hashCode(), "given PrivateChatId('"+privateChatId+"') does not exists")))));

@@ -47,7 +47,7 @@ public class PlayerTypeService {
 
     public Result<PlayerType> updatePlayerType(int id, PlayerType playerType) throws Exception {
         if (playerTypeRepository.updatePlayerType(id,playerType)) {
-            return new Result<>(201,playerType);
+            return new Result<>(200,playerType);
         }
         throw new ResultException(new Result<>(400, "Unable to update the given PlayerType details! Please try again!", new ArrayList<>(Arrays
                 .asList(new Result.SportsGeekSystemError(playerType.hashCode(), "given PlayerTypeId('"+id+"') does not exists")))));

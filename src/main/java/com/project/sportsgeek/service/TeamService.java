@@ -80,7 +80,7 @@ public class TeamService {
             String teamlogo = "https://firebasestorage.googleapis.com/v0/b/sportsgeek-74e1e.appspot.com/o/" +file+"?alt=media&token=e9924ea4-c2d9-4782-bc2d-0fe734431c86";
             team.setTeamLogo(teamlogo);
             if (teamRepository.updateTeam(id,team)) {
-                return new Result<>(201,"Team Updated Successfully",team);
+                return new Result<>(200,"Team Updated Successfully",team);
             }
             else
             {

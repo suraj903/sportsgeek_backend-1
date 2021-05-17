@@ -90,7 +90,7 @@ public class PlayerService {
             String playerlogo = "https://firebasestorage.googleapis.com/v0/b/sportsgeek-74e1e.appspot.com/o/" + file + "?alt=media&token=e9924ea4-c2d9-4782-bc2d-0fe734431c86";
             player.setProfilePicture(playerlogo);
             if (playerRepository.updatePlayer(id, player)) {
-                return new Result<>(201, "Player Details Updated Successfully", player);
+                return new Result<>(200, "Player Details Updated Successfully", player);
             } else {
                 throw new ResultException(new Result<>(400, "Unable to update the given Player details! Please try again!", new ArrayList<>(Arrays
                         .asList(new Result.SportsGeekSystemError(player.hashCode(), "given PlayerId('" + id + "') does not exists")))));
@@ -104,7 +104,7 @@ public class PlayerService {
 
     public Result<String> updatePlayerType(int id, int PlayerTypeId) throws Exception {
         if (playerRepository.updatePlayerType(id, PlayerTypeId)) {
-            return new Result<>(201,"PlayerType Updated Successfully");
+            return new Result<>(200,"PlayerType Updated Successfully");
         }
         return new Result<>(400,"Couldn't Update PlayerType with id='"+id+"'");
     }

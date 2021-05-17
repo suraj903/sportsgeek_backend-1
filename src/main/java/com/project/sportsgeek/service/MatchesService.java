@@ -118,7 +118,7 @@ public class MatchesService {
 
     public Result<Matches> updateMatch(int id, Matches matches) throws Exception {
         if (matchesRepository.updateMatch(id, matches)) {
-            return new Result<>(201,"Player Details Updated Successfully",matches);
+            return new Result<>(200,"Player Details Updated Successfully",matches);
         }
         throw new ResultException(new Result<>(400, "Unable to update the given Player details! Please try again!", new ArrayList<>(Arrays
                 .asList(new Result.SportsGeekSystemError(matches.hashCode(), "given PlayerId('"+id+"') does not exists")))));
@@ -141,16 +141,16 @@ public class MatchesService {
 
     public Result<String> updateMatchWinningTeam(int matchId, int ResultStatus, int winningTeamId) throws Exception {
             if(matchesRepository.updateMatchWinningTeam(matchId,ResultStatus,winningTeamId)== true) {
-                return new Result<>(201,"Matches Updated Successfully!!");
+                return new Result<>(200, "Matches Updated Successfully!!");
             }else {
-                return new Result<>(400,"Failed to Update Match Result!!");
+                return new Result<>(400, "Failed to Update Match Result!!");
             }
     }
 
     public Result<String> updateMinimumPoints(int matchId,int minPoints) throws Exception {
         int result = matchesRepository.updateMinimumPoints(matchId, minPoints);
         if(result > 0) {
-            return new Result<>(201, "Successfully Updated Minimum Points for Match");
+            return new Result<>(200, "Successfully Updated Minimum Points for Match");
         }
         else {
             return new Result<>(500, "Internal Server error!, Unable to update the Minimum Points");
@@ -160,7 +160,7 @@ public class MatchesService {
     public Result<String> updateMatchVenue(int matchId,int venueId) throws Exception {
         int result = matchesRepository.updateMatchVenue(matchId, venueId);
         if(result > 0) {
-            return new Result<>(201, "Successfully Updated Venue for Match");
+            return new Result<>(200, "Successfully Updated Venue for Match");
         }
         else {
             return new Result<>(500, "Internal Server error!, Unable to update the Venue");
@@ -170,7 +170,7 @@ public class MatchesService {
     public Result<String> updateMatchResultStatus(int matchId,boolean status) throws Exception {
         int result = matchesRepository.updateResultStatus(matchId, status);
         if(result > 0) {
-            return new Result<>(201, "Successfully Updated Result Status for Match");
+            return new Result<>(200, "Successfully Updated Result Status for Match");
         }
         else {
             return new Result<>(500, "Internal Server error!, Unable to update the Result Status");
@@ -180,7 +180,7 @@ public class MatchesService {
     public Result<String> updateMatchStartDateTime(int matchId, Timestamp date) throws Exception {
         int result = matchesRepository.updateMatchScheduleDate(matchId, date);
         if(result > 0) {
-            return new Result<>(201, "Successfully Updated Match StartDateTime");
+            return new Result<>(200, "Successfully Updated Match StartDateTime");
         }
         else {
             return new Result<>(500, "Internal Server error!, Unable to update the Match StartDateTime");

@@ -80,7 +80,7 @@ public class ContestService {
             // Update User Available Points
             int n = userRepository.addAvailablePoints(contest.getUserId(), oldContestPoints- contest.getContestPoints());
             if(n > 0){
-                return new Result<>(201, contest);
+                return new Result<>(200, contest);
             }
             else{
                 return new Result<>(500, "Unable to update user available points.");

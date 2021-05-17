@@ -46,7 +46,7 @@ public class GenderService {
 
     public Result<Gender> updateGender(int genderId, Gender gender) throws Exception {
         if (genderRepository.updateGender(genderId, gender)) {
-            return new Result<>(201, gender);
+            return new Result<>(200, gender);
         }else{
             throw new ResultException(new Result<>(400, "Unable to update the given gender details! Please try again!", new ArrayList<>(Arrays
                     .asList(new Result.SportsGeekSystemError(gender.hashCode(), "given genderId('" + genderId + "') does not exists")))));

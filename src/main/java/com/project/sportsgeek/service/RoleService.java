@@ -41,7 +41,7 @@ public class RoleService {
 
     public Result<Role> updateRole(int roleId, Role role) throws Exception {
         if (roleRepository.updateRole(roleId, role)) {
-            return new Result<>(201, role);
+            return new Result<>(200, role);
         }
         throw new ResultException(new Result<>(400, "Error in updating the Role!!. Role with Role Id=(" + roleId + ") not found"));
     }

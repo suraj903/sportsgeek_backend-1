@@ -168,7 +168,7 @@ public class UserService implements UserDetailsService {
 //				throw new ResultException(new Result<>(401, "Sorry! you have been blocked by the admin",
 //						new ArrayList<>(Arrays.asList(new Result.SportsGeekSystemError(999,
 //								"Sorry! you have been blocked by the admin")))));
-				throw new ResultException(new Result<>(401, "Sorry! you have been blocked by the admin"));
+//				throw new ResultException(new Result<>(401, "Sorry! you have been blocked by the admin."));
 			} else {
 				return new Result<>(200, userForLoginState);
 			}

@@ -1,5 +1,6 @@
 package com.project.sportsgeek.controller;
 
+import com.project.sportsgeek.exception.ResultException;
 import com.project.sportsgeek.jwtconfig.JwtTokenUtil;
 import com.project.sportsgeek.model.profile.*;
 import com.project.sportsgeek.response.Result;
@@ -235,9 +236,11 @@ public class UserController {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         } catch (DisabledException e) {
-            throw new Exception("USER_DISABLED", e);
+//            throw new Exception("USER_DISABLED", e);
+            throw new ResultException((new Result<>(401,"Sorry! you have been blocked by the admin.")));
         } catch (BadCredentialsException e) {
-            throw new Exception("INVALID_CREDENTIALS", e);
+//            throw new Exception("INVALID_CREDENTIALS", e);
+            throw new ResultException((new Result<>(400,"Invalid username or password!")));
         }
     }
 }

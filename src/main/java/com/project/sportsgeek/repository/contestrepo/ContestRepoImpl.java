@@ -31,9 +31,8 @@ public class ContestRepoImpl implements ContestRepository {
         List<Contest> contestList = jdbcTemplate.query(sql, params, new ContestWithMatchRowMapper());
         if (contestList.size() > 0) {
             return contestList.get(0);
-        }else{
-            return null;
         }
+        return null;
     }
 
     @Override
@@ -63,9 +62,8 @@ public class ContestRepoImpl implements ContestRepository {
         int n = jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(contest), holder);
         if(n > 0){
             return holder.getKey().intValue();
-        }else{
-            return 0;
         }
+        return 0;
     }
 
     @Override

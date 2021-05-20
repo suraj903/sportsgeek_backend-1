@@ -35,9 +35,8 @@ public class EmailContactRepoImpl implements EmailContactRepository {
         int n = jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(emailContact), holder);
         if(n > 0) {
             return holder.getKey().intValue();
-        }else {
-            return 0;
         }
+        return 0;
     }
 
     @Override

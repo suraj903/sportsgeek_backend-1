@@ -31,9 +31,8 @@ public class GenderRepositoryImpl implements GenderRepository {
         List<Gender> genderList = jdbcTemplate.query(sql, params, new GenderRowMapper());
         if(genderList.size() > 0){
             return genderList.get(0);
-        }else{
-            return null;
         }
+        return null;
     }
 
     @Override
@@ -43,9 +42,8 @@ public class GenderRepositoryImpl implements GenderRepository {
         int n = jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(gender), holder);
         if(n > 0) {
             return holder.getKey().intValue();
-        }else {
-            return 0;
         }
+        return 0;
     }
 
     @Override

@@ -14,13 +14,13 @@ public interface MatchesRepository {
 
     List<MatchesWithVenue> findAllMatches(int tournamentId) throws Exception;
 
-    List<MatchesWithVenue> findMatchesById(int id, int tournamentId) throws Exception;
+    List<MatchesWithVenue> findMatchesById(int matchId, int tournamentId) throws Exception;
 
-    List<MatchesWithVenue> findAllMatchesByTournament(int id) throws Exception;
+    List<MatchesWithVenue> findAllMatchesByTournament(int tournamentId) throws Exception;
 
-    List<MatchesWithVenue> findAllMatchesByVenue(int id) throws Exception;
+    List<MatchesWithVenue> findAllMatchesByVenue(int venueId) throws Exception;
 
-    List<MatchesWithVenue> findAllMatchesByTeam(int id) throws Exception;
+    List<MatchesWithVenue> findAllMatchesByTeam(int teamId) throws Exception;
 
     List<MatchesWithVenue> findAllMatchesByPreviousDateAndResultStatus(int tournamentId) throws Exception;
 
@@ -28,18 +28,18 @@ public interface MatchesRepository {
 
     int addMatch(Matches matches) throws Exception;
 
-    boolean updateMatch(int id, Matches matches) throws Exception;
+    boolean updateMatch(int matchId, Matches matches) throws Exception;
 
     boolean updateMatchWinningTeam(int matchId, int ResultStatus, int winningTeamId) throws Exception;
 
-    int updateMatchVenue(int id,int venueId) throws Exception;
+    int updateMatchVenue(int matchId, int venueId) throws Exception;
 
-    int updateResultStatus(int id, boolean status) throws Exception;
+    int updateResultStatus(int matchId, boolean status) throws Exception;
 
     int updateMinimumPoints(int matchId, int minPoints) throws Exception;
 
-    int updateMatchScheduleDate(int id, Timestamp date) throws Exception;
+    int updateMatchScheduleDate(int matchId, Timestamp date) throws Exception;
 
-    int deleteMatches(int id) throws Exception;
+    int deleteMatches(int matchId) throws Exception;
 
 }

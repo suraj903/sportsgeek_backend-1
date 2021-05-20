@@ -117,7 +117,7 @@ public class UserController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Success"),
             @ApiResponse(code = 500, message = "Internal server error"),
             @ApiResponse(code = 404, message = "Bad Request")})
-    @PostMapping("/add-user")
+    @PostMapping("/register")
     public ResponseEntity<User> addUser(@RequestBody(required = true) UserWithPassword userWithPassword)
             throws Exception {
         userWithPassword.setPassword(bCryptPasswordEncoder.encode(userWithPassword.getPassword()));
@@ -139,7 +139,7 @@ public class UserController {
     public ResponseEntity<String> updatePassword(@RequestBody(required = true) UserWithNewPassword userWithNewPassword) throws Exception {
         System.out.println(userWithNewPassword);
         Result<String> userResult = userService.updatePassword(userWithNewPassword);
-        return new ResponseEntity<>(userResult.getData(), HttpStatus.valueOf(userResult.getCode()));
+        return new ResponseEntity<>(userResult.getMessage(), HttpStatus.valueOf(userResult.getCode()));
     }
 
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully updated schema"),
@@ -148,9 +148,9 @@ public class UserController {
             @ApiResponse(code = 500, message = "Internal error")})
     @PreAuthorize("hasRole('Admin')")
     @PutMapping("/{userId}/update-status/{status}")
-    public ResponseEntity<User> updateStatus(@PathVariable int userId, @PathVariable boolean status) throws Exception {
+    public ResponseEntity<String> updateStatus(@PathVariable int userId, @PathVariable boolean status) throws Exception {
         Result<User> userResult = userService.updateStatus(userId, status);
-        return new ResponseEntity<>(userResult.getData(), HttpStatus.valueOf(userResult.getCode()));
+        return new ResponseEntity<>(userResult.getMessage(), HttpStatus.valueOf(userResult.getCode()));
     }
 
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully updated schema"),
@@ -183,7 +183,7 @@ public class UserController {
             @ApiResponse(code = 404, message = "Schema not found"),
             @ApiResponse(code = 400, message = "Missing or invalid request body"),
             @ApiResponse(code = 500, message = "Internal error")})
-    @PreAuthorize("hasAnyRole('Admin','User')")
+//    @PreAuthorize("hasAnyRole('Admin','User')")
     @PostMapping("/forget-password")
     public ResponseEntity<User> getUserByEmailIdAndMobileNumber(@RequestBody(required = true) User user) throws Exception {
         Result<User> userResult = userService.findUserByEmailIdAndMobileNumber(user);
@@ -194,12 +194,12 @@ public class UserController {
             @ApiResponse(code = 404, message = "Schema not found"),
             @ApiResponse(code = 400, message = "Missing or invalid request body"),
             @ApiResponse(code = 500, message = "Internal error")})
-    @PreAuthorize("hasAnyRole('Admin','User')")
+//    @PreAuthorize("hasAnyRole('Admin','User')")
     @PutMapping("/forget-password")
     public ResponseEntity<String> forgetPassword(@RequestBody(required = true) UserWithOtp userWithOtp)
             throws Exception {
         Result<String> userResult = userService.updateForgetPassword(userWithOtp);
-        return new ResponseEntity<>(userResult.getData(), HttpStatus.valueOf(userResult.getCode()));
+        return new ResponseEntity<>(userResult.getMessage(), HttpStatus.valueOf(userResult.getCode()));
     }
 
 //	---------------------------------------------------------------------------------------------------------------------------------------------
@@ -226,6 +226,7 @@ public class UserController {
         Result<UserForLoginState> userResult = userService.authenticate(userAtLogin);
         // Generate token
         authenticate(userAtLogin.getUsername(), userAtLogin.getPassword());
+//        System.out.println("Authentication Success.");
         final UserDetails userDetails = userService.loadUserByUsername(userAtLogin.getUsername());
         final String token = jwtTokenUtil.generateToken(userDetails);
         userResult.getData().setToken(token);

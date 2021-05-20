@@ -65,7 +65,7 @@ public class UserService implements UserDetailsService {
 	private int otp;
 	private int sendOtp;
 
-//	private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+	private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
 //	---------------------------------------------------------------------------------------------------------------------------------------------
 //	------------------------------------------------- SELECT SERVICE ----------------------------------------------------------------------------
@@ -160,7 +160,7 @@ public class UserService implements UserDetailsService {
 
 	public Result<UserForLoginState> authenticate(UserAtLogin userAtLogin) throws Exception {
 		UserForLoginState userForLoginState = userRepository.authenticate(userAtLogin);
-		System.out.println("UserForLoginState:" + userForLoginState);
+//		System.out.println("UserForLoginState:" + userForLoginState);
 		if (userForLoginState != null) {
 			if (userForLoginState.isStatus() == false) {
 //				return new Result<>(401, "Sorry! you have been blocked by the admin");
@@ -168,7 +168,7 @@ public class UserService implements UserDetailsService {
 //				throw new ResultException(new Result<>(401, "Sorry! you have been blocked by the admin",
 //						new ArrayList<>(Arrays.asList(new Result.SportsGeekSystemError(999,
 //								"Sorry! you have been blocked by the admin")))));
-//				throw new ResultException(new Result<>(401, "Sorry! you have been blocked by the admin."));
+				throw new ResultException(new Result<>(401, "Sorry! you have been blocked by the admin."));
 			} else {
 				return new Result<>(200, userForLoginState);
 			}
@@ -207,24 +207,29 @@ public class UserService implements UserDetailsService {
 				mobileContactRepository.addMobileContact(mobileContact);
 
 				// Send Email to User
-				String subject = "New User Registration!!";
-				String msg = "Hello " + userWithPassword.getFirstName() + " " + userWithPassword.getLastName()
-						+ "\n Welcome to SportsGeek.\n"
-						+ "Your account is pending for approval by Admin. Wait For the Response of the approval of account.";
+				String subject = "SportsGeek Registration Successful!!";
+				String msg = "Hello " + userWithPassword.getFirstName() + " " + userWithPassword.getLastName() +
+						"\n\nYou have successfully registered on SportsGeek." +
+						"\n\nYour account is pending for approval by the Admin. Please wait until admin approves your account." +
+						"\n\nThanking you\nSportsGeek Team";
 				Email email = Email.builder().setSubject(subject).setTo(userWithPassword.getEmail()).message(msg)
 						.build();
 				emailService.sendEmail(email);
 
 				// Send Email to Admin
 				String admin_subject = "New User Registration Approval!!";
-				String adm_msg = "Hello Admin \n New user With Name:" + userWithPassword.getFirstName() + " "
-						+ userWithPassword.getLastName() + " and username: " + userWithPassword.getUsername() + " "
-						+ " has Registered for SportsGeek, Please Approve if he/she is a valid user.\n"
-						+ "Thanking you\n" + "SportsGeek Team";
-				String admin_email = "admn.sportsgeek@gmail.com";
-				Email adm_sendemail = Email.builder().setSubject(admin_subject).setTo(admin_email).message(adm_msg)
+				String adm_msg = "Hello Admin\n\nA new user has registered on SportsGeek with the following details :\n" +
+						"\nName : " + userWithPassword.getFirstName() + " " + userWithPassword.getLastName() +
+						"\nEmail : " + userWithPassword.getEmail() +
+						"\nMobile Number : " + userWithPassword.getMobileNumber() +
+						"\nGender : " + (userWithPassword.getGenderId() == 1 ? "Male" : "Female") +
+						"\nUsername : " + userWithPassword.getUsername() +
+						"\n\nPlease Approve if " + (userWithPassword.getGenderId() == 1 ? "he" : "she") + " is a valid user." +
+						"\n\nThanking you\n" + "SportsGeek Team";
+				String adminEmailId = "admn.sportsgeek@gmail.com";
+				Email adminEmail = Email.builder().setSubject(admin_subject).setTo(adminEmailId).message(adm_msg)
 						.build();
-				emailService.sendEmail(adm_sendemail);
+				emailService.sendEmail(adminEmail);
 				return new Result<>(201, userWithPassword);
 			} else {
 				throw new ResultException(new Result<>(500, "Unable to add User"));
@@ -257,13 +262,13 @@ public class UserService implements UserDetailsService {
 		if (userRepository.updateStatus(userId, status)) {
 			User user = userRepository.findUserByUserId(userId);
 			String sub = "Account Approved!!";
-			String updateStatus_msg = "Congratulations " + user.getFirstName() + " "
-					+ user.getLastName() + ",\n\n" + "Your account is approved by the Admin. \n"
-					+ "Your username is \"" + user.getUsername() + "\".\n"
-					+ "Now, You can login to the app and enjoy SportsGeek.\n" + "\n" + "Thanking you\n"
-					+ "SportsGeek Team";
-			String user_email = user.getEmail();
-			Email email = Email.builder().setSubject(sub).setTo(user_email).message(updateStatus_msg).build();
+			String msg = "Congratulations " + user.getFirstName() + " " + user.getLastName() + ",\n\n" +
+					"Your account is approved by the Admin.\n\n" +
+					"Your username is \"" + user.getUsername() + "\".\n" +
+					"Now, You can login to the app and enjoy SportsGeek.\n\n" +
+					"Thanking you\nSportsGeek Team";
+			String userEmailId = user.getEmail();
+			Email email = Email.builder().setSubject(sub).setTo(userEmailId).message(msg).build();
 			emailService.sendEmail(email);
 			return new Result<>(200, "status of given id(" + userId + ") has been successfully updated");
 		}
@@ -282,25 +287,20 @@ public class UserService implements UserDetailsService {
 //	------------------------------------------------- UPDATE PASSWORD SERVICE --------------------------------------------------------------------
 
 	public Result<String> updatePassword(UserWithNewPassword userWithNewPassword) throws Exception {
-//		String select_password = "SELECT u.UserName as UserName,u.Password as Password,r.Name as Name FROM User as u INNER JOIN Role as r on u.RoleId=r.RoleId WHERE UserId= :userId";
-//		System.out.println(select_password);
-//		List<UserWithPassword> userWithOldPassword = namedParameterJdbcTemplate.query(select_password,
-//				new BeanPropertySqlParameterSource(userWithNewPassword), new UserWithPasswordRowMapper());
-//		System.out.println(userWithOldPassword);
-//		if (userWithOldPassword.size() > 0 && bCryptPasswordEncoder.matches(userWithNewPassword.getOldPassword(),
-//				userWithOldPassword.get(0).getPassword())) {
-//			userWithNewPassword.setNewPassword(bCryptPasswordEncoder.encode(userWithNewPassword.getNewPassword()));
-//			int result = userRepository.updateUserPassword(userWithNewPassword);
-//			System.out.println(result);
-//			if (result > 0) {
-//				return new Result<>(200, "password has been successfully updated");
-//			} else {
-//
-//				return new Result<>(500, "Internal Server error!, Unable to update the password");
-//			}
-//		}
-//		return new Result<>(400,"Old Password does not match!");
-		return null;
+		UserWithPassword userWithOldPassword = userRepository.findUserWithPasswordByUserId(userWithNewPassword.getUserId());
+		System.out.println(userWithOldPassword);
+		if (userWithOldPassword != null && bCryptPasswordEncoder.matches(userWithNewPassword.getOldPassword(), userWithOldPassword.getPassword())) {
+			userWithNewPassword.setNewPassword(bCryptPasswordEncoder.encode(userWithNewPassword.getNewPassword()));
+			int result = userRepository.updateUserPassword(userWithNewPassword);
+			System.out.println(result);
+			if (result > 0) {
+				return new Result<>(200, "Password has been successfully updated");
+			} else {
+
+				return new Result<>(500, "Internal Server error!, Unable to update the password");
+			}
+		}
+		return new Result<>(400,"Old Password does not match!");
 	}
 
 //	------------------------------------------------- UPDATE FORGOT PASSWORD SERVICE -------------------------------------------------------------
@@ -313,20 +313,21 @@ public class UserService implements UserDetailsService {
 	}
 
 	public Result<User> findUserByEmailIdAndMobileNumber(User user) throws Exception {
-		List<User> userList = userRepository.findUserByEmailIdAndMobileNumber(user);
-		System.out.println(userList);
-		if (userList.size() > 0) {
+		User foundUser = userRepository.findUserByEmailIdAndMobileNumber(user);
+		System.out.println(foundUser);
+		if (foundUser != null) {
 			sendOtp = generateOTP();
-			String subject = "Forgot Password OTP Verification!!";
-			String msg = "Hello " + userList.get(0).getFirstName() + " " + userList.get(0).getLastName()
-					+ "\n Your OTP For Password Change.\n" + "OTP:" + sendOtp + "";
+			String subject = "Forget Password OTP Verification!!";
+			String msg = "Hello " + foundUser.getFirstName() + " " + foundUser.getLastName() +
+					"\n\nYour OTP For Password Change.\n\n" +
+					"OTP : " + sendOtp +
+					"\n\nThanking you\nSportsGeek Team";
 			System.out.println(msg);
-			Email email = Email.builder().setSubject(subject).setTo(userList.get(0).getEmail()).message(msg).build();
+			Email email = Email.builder().setSubject(subject).setTo(foundUser.getEmail()).message(msg).build();
 			emailService.sendEmail(email);
-			return new Result<>(200, userList.get(0));
+			return new Result<>(200, foundUser);
 		} else {
 			return new Result<>(404, "Email Id And Mobile Number Not Found");
-
 		}
 	}
 

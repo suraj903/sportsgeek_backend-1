@@ -69,7 +69,7 @@ public class ContestService {
         else {
 //            throw new ResultException((new Result<>(404,"No Contest's found,please try again","Contest with id=('"+ userid +"') not found")));
 //            return new Result<>(404, "No Data Found!");
-            throw new ResultException((new Result<>(404,"No Contest's found,please try again","Contest for userId='"+ userId +"' for matchId='" + matchId + "' not found")));
+            throw new ResultException((new Result<>(404,"No Contest's found. Please place contest.","Contest for userId='"+ userId +"' for matchId='" + matchId + "' not found")));
         }
     }
     public Result<Contest> updateContest(int contestId, Contest contest) throws Exception {

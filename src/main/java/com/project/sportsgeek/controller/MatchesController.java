@@ -51,9 +51,9 @@ public class MatchesController {
             }
     )
     @PreAuthorize("hasAnyRole('Admin','User')")
-    @GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MatchesWithVenue> getMatchesById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id) throws Exception {
-        Result<MatchesWithVenue> matchesList = matchesService.findMatchesById(id);
+    @GetMapping(value = "/{matchId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<MatchesWithVenue> getMatchesById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int matchId) throws Exception {
+        Result<MatchesWithVenue> matchesList = matchesService.findMatchesById(matchId);
         return new ResponseEntity<>(matchesList.getData(), HttpStatus.valueOf(matchesList.getCode()));
     }
 
@@ -66,9 +66,9 @@ public class MatchesController {
             }
     )
     @PreAuthorize("hasRole('Admin')")
-    @GetMapping(value = "/tournament/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<MatchesWithVenue>> getMatchesByTournament(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id) throws Exception {
-        Result<List<MatchesWithVenue>> matchesList = matchesService.findMatchesByTournament(id);
+    @GetMapping(value = "/tournament/{tournamentId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<MatchesWithVenue>> getMatchesByTournament(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int tournamentId) throws Exception {
+        Result<List<MatchesWithVenue>> matchesList = matchesService.findMatchesByTournament(tournamentId);
         return new ResponseEntity<>(matchesList.getData(), HttpStatus.valueOf(matchesList.getCode()));
     }
 
@@ -81,9 +81,9 @@ public class MatchesController {
             }
     )
     @PreAuthorize("hasRole('Admin')")
-    @GetMapping(value = "/venue/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<MatchesWithVenue>> getMatchesByVenue(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id) throws Exception {
-        Result<List<MatchesWithVenue>> matchesList = matchesService.findMatchesByVenue(id);
+    @GetMapping(value = "/venue/{venueId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<MatchesWithVenue>> getMatchesByVenue(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int venueId) throws Exception {
+        Result<List<MatchesWithVenue>> matchesList = matchesService.findMatchesByVenue(venueId);
         return new ResponseEntity<>(matchesList.getData(), HttpStatus.valueOf(matchesList.getCode()));
     }
 
@@ -111,9 +111,9 @@ public class MatchesController {
             }
     )
     @PreAuthorize("hasRole('Admin')")
-    @GetMapping(value = "/team/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<MatchesWithVenue>> getMatchesByTeam(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id) throws Exception {
-        Result<List<MatchesWithVenue>> matchesList = matchesService.findMatchesByTeam(id);
+    @GetMapping(value = "/team/{teamId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<MatchesWithVenue>> getMatchesByTeam(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int teamId) throws Exception {
+        Result<List<MatchesWithVenue>> matchesList = matchesService.findMatchesByTeam(teamId);
         return new ResponseEntity<>(matchesList.getData(), HttpStatus.valueOf(matchesList.getCode()));
     }
 
@@ -140,8 +140,37 @@ public class MatchesController {
             }
     )
     @PreAuthorize("hasRole('Admin')")
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<Matches> addMatches(@ApiParam(value = "matchId") @RequestParam("matchId") int matchId,@ApiParam(value = "tournamentId") @RequestParam("tournamentId") int tournamentId, @ApiParam(value = "name") @RequestParam("name") String name,@ApiParam(value = "startDateTime") @RequestParam("startDateTime") Timestamp startDateTime,@ApiParam(value = "venueId") @RequestParam("venueId") int venueId,@ApiParam(value = "team1") @RequestParam("team1") int team1,@ApiParam(value = "team2") @RequestParam("team2") int team2,@ApiParam(value = "minimumPoints") @RequestParam("minimumPoints") int minimumPoints) throws  Exception {
+//        Matches matches = Matches.builder()
+//                .matchId(matchId)
+//                .tournamentId(tournamentId)
+//                .name(name)
+//                .startDateTime(startDateTime)
+//                .venueId(venueId)
+//                .team1(team1)
+//                .team2(team2)
+//                .minimumPoints(minimumPoints).build();
+//        Result<Matches> matchesResult = matchesService.addMatches(matches);
+//        return new ResponseEntity(matchesResult.getData(), HttpStatus.valueOf(matchesResult.getCode()));
+//    }
+    public ResponseEntity<Matches> addMatches(@RequestBody(required = true) @Valid Matches matches) throws  Exception {
+        System.out.println(matches);
+        Result<Matches> matchesResult = matchesService.addMatches(matches);
+        return new ResponseEntity(matchesResult.getData(), HttpStatus.valueOf(matchesResult.getCode()));
+    }
+
+    @ApiResponses(value =
+            {
+                    @ApiResponse(code = 201, message = "success", response = Matches.class),
+                    @ApiResponse(code = 400, message = "Bad request", response = MatchesException.class),
+                    @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = MatchesException.class),
+                    @ApiResponse(code = 403 , message = "Forbidden!! Access is Denied!")
+            }
+    )
+    @PreAuthorize("hasRole('Admin')")
     @PutMapping(value = "/update-match/{matchId}/{resultStatus}/{winnerTeamId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Matches> updateMatchResult(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int matchId,@PathVariable @Valid @Pattern(regexp = "[0-9]*") int resultStatus, @PathVariable @Valid @Pattern(regexp = "[0-9]*") int winnerTeamId) throws Exception {
+    public ResponseEntity<String> updateMatchResult(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int matchId,@PathVariable @Valid @Pattern(regexp = "[0-9]*") int resultStatus, @PathVariable @Valid @Pattern(regexp = "[0-9]*") int winnerTeamId) throws Exception {
         Result<String> updateResult = matchesService.updateMatchWinningTeam(matchId,resultStatus,winnerTeamId);
         return new ResponseEntity(updateResult.getMessage(),HttpStatus.valueOf(updateResult.getCode()));
     }
@@ -155,9 +184,9 @@ public class MatchesController {
             }
     )
     @PreAuthorize("hasRole('Admin')")
-    @PutMapping(value = "/{id}/update-match-detail",produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<Matches> updateMatch(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id,@ApiParam(value = "tournamentId") @RequestParam("tournamentId") int tournamentId, @ApiParam(value = "name") @RequestParam("name") String name,@ApiParam(value = "startDateTime") @RequestParam("startDateTime") Timestamp startDateTime,@ApiParam(value = "venueId") @RequestParam("venueId") int venueId,@ApiParam(value = "team1") @RequestParam("team1") int team1,@ApiParam(value = "team2") @RequestParam("team2") int team2,@ApiParam(value = "winnerTeamId") @RequestParam("winnerTeamId") int winnerTeamId,@ApiParam(value = "resultStatus") @RequestParam("resultStatus") boolean resultStatus,@ApiParam(value = "minimumPoints") @RequestParam("minimumPoints") int minimumPoints) throws Exception {
-//        Matches  matches = Matches.builder()
+    @PutMapping(value = "/{matchId}",produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<Matches> updateMatch(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int matchId,@ApiParam(value = "tournamentId") @RequestParam("tournamentId") int tournamentId, @ApiParam(value = "name") @RequestParam("name") String name,@ApiParam(value = "startDateTime") @RequestParam("startDateTime") Timestamp startDateTime,@ApiParam(value = "venueId") @RequestParam("venueId") int venueId,@ApiParam(value = "team1") @RequestParam("team1") int team1,@ApiParam(value = "team2") @RequestParam("team2") int team2,@ApiParam(value = "winnerTeamId") @RequestParam("winnerTeamId") int winnerTeamId,@ApiParam(value = "resultStatus") @RequestParam("resultStatus") boolean resultStatus,@ApiParam(value = "minimumPoints") @RequestParam("minimumPoints") int minimumPoints) throws Exception {
+//        Matches matches = Matches.builder()
 //                .tournamentId(tournamentId)
 //                .name(name)
 //                .startDateTime(startDateTime)
@@ -170,8 +199,8 @@ public class MatchesController {
 //        Result<Matches> matchResult = matchesService.updateMatch(id, matches);
 //        return new ResponseEntity(matchResult.getData(), HttpStatus.valueOf(matchResult.getCode()));
 //    }
-    public ResponseEntity<Matches> addMatches(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id, @RequestBody(required = true) @Valid Matches matches) throws  Exception {
-        Result<Matches> matchResult = matchesService.updateMatch(id, matches);
+    public ResponseEntity<Matches> updateMatches(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int matchId, @RequestBody(required = true) @Valid Matches matches) throws  Exception {
+        Result<Matches> matchResult = matchesService.updateMatch(matchId, matches);
         return new ResponseEntity(matchResult.getData(), HttpStatus.valueOf(matchResult.getCode()));
     }
 
@@ -184,9 +213,9 @@ public class MatchesController {
             }
     )
     @PreAuthorize("hasRole('Admin')")
-    @PutMapping(value = "/{id}/update-match-venue/{venueId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> updateMatchVenue(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id,@PathVariable @Valid @Pattern(regexp = "[0-9]*") int venueId ) throws Exception {
-        Result<String> matchResult = matchesService.updateMatchVenue(id, venueId);
+    @PutMapping(value = "/{matchId}/update-match-venue/{venueId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> updateMatchVenue(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int matchId, @PathVariable @Valid @Pattern(regexp = "[0-9]*") int venueId ) throws Exception {
+        Result<String> matchResult = matchesService.updateMatchVenue(matchId, venueId);
         return new ResponseEntity(matchResult.getData(),HttpStatus.valueOf(matchResult.getCode()));
     }
 
@@ -199,9 +228,9 @@ public class MatchesController {
             }
     )
     @PreAuthorize("hasRole('Admin')")
-    @PutMapping(value = "/{id}/update-match-result-status/{status}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> updateMatchResultStatus(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id,@PathVariable @Valid @Pattern(regexp = "[0-9]*") boolean status ) throws Exception {
-        Result<String> matchResult = matchesService.updateMatchResultStatus(id, status);
+    @PutMapping(value = "/{matchId}/update-match-result-status/{status}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> updateMatchResultStatus(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int matchId,@PathVariable @Valid @Pattern(regexp = "[0-9]*") boolean status ) throws Exception {
+        Result<String> matchResult = matchesService.updateMatchResultStatus(matchId, status);
         return new ResponseEntity(matchResult.getData(),HttpStatus.valueOf(matchResult.getCode()));
     }
 
@@ -214,9 +243,9 @@ public class MatchesController {
             }
     )
     @PreAuthorize("hasRole('Admin')")
-    @PutMapping(value = "/{id}/update-match-start-date/{date}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> updateMatchStartDateTime(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id, @PathVariable @Valid Timestamp date) throws Exception {
-        Result<String> matchResult = matchesService.updateMatchStartDateTime(id, date);
+    @PutMapping(value = "/{matchId}/update-match-start-date/{date}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> updateMatchStartDateTime(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int matchId, @PathVariable @Valid Timestamp date) throws Exception {
+        Result<String> matchResult = matchesService.updateMatchStartDateTime(matchId, date);
         return new ResponseEntity(matchResult.getData(), HttpStatus.valueOf(matchResult.getCode()));
     }
 
@@ -237,34 +266,6 @@ public class MatchesController {
 
     @ApiResponses(value =
             {
-                    @ApiResponse(code = 201, message = "success", response = Matches.class),
-                    @ApiResponse(code = 400, message = "Bad request", response = MatchesException.class),
-                    @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = MatchesException.class),
-                    @ApiResponse(code = 403 , message = "Forbidden!! Access is Denied!")
-            }
-    )
-    @PreAuthorize("hasRole('Admin')")
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-//    public ResponseEntity<Matches> addMatches(@ApiParam(value = "matchId") @RequestParam("matchId") int matchId,@ApiParam(value = "tournamentId") @RequestParam("tournamentId") int tournamentId, @ApiParam(value = "name") @RequestParam("name") String name,@ApiParam(value = "startDateTime") @RequestParam("startDateTime") Timestamp startDateTime,@ApiParam(value = "venueId") @RequestParam("venueId") int venueId,@ApiParam(value = "team1") @RequestParam("team1") int team1,@ApiParam(value = "team2") @RequestParam("team2") int team2,@ApiParam(value = "minimumPoints") @RequestParam("minimumPoints") int minimumPoints) throws  Exception {
-//        Matches matches = Matches.builder()
-//                .matchId(matchId)
-//                .tournamentId(tournamentId)
-//                .name(name)
-//                .startDateTime(startDateTime)
-//                .venueId(venueId)
-//                .team1(team1)
-//                .team2(team2)
-//                .minimumPoints(minimumPoints).build();
-//        Result<Matches> matchesResult = matchesService.addMatches(matches);
-//        return new ResponseEntity(matchesResult.getData(), HttpStatus.valueOf(matchesResult.getCode()));
-//    }
-    public ResponseEntity<Matches> addMatches(@RequestBody(required = true) @Valid Matches matches) throws  Exception {
-        Result<Matches> matchesResult = matchesService.addMatches(matches);
-        return new ResponseEntity(matchesResult.getData(), HttpStatus.valueOf(matchesResult.getCode()));
-    }
-
-    @ApiResponses(value =
-            {
                     @ApiResponse(code = 200, message = "success", response = Matches.class),
                     @ApiResponse(code = 404, message = "Bad request", response = MatchesException.class),
                     @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = MatchesException.class),
@@ -272,9 +273,9 @@ public class MatchesController {
             }
     )
     @PreAuthorize("hasRole('Admin')")
-    @DeleteMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Matches> deleteMatchById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id) throws Exception {
-        Result<Integer> integerResult = matchesService.deleteMatch(id);
+    @DeleteMapping(value = "/{matchId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Matches> deleteMatchById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int matchId) throws Exception {
+        Result<Integer> integerResult = matchesService.deleteMatch(matchId);
         return new ResponseEntity(integerResult.getData(), HttpStatus.valueOf(integerResult.getCode()));
     }
 }

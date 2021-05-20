@@ -43,11 +43,11 @@ public class MatchesService {
 //        }
     }
     
-    public Result<MatchesWithVenue> findMatchesById(int id) throws Exception {
+    public Result<MatchesWithVenue> findMatchesById(int matchId) throws Exception {
         Tournament tournament = tournamentRepository.findTournamentByActive();
         if (tournament != null)
         {
-            List<MatchesWithVenue> matchesList = matchesRepository.findMatchesById(id, tournament.getTournamentId());
+            List<MatchesWithVenue> matchesList = matchesRepository.findMatchesById(matchId, tournament.getTournamentId());
             return new Result<>(200,"Matches Detail Retrieved Successfully", matchesList.get(0));
 //            if (matchesList.size() > 0) {
 //                return new Result<>(200,"Matches Detail Retrieved Successfully", matchesList.get(0));
@@ -62,8 +62,8 @@ public class MatchesService {
         }
     }
 
-    public Result<List<MatchesWithVenue>> findMatchesByTournament(int id) throws Exception {
-        List<MatchesWithVenue> matchesList = matchesRepository.findAllMatchesByTournament(id);
+    public Result<List<MatchesWithVenue>> findMatchesByTournament(int tournamentId) throws Exception {
+        List<MatchesWithVenue> matchesList = matchesRepository.findAllMatchesByTournament(tournamentId);
         return new Result<>(200,"Matches Detail Retrieved Successfully", matchesList);
 //        if (matchesList.size() > 0) {
 //            return new Result<>(200,"Matches Detail Retrieved Successfully", matchesList);
@@ -73,8 +73,8 @@ public class MatchesService {
 //        }
     }
 
-    public Result<List<MatchesWithVenue>> findMatchesByVenue(int id) throws Exception {
-        List<MatchesWithVenue> matchesList = matchesRepository.findAllMatchesByVenue(id);
+    public Result<List<MatchesWithVenue>> findMatchesByVenue(int venueId) throws Exception {
+        List<MatchesWithVenue> matchesList = matchesRepository.findAllMatchesByVenue(venueId);
         return new Result<>(200,"Matches Detail Retrieved Successfully", matchesList);
 //        if (matchesList.size() > 0) {
 //            return new Result<>(200,"Matches Detail Retrieved Successfully", matchesList);
@@ -84,8 +84,8 @@ public class MatchesService {
 //        }
     }
 
-    public Result<List<MatchesWithVenue>> findMatchesByTeam(int id) throws Exception {
-        List<MatchesWithVenue> matchesList = matchesRepository.findAllMatchesByTeam(id);
+    public Result<List<MatchesWithVenue>> findMatchesByTeam(int teamId) throws Exception {
+        List<MatchesWithVenue> matchesList = matchesRepository.findAllMatchesByTeam(teamId);
         return new Result<>(200,"Matches Detail Retrieved Successfully", matchesList);
 //        if (matchesList.size() > 0) {
 //            return new Result<>(200,"Matches Detail Retrieved Successfully", matchesList);
@@ -116,12 +116,12 @@ public class MatchesService {
 //                .asList(new Result.SportsGeekSystemError(matches.hashCode(), "unable to add the given gender")))));
     }
 
-    public Result<Matches> updateMatch(int id, Matches matches) throws Exception {
-        if (matchesRepository.updateMatch(id, matches)) {
-            return new Result<>(200,"Player Details Updated Successfully",matches);
+    public Result<Matches> updateMatch(int matchId, Matches matches) throws Exception {
+        if (matchesRepository.updateMatch(matchId, matches)) {
+            return new Result<>(200,"Match Details Updated Successfully",matches);
         }
-        throw new ResultException(new Result<>(400, "Unable to update the given Player details! Please try again!", new ArrayList<>(Arrays
-                .asList(new Result.SportsGeekSystemError(matches.hashCode(), "given PlayerId('"+id+"') does not exists")))));
+        throw new ResultException(new Result<>(400, "Unable to update the given Match details! Please try again!", new ArrayList<>(Arrays
+                .asList(new Result.SportsGeekSystemError(matches.hashCode(), "given MatchId('"+matchId+"') does not exists")))));
     }
 
     public Result<List<MatchesWithVenue>> findAllMatchesByPreviousDateAndResultStatus() throws Exception {
@@ -141,13 +141,13 @@ public class MatchesService {
 
     public Result<String> updateMatchWinningTeam(int matchId, int ResultStatus, int winningTeamId) throws Exception {
             if(matchesRepository.updateMatchWinningTeam(matchId,ResultStatus,winningTeamId)== true) {
-                return new Result<>(200, "Matches Updated Successfully!!");
+                return new Result<>(200, "Match Result updated successfully!!");
             }else {
                 return new Result<>(400, "Failed to Update Match Result!!");
             }
     }
 
-    public Result<String> updateMinimumPoints(int matchId,int minPoints) throws Exception {
+    public Result<String> updateMinimumPoints(int matchId, int minPoints) throws Exception {
         int result = matchesRepository.updateMinimumPoints(matchId, minPoints);
         if(result > 0) {
             return new Result<>(200, "Successfully Updated Minimum Points for Match");
@@ -157,7 +157,7 @@ public class MatchesService {
         }
     }
 
-    public Result<String> updateMatchVenue(int matchId,int venueId) throws Exception {
+    public Result<String> updateMatchVenue(int matchId, int venueId) throws Exception {
         int result = matchesRepository.updateMatchVenue(matchId, venueId);
         if(result > 0) {
             return new Result<>(200, "Successfully Updated Venue for Match");
@@ -167,7 +167,7 @@ public class MatchesService {
         }
     }
 
-    public Result<String> updateMatchResultStatus(int matchId,boolean status) throws Exception {
+    public Result<String> updateMatchResultStatus(int matchId, boolean status) throws Exception {
         int result = matchesRepository.updateResultStatus(matchId, status);
         if(result > 0) {
             return new Result<>(200, "Successfully Updated Result Status for Match");

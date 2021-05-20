@@ -13,7 +13,7 @@ public class UserWithPasswordRowMapper implements RowMapper<UserWithPassword> {
         UserWithPassword userWithPassword = new UserWithPassword();
         userWithPassword.setUsername(rs.getString("UserName"));
         userWithPassword.setPassword(rs.getString("Password"));
-        userWithPassword.setRole(rs.getString("Name"));
+        userWithPassword.setRole(rs.getString("Role"));
         return userWithPassword;
     }
 

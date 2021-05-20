@@ -49,9 +49,20 @@ public class UserRepoImpl implements UserRepository {
 		List<User> userList = jdbcTemplate.query(sql, params, new UserWithContactRowMapper());
 		if(userList.size() > 0){
 			return userList.get(0);
-		}else{
-			return null;
 		}
+		return null;
+	}
+
+
+	@Override
+	public UserWithPassword findUserWithPasswordByUserId(int userId) throws Exception {
+		String sql = "SELECT Username, Password, r.Name as Role FROM User as u INNER JOIN Role as r on u.RoleId=r.RoleId WHERE UserId= :userId";
+		MapSqlParameterSource params = new MapSqlParameterSource("userId", userId);
+		List<UserWithPassword> userList = jdbcTemplate.query(sql, params, new UserWithPasswordRowMapper());
+		if(userList.size() > 0){
+			return userList.get(0);
+		}
+		return null;
 	}
 
 	@Override
@@ -62,12 +73,17 @@ public class UserRepoImpl implements UserRepository {
 	}
 
 	@Override
-	public List<User> findUserByEmailIdAndMobileNumber(User user) throws Exception {
+	public User findUserByEmailIdAndMobileNumber(User user) throws Exception {
 		String sql = "SELECT User.UserId as UserId, FirstName, LastName, GenderId, RoleId, Username, AvailablePoints, ProfilePicture, Status, EmailContact.EmailId as Email, MobileContact.MobileNumber as MobileNumber "
 				+ "FROM User inner join EmailContact on User.UserId=EmailContact.UserId inner join MobileContact on User.UserId=MobileContact.UserId WHERE EmailContact.EmailId = :emailId AND MobileContact.MobileNumber = :mobileNumber";
 		MapSqlParameterSource params = new MapSqlParameterSource("emailId", user.getEmail());
 		params.addValue("mobileNumber", user.getMobileNumber());
-		return jdbcTemplate.query(sql, params, new UserRowMapper());
+		List<User> userList = jdbcTemplate.query(sql, params, new UserWithContactRowMapper());
+		if(userList.size() > 0){
+			return userList.get(0);
+		}else{
+			return null;
+		}
 	}
 
 	@Override
@@ -96,7 +112,7 @@ public class UserRepoImpl implements UserRepository {
 
 	@Override
 	public List<UserWithPassword> findUserByUserName(String username) throws Exception {
-		String sql = "SELECT u.UserName as UserName,u.Password as Password,r.Name as Name FROM User as u INNER JOIN Role as r on u.RoleId=r.RoleId WHERE UserName = :username";
+		String sql = "SELECT u.UserName as UserName,u.Password as Password,r.Name as Role FROM User as u INNER JOIN Role as r on u.RoleId=r.RoleId WHERE UserName = :username";
 		MapSqlParameterSource params = new MapSqlParameterSource("username", username);
 		return jdbcTemplate.query(sql, params, new UserWithPasswordRowMapper());
 	}
@@ -108,7 +124,6 @@ public class UserRepoImpl implements UserRepository {
 
 	@Override
 	public UserForLoginState authenticate(UserAtLogin userAtLogin) throws Exception {
-		System.out.println("Authenticate from repo called...");
 //		String sql = "select u.UserId, u.UserName, r.Name, u.Status from User as u inner join Role as r on u.RoleId = r.RoleId where u.UserName=:username";
 		String sql = "SELECT u.UserId AS UserId, Username, r.Name AS Role, Status from User as u inner join Role as r on u.RoleId = r.RoleId where Username=:username";
 //		String sql = "SELECT u.UserId AS UserId, Username, r.Name AS Role, Status from User as u inner join Role as r on u.RoleId = r.RoleId where u.UserName=:username and u.Password=:password";

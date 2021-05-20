@@ -12,11 +12,13 @@ public interface UserRepository {
 
     User findUserByUserId(int id) throws Exception;
 
+    UserWithPassword findUserWithPasswordByUserId(int userId) throws Exception;
+
     List<UserWithPassword> findUserByUserName(String userName) throws Exception;
 
     List<User> findAllUsersByRole(int roleId) throws Exception;
 
-    List<User> findUserByEmailIdAndMobileNumber(User user) throws Exception;
+    User findUserByEmailIdAndMobileNumber(User user) throws Exception;
 
     List<UserWinningAndLossingPoints> findLoosingPointsByUserId(int userId) throws Exception;
 
@@ -25,7 +27,6 @@ public interface UserRepository {
     List<User> findUsersByStatus(boolean status) throws Exception;
 
     int addUser(UserWithPassword userWithPassword) throws Exception;
-
 
     boolean updateUser(int id, User user) throws Exception;
 

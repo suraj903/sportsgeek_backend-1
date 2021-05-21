@@ -245,7 +245,7 @@ public class UserRepoImpl implements UserRepository {
 	public boolean deleteUser(int userId) throws Exception {
 		String sql = "DELETE FROM User WHERE UserId = :userId";
 		MapSqlParameterSource params = new MapSqlParameterSource("userId", userId);
-		return jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(userId)) > 0;
+		return jdbcTemplate.update(sql, params) > 0;
 	}
 
 }

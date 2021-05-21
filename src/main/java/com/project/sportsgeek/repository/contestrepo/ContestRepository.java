@@ -22,6 +22,6 @@ public interface ContestRepository {
 
     int getContestPoints(int contestId) throws Exception;
 
-    boolean deleteContestByUserId(int userId) throws Exception;
+    boolean deleteContestsByUserId(int userId) throws Exception;
 
 }

@@ -351,15 +351,16 @@ public class UserService implements UserDetailsService {
 //	---------------------------------------------------------------------------------------------------------------------------------------------
 
 	public Result<User> deleteUser(int userId) throws Exception {
-		boolean result = emailContactRepository.deleteEmailContactByUserId(userId);
-		if (result) {
+		User user = userRepository.findUserByUserId(userId);
+		System.out.println(user);
+		if (user != null) {
+			emailContactRepository.deleteEmailContactByUserId(userId);
 			mobileContactRepository.deleteMobileContactByUserId(userId);
 			rechargeRepository.deleteRechargeByUserId(userId);
-			contestRepository.deleteContestByUserId(userId);
+			contestRepository.deleteContestsByUserId(userId);
 			userRepository.deleteUser(userId);
 			return new Result<>(200, "User Deleted Successfully!!");
 		}
-
 		return new Result<>(404, "Given User Id does not exists");
 	}
 

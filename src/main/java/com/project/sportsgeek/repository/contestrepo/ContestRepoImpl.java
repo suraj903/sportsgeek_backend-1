@@ -81,7 +81,7 @@ public class ContestRepoImpl implements ContestRepository {
     }
 
     @Override
-    public boolean deleteContestByUserId(int userId) throws Exception {
+    public boolean deleteContestsByUserId(int userId) throws Exception {
         String sql = "DELETE FROM Contest WHERE UserId = :userId";
         MapSqlParameterSource params = new MapSqlParameterSource("userId", userId);
         return jdbcTemplate.update(sql, params) > 0;

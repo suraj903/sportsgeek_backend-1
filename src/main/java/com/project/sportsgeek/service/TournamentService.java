@@ -35,6 +35,16 @@ public class TournamentService {
         }
     }
 
+    public Result<Tournament> findTournamentByActive() throws Exception{
+        Tournament tournament = tournamentRepository.findTournamentByActive();
+        if (tournament != null) {
+            return new Result<>(200,"Active Tournament Details Retrieved Successfully", tournament);
+        }
+        else {
+            throw new ResultException((new Result<>(404,"No Active Tournament's found,please try again","No Active Tournament's found,please try again")));
+        }
+    }
+
     public Result<Tournament> addTournament(Tournament tournament) throws Exception {
         int id = tournamentRepository.addTournament(tournament);
         tournament.setTournamentId(id);

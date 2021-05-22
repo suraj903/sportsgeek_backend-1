@@ -1,18 +1,23 @@
 package com.project.sportsgeek.exception;
 
+import com.project.sportsgeek.response.ResponseMessage;
 import com.project.sportsgeek.response.Result;
 
 public class ResultException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
-    Result<Object> resultExecption;
+    Result<Object> resultException;
 
-    public ResultException(Result<Object> resultExecption) {
-        super(resultExecption.getMessage());
-        this.resultExecption = resultExecption;
+    public ResultException(Result<Object> resultException) {
+        super(resultException.getMessage());
+        this.resultException = resultException;
     }
 
-    public Result<Object> getResultExecption() {
-        return resultExecption;
+    public Result<Object> getResultException() {
+        return resultException;
     }
+
+//    public ResponseMessage getResultException() {
+//        return new ResponseMessage(resultException.getMessage());
+//    }
 }

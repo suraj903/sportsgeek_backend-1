@@ -1,6 +1,6 @@
 package com.project.sportsgeek.controller;
 
-import com.project.sportsgeek.exception.VenueException;
+import com.project.sportsgeek.exception.ResultException;
 import com.project.sportsgeek.model.Venue;
 import com.project.sportsgeek.response.Result;
 import com.project.sportsgeek.service.VenueService;
@@ -26,7 +26,7 @@ public class VenueController {
     @ApiResponses(value =
             {
                     @ApiResponse(code = 200, message = "success", response = Venue.class),
-                    @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = VenueException.class),
+                    @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = ResultException.class),
                     @ApiResponse(code = 403 , message = "Forbidden!! Access is Denied!")
             }
     )
@@ -40,8 +40,8 @@ public class VenueController {
     @ApiResponses(value =
             {
                     @ApiResponse(code = 200, message = "success", response = Venue.class),
-                    @ApiResponse(code = 404, message = "Bad request", response = VenueException.class),
-                    @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = VenueException.class),
+                    @ApiResponse(code = 404, message = "Bad request", response = ResultException.class),
+                    @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = ResultException.class),
                     @ApiResponse(code = 403 , message = "Forbidden!! Access is Denied!")
             }
     )
@@ -55,8 +55,8 @@ public class VenueController {
     @ApiResponses(value =
             {
                     @ApiResponse(code = 201, message = "success", response = Venue.class),
-                    @ApiResponse(code = 400, message = "Bad request", response = VenueException.class),
-                    @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = VenueException.class),
+                    @ApiResponse(code = 400, message = "Bad request", response = ResultException.class),
+                    @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = ResultException.class),
                     @ApiResponse(code = 403 , message = "Forbidden!! Access is Denied!")
             }
     )
@@ -70,8 +70,8 @@ public class VenueController {
     @ApiResponses(value =
             {
                     @ApiResponse(code = 201, message = "success", response = Venue.class),
-                    @ApiResponse(code = 400, message = "Bad request", response = VenueException.class),
-                    @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = VenueException.class),
+                    @ApiResponse(code = 400, message = "Bad request", response = ResultException.class),
+                    @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = ResultException.class),
                     @ApiResponse(code = 403 , message = "Forbidden!! Access is Denied!")
             }
     )
@@ -85,8 +85,8 @@ public class VenueController {
     @ApiResponses(value =
             {
                     @ApiResponse(code = 200, message = "success", response = Venue.class),
-                    @ApiResponse(code = 404, message = "Bad request", response = VenueException.class),
-                    @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = VenueException.class),
+                    @ApiResponse(code = 404, message = "Bad request", response = ResultException.class),
+                    @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = ResultException.class),
                     @ApiResponse(code = 403 , message = "Forbidden!! Access is Denied!")
             }
     )

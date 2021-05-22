@@ -1,7 +1,7 @@
 package com.project.sportsgeek.controller;
 
-import com.project.sportsgeek.exception.TournamentException;
-import com.project.sportsgeek.exception.TournamentException;
+import com.project.sportsgeek.exception.ResultException;
+import com.project.sportsgeek.exception.ResultException;
 import com.project.sportsgeek.model.Tournament;
 import com.project.sportsgeek.model.Tournament;
 import com.project.sportsgeek.response.Result;
@@ -29,7 +29,7 @@ public class TournamentController {
     @ApiResponses(value =
             {
                     @ApiResponse(code = 200, message = "success", response = Tournament.class),
-                    @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = TournamentException.class),
+                    @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = ResultException.class),
                     @ApiResponse(code = 403 , message = "Forbidden!! Access is Denied!")
             }
     )
@@ -43,8 +43,8 @@ public class TournamentController {
     @ApiResponses(value =
             {
                     @ApiResponse(code = 200, message = "success", response = Tournament.class),
-                    @ApiResponse(code = 404, message = "Bad request", response = TournamentException.class),
-                    @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = TournamentException.class),
+                    @ApiResponse(code = 404, message = "Bad request", response = ResultException.class),
+                    @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = ResultException.class),
                     @ApiResponse(code = 403 , message = "Forbidden!! Access is Denied!")
             }
     )
@@ -58,8 +58,8 @@ public class TournamentController {
     @ApiResponses(value =
             {
                     @ApiResponse(code = 200, message = "success", response = Tournament.class),
-                    @ApiResponse(code = 404, message = "Bad request", response = TournamentException.class),
-                    @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = TournamentException.class),
+                    @ApiResponse(code = 404, message = "Bad request", response = ResultException.class),
+                    @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = ResultException.class),
                     @ApiResponse(code = 403 , message = "Forbidden!! Access is Denied!")
             }
     )
@@ -73,8 +73,8 @@ public class TournamentController {
     @ApiResponses(value =
             {
                     @ApiResponse(code = 201, message = "success", response = Tournament.class),
-                    @ApiResponse(code = 400, message = "Bad request", response = TournamentException.class),
-                    @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = TournamentException.class),
+                    @ApiResponse(code = 400, message = "Bad request", response = ResultException.class),
+                    @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = ResultException.class),
                     @ApiResponse(code = 403 , message = "Forbidden!! Access is Denied!")
             }
     )
@@ -88,8 +88,8 @@ public class TournamentController {
     @ApiResponses(value =
             {
                     @ApiResponse(code = 201, message = "success", response = Tournament.class),
-                    @ApiResponse(code = 400, message = "Bad request", response = TournamentException.class),
-                    @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = TournamentException.class),
+                    @ApiResponse(code = 400, message = "Bad request", response = ResultException.class),
+                    @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = ResultException.class),
                     @ApiResponse(code = 403 , message = "Forbidden!! Access is Denied!")
             }
     )
@@ -103,8 +103,8 @@ public class TournamentController {
     @ApiResponses(value =
             {
                     @ApiResponse(code = 201, message = "success", response = Tournament.class),
-                    @ApiResponse(code = 400, message = "Bad request", response = TournamentException.class),
-                    @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = TournamentException.class),
+                    @ApiResponse(code = 400, message = "Bad request", response = ResultException.class),
+                    @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = ResultException.class),
                     @ApiResponse(code = 403 , message = "Forbidden!! Access is Denied!")
             }
     )
@@ -118,8 +118,8 @@ public class TournamentController {
     @ApiResponses(value =
             {
                     @ApiResponse(code = 200, message = "success", response = Tournament.class),
-                    @ApiResponse(code = 404, message = "Bad request", response = TournamentException.class),
-                    @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = TournamentException.class),
+                    @ApiResponse(code = 404, message = "Bad request", response = ResultException.class),
+                    @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = ResultException.class),
                     @ApiResponse(code = 403 , message = "Forbidden!! Access is Denied!")
             }
     )

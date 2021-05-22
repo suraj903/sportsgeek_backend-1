@@ -1,6 +1,7 @@
 package com.project.sportsgeek.controller;
 
 import com.project.sportsgeek.model.Gender;
+import com.project.sportsgeek.response.ResponseMessage;
 import com.project.sportsgeek.response.Result;
 import com.project.sportsgeek.service.GenderService;
 import io.swagger.annotations.ApiResponse;
@@ -55,8 +56,9 @@ public class GenderController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully deleted schema"), @ApiResponse(code = 404, message = "Schema not found"), @ApiResponse(code = 409, message = "Schema is in use"), @ApiResponse(code = 500, message = "Error deleting schema")})
     @PreAuthorize("hasRole('Admin')")
     @DeleteMapping("/{genderId}")
-    public ResponseEntity<Result<String>> deleteGenderById(@PathVariable int genderId) throws Exception {
+    public ResponseEntity<ResponseMessage> deleteGenderById(@PathVariable int genderId) throws Exception {
         Result<String> result = genderService.deleteGender(genderId);
-        return new ResponseEntity(result, HttpStatus.valueOf(result.getCode()));
+        return new ResponseEntity<>(new ResponseMessage(result.getMessage()), HttpStatus.valueOf(result.getCode()));
+//        return new ResponseEntity(result, HttpStatus.valueOf(result.getCode()));
     }
 }

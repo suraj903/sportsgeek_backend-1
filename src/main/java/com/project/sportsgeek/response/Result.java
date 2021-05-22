@@ -16,6 +16,11 @@ public class Result<T> {
         super();
     }
 
+    public Result(String message){
+        super();
+        this.message = message;
+    }
+
     public Result(int code, String message) {
         super();
         this.code = code;

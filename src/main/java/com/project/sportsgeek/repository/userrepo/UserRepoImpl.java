@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.project.sportsgeek.mapper.*;
+import com.project.sportsgeek.model.profile.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowCountCallbackHandler;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -13,14 +14,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
-
-import com.project.sportsgeek.model.profile.User;
-import com.project.sportsgeek.model.profile.UserAtLogin;
-import com.project.sportsgeek.model.profile.UserForLoginState;
-import com.project.sportsgeek.model.profile.UserWinningAndLossingPoints;
-import com.project.sportsgeek.model.profile.UserWithNewPassword;
-import com.project.sportsgeek.model.profile.UserWithOtp;
-import com.project.sportsgeek.model.profile.UserWithPassword;
 
 @Repository(value = "userRepo")
 public class UserRepoImpl implements UserRepository {
@@ -36,17 +29,17 @@ public class UserRepoImpl implements UserRepository {
 
 
 	@Override
-	public List<User> findAllUsers() {
+	public List<UserResponse> findAllUsers() {
 //		String sql = "SELECT * FROM User";
-		String sql = "SELECT User.UserId as UserId, FirstName, LastName, GenderId, RoleId, Username, AvailablePoints, ProfilePicture, Status, EmailContact.EmailId as Email, MobileContact.MobileNumber as MobileNumber FROM User inner join EmailContact on User.UserId=EmailContact.UserId inner join MobileContact on User.UserId=MobileContact.UserId";
-		return jdbcTemplate.query(sql, new UserWithContactRowMapper());
+		String sql = "SELECT User.UserId as UserId, FirstName, LastName, User.GenderId, Gender.Name as GenderName, User.RoleId, Role.Name as RoleName, Username, AvailablePoints, ProfilePicture, Status, EmailContact.EmailId as Email, MobileContact.MobileNumber as MobileNumber FROM User inner join EmailContact on User.UserId=EmailContact.UserId inner join Gender on User.GenderId=Gender.GenderId inner join Role on User.RoleId=Role.RoleId inner join MobileContact on User.UserId=MobileContact.UserId";
+		return jdbcTemplate.query(sql, new UserResponseRowMapper());
 	}
 
 	@Override
-	public User findUserByUserId(int userId) throws Exception {
-		String sql = "SELECT User.UserId as UserId, FirstName, LastName, GenderId, RoleId, Username, AvailablePoints, ProfilePicture, Status, EmailContact.EmailId as Email, MobileContact.MobileNumber as MobileNumber FROM User inner join EmailContact on User.UserId=EmailContact.UserId inner join MobileContact on User.UserId=MobileContact.UserId WHERE User.UserId = :userId";
+	public UserResponse findUserByUserId(int userId) throws Exception {
+		String sql = "SELECT User.UserId as UserId, FirstName, LastName, User.GenderId, Gender.Name as GenderName, User.RoleId, Role.Name as RoleName, Username, AvailablePoints, ProfilePicture, Status, EmailContact.EmailId as Email, MobileContact.MobileNumber as MobileNumber FROM User inner join EmailContact on User.UserId=EmailContact.UserId inner join Gender on User.GenderId=Gender.GenderId inner join Role on User.RoleId=Role.RoleId inner join MobileContact on User.UserId=MobileContact.UserId WHERE User.UserId = :userId";
 		MapSqlParameterSource params = new MapSqlParameterSource("userId", userId);
-		List<User> userList = jdbcTemplate.query(sql, params, new UserWithContactRowMapper());
+		List<UserResponse> userList = jdbcTemplate.query(sql, params, new UserResponseRowMapper());
 		if(userList.size() > 0){
 			return userList.get(0);
 		}
@@ -66,19 +59,18 @@ public class UserRepoImpl implements UserRepository {
 	}
 
 	@Override
-	public List<User> findAllUsersByRole(int roleId) throws Exception {
-		String sql = "SELECT * FROM User WHERE RoleId= :roleId";
+	public List<UserResponse> findAllUsersByRole(int roleId) throws Exception {
+		String sql = "SELECT User.UserId as UserId, FirstName, LastName, User.GenderId, Gender.Name as GenderName, User.RoleId, Role.Name as RoleName, Username, AvailablePoints, ProfilePicture, Status, EmailContact.EmailId as Email, MobileContact.MobileNumber as MobileNumber FROM User inner join EmailContact on User.UserId=EmailContact.UserId inner join Gender on User.GenderId=Gender.GenderId inner join Role on User.RoleId=Role.RoleId inner join MobileContact on User.UserId=MobileContact.UserId WHERE RoleId= :roleId";
 		MapSqlParameterSource params = new MapSqlParameterSource("roleId", roleId);
-		return jdbcTemplate.query(sql, params, new UserRowMapper());
+		return jdbcTemplate.query(sql, params, new UserResponseRowMapper());
 	}
 
 	@Override
-	public User findUserByEmailIdAndMobileNumber(User user) throws Exception {
-		String sql = "SELECT User.UserId as UserId, FirstName, LastName, GenderId, RoleId, Username, AvailablePoints, ProfilePicture, Status, EmailContact.EmailId as Email, MobileContact.MobileNumber as MobileNumber "
-				+ "FROM User inner join EmailContact on User.UserId=EmailContact.UserId inner join MobileContact on User.UserId=MobileContact.UserId WHERE EmailContact.EmailId = :emailId AND MobileContact.MobileNumber = :mobileNumber";
+	public UserResponse findUserByEmailIdAndMobileNumber(User user) throws Exception {
+		String sql = "SELECT User.UserId as UserId, FirstName, LastName, User.GenderId, Gender.Name as GenderName, User.RoleId, Role.Name as RoleName, Username, AvailablePoints, ProfilePicture, Status, EmailContact.EmailId as Email, MobileContact.MobileNumber as MobileNumber FROM User inner join EmailContact on User.UserId=EmailContact.UserId inner join Gender on User.GenderId=Gender.GenderId inner join Role on User.RoleId=Role.RoleId inner join MobileContact on User.UserId=MobileContact.UserId WHERE EmailContact.EmailId = :emailId AND MobileContact.MobileNumber = :mobileNumber";
 		MapSqlParameterSource params = new MapSqlParameterSource("emailId", user.getEmail());
 		params.addValue("mobileNumber", user.getMobileNumber());
-		List<User> userList = jdbcTemplate.query(sql, params, new UserWithContactRowMapper());
+		List<UserResponse> userList = jdbcTemplate.query(sql, params, new UserResponseRowMapper());
 		if(userList.size() > 0){
 			return userList.get(0);
 		}else{
@@ -87,11 +79,10 @@ public class UserRepoImpl implements UserRepository {
 	}
 
 	@Override
-	public List<User> findUsersByStatus(boolean status) throws Exception {
-		String sql = "SELECT User.UserId as UserId, FirstName, LastName, GenderId, RoleId, Username, AvailablePoints, ProfilePicture, Status, EmailContact.EmailId as Email, MobileContact.MobileNumber as MobileNumber "
-				+ "FROM User inner join EmailContact on User.UserId=EmailContact.UserId inner join MobileContact on User.UserId=MobileContact.UserId WHERE User.Status = :status";
+	public List<UserResponse> findUsersByStatus(boolean status) throws Exception {
+		String sql = "SELECT User.UserId as UserId, FirstName, LastName, User.GenderId, Gender.Name as GenderName, User.RoleId, Role.Name as RoleName, Username, AvailablePoints, ProfilePicture, Status, EmailContact.EmailId as Email, MobileContact.MobileNumber as MobileNumber FROM User inner join EmailContact on User.UserId=EmailContact.UserId inner join Gender on User.GenderId=Gender.GenderId inner join Role on User.RoleId=Role.RoleId inner join MobileContact on User.UserId=MobileContact.UserId WHERE User.Status = :status";
 		MapSqlParameterSource params = new MapSqlParameterSource("status", status);
-		return jdbcTemplate.query(sql, params, new UserRowMapper());
+		return jdbcTemplate.query(sql, params, new UserResponseRowMapper());
 	}
 
 	@Override

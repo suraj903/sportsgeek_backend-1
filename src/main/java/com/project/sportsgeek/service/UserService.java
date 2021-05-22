@@ -10,6 +10,7 @@ import java.util.Set;
 import com.project.sportsgeek.model.Email;
 import com.project.sportsgeek.model.EmailContact;
 import com.project.sportsgeek.model.MobileContact;
+import com.project.sportsgeek.model.profile.*;
 import com.project.sportsgeek.repository.contestrepo.ContestRepository;
 import com.project.sportsgeek.repository.emailcontactrepo.EmailContactRepository;
 import com.project.sportsgeek.repository.mobilecontactrepo.MobileContactRepository;
@@ -24,13 +25,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.project.sportsgeek.exception.ResultException;
-import com.project.sportsgeek.model.profile.User;
-import com.project.sportsgeek.model.profile.UserAtLogin;
-import com.project.sportsgeek.model.profile.UserForLoginState;
-import com.project.sportsgeek.model.profile.UserWinningAndLossingPoints;
-import com.project.sportsgeek.model.profile.UserWithNewPassword;
-import com.project.sportsgeek.model.profile.UserWithOtp;
-import com.project.sportsgeek.model.profile.UserWithPassword;
 import com.project.sportsgeek.repository.userrepo.UserRepository;
 import com.project.sportsgeek.response.Result;
 
@@ -71,13 +65,13 @@ public class UserService implements UserDetailsService {
 //	------------------------------------------------- SELECT SERVICE ----------------------------------------------------------------------------
 //	---------------------------------------------------------------------------------------------------------------------------------------------
 
-	public Result<List<User>> findAllUsers() {
-		List<User> userList = userRepository.findAllUsers();
+	public Result<List<UserResponse>> findAllUsers() {
+		List<UserResponse> userList = userRepository.findAllUsers();
 		return new Result<>(200, userList);
 	}
 
-	public Result<User> findUserByUserId(int userId) throws Exception {
-		User user = userRepository.findUserByUserId(userId);
+	public Result<UserResponse> findUserByUserId(int userId) throws Exception {
+		UserResponse user = userRepository.findUserByUserId(userId);
 		if (user != null) {
 			return new Result<>(200, user);
 		} else {
@@ -120,8 +114,8 @@ public class UserService implements UserDetailsService {
 		}
 	}
 
-	public Result<List<User>> findUsersByStatus(boolean status) throws Exception {
-		List<User> userList = userRepository.findUsersByStatus(status);
+	public Result<List<UserResponse>> findUsersByStatus(boolean status) throws Exception {
+		List<UserResponse> userList = userRepository.findUsersByStatus(status);
 		if (userList.size() > 0) {
 			return new Result<>(200, userList);
 		} else {
@@ -130,8 +124,8 @@ public class UserService implements UserDetailsService {
 		}
 	}
 
-	public Result<List<User>> findUsersByRole(int roleId) throws Exception {
-		List<User> userList = userRepository.findAllUsersByRole(roleId);
+	public Result<List<UserResponse>> findUsersByRole(int roleId) throws Exception {
+		List<UserResponse> userList = userRepository.findAllUsersByRole(roleId);
 		if (userList.size() > 0) {
 			return new Result<>(200, userList);
 		} else {
@@ -260,7 +254,7 @@ public class UserService implements UserDetailsService {
 
 	public Result<User> updateStatus(int userId, boolean status) throws Exception {
 		if (userRepository.updateStatus(userId, status)) {
-			User user = userRepository.findUserByUserId(userId);
+			UserResponse user = userRepository.findUserByUserId(userId);
 			String sub = "Account Approved!!";
 			String msg = "Congratulations " + user.getFirstName() + " " + user.getLastName() + ",\n\n" +
 					"Your account is approved by the Admin.\n\n" +
@@ -312,8 +306,8 @@ public class UserService implements UserDetailsService {
 		return otp;
 	}
 
-	public Result<User> findUserByEmailIdAndMobileNumber(User user) throws Exception {
-		User foundUser = userRepository.findUserByEmailIdAndMobileNumber(user);
+	public Result<UserResponse> findUserByEmailIdAndMobileNumber(User user) throws Exception {
+		UserResponse foundUser = userRepository.findUserByEmailIdAndMobileNumber(user);
 		System.out.println(foundUser);
 		if (foundUser != null) {
 			sendOtp = generateOTP();
@@ -351,7 +345,7 @@ public class UserService implements UserDetailsService {
 //	---------------------------------------------------------------------------------------------------------------------------------------------
 
 	public Result<User> deleteUser(int userId) throws Exception {
-		User user = userRepository.findUserByUserId(userId);
+		UserResponse user = userRepository.findUserByUserId(userId);
 		System.out.println(user);
 		if (user != null) {
 			emailContactRepository.deleteEmailContactByUserId(userId);

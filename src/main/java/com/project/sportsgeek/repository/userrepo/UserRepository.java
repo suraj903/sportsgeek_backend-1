@@ -8,23 +8,23 @@ import java.util.List;
 @Repository(value = "userRepo")
 public interface UserRepository {
 
-    List<User> findAllUsers() ;
+    List<UserResponse> findAllUsers() ;
 
-    User findUserByUserId(int id) throws Exception;
+    UserResponse findUserByUserId(int id) throws Exception;
 
     UserWithPassword findUserWithPasswordByUserId(int userId) throws Exception;
 
     List<UserWithPassword> findUserByUserName(String userName) throws Exception;
 
-    List<User> findAllUsersByRole(int roleId) throws Exception;
+    List<UserResponse> findAllUsersByRole(int roleId) throws Exception;
 
-    User findUserByEmailIdAndMobileNumber(User user) throws Exception;
+    UserResponse findUserByEmailIdAndMobileNumber(User user) throws Exception;
 
     List<UserWinningAndLossingPoints> findLoosingPointsByUserId(int userId) throws Exception;
 
     List<UserWinningAndLossingPoints> findWinningPointsByUserId(int userId) throws Exception;
 
-    List<User> findUsersByStatus(boolean status) throws Exception;
+    List<UserResponse> findUsersByStatus(boolean status) throws Exception;
 
     int addUser(UserWithPassword userWithPassword) throws Exception;
 

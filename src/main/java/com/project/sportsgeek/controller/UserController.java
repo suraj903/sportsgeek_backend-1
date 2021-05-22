@@ -43,8 +43,8 @@ public class UserController {
             @ApiResponse(code = 404, message = "Bad Request")})
     @PreAuthorize("hasRole('Admin')")
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        Result<List<User>> userList = userService.findAllUsers();
+    public ResponseEntity<List<UserResponse>> getAllUsers() {
+        Result<List<UserResponse>> userList = userService.findAllUsers();
         return new ResponseEntity<>(userList.getData(), HttpStatus.valueOf(userList.getCode()));
     }
 
@@ -53,8 +53,8 @@ public class UserController {
             @ApiResponse(code = 404, message = "Bad Request")})
     @PreAuthorize("hasAnyRole('Admin','User')")
     @GetMapping("/{userId}")
-    public ResponseEntity<User> getUserById(@PathVariable int userId) throws Exception {
-        Result<User> userResult = userService.findUserByUserId(userId);
+    public ResponseEntity<UserResponse> getUserById(@PathVariable int userId) throws Exception {
+        Result<UserResponse> userResult = userService.findUserByUserId(userId);
         return new ResponseEntity<>(userResult.getData(), HttpStatus.valueOf(userResult.getCode()));
     }
 
@@ -95,8 +95,8 @@ public class UserController {
             @ApiResponse(code = 404, message = "Bad Request")})
     @PreAuthorize("hasAnyRole('Admin','User')")
     @GetMapping("/user-with-status/{status}")
-    public ResponseEntity<List<User>> getUsersByStatus(@PathVariable boolean status) throws Exception {
-        Result<List<User>> userResult = userService.findUsersByStatus(status);
+    public ResponseEntity<List<UserResponse>> getUsersByStatus(@PathVariable boolean status) throws Exception {
+        Result<List<UserResponse>> userResult = userService.findUsersByStatus(status);
         return new ResponseEntity<>(userResult.getData(), HttpStatus.valueOf(userResult.getCode()));
     }
 
@@ -105,8 +105,8 @@ public class UserController {
             @ApiResponse(code = 404, message = "Bad Request")})
     @PreAuthorize("hasAnyRole('Admin')")
     @GetMapping("/role-id/{roleId}")
-    public ResponseEntity<List<User>> getUserByRoleId(@PathVariable int roleId) throws Exception {
-        Result<List<User>> userResult = userService.findUsersByRole(roleId);
+    public ResponseEntity<List<UserResponse>> getUserByRoleId(@PathVariable int roleId) throws Exception {
+        Result<List<UserResponse>> userResult = userService.findUsersByRole(roleId);
         return new ResponseEntity<>(userResult.getData(), HttpStatus.valueOf(userResult.getCode()));
     }
 
@@ -185,8 +185,8 @@ public class UserController {
             @ApiResponse(code = 500, message = "Internal error")})
 //    @PreAuthorize("hasAnyRole('Admin','User')")
     @PostMapping("/forget-password")
-    public ResponseEntity<User> getUserByEmailIdAndMobileNumber(@RequestBody(required = true) User user) throws Exception {
-        Result<User> userResult = userService.findUserByEmailIdAndMobileNumber(user);
+    public ResponseEntity<UserResponse> getUserByEmailIdAndMobileNumber(@RequestBody(required = true) User user) throws Exception {
+        Result<UserResponse> userResult = userService.findUserByEmailIdAndMobileNumber(user);
         return new ResponseEntity<>(userResult.getData(), HttpStatus.valueOf(userResult.getCode()));
     }
 

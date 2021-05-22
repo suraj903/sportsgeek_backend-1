@@ -290,7 +290,6 @@ public class UserService implements UserDetailsService {
 			if (result > 0) {
 				return new Result<>(200, "Password has been successfully updated");
 			} else {
-
 				return new Result<>(500, "Internal Server error!, Unable to update the password");
 			}
 		}

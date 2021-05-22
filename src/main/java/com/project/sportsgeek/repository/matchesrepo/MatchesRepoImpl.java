@@ -41,7 +41,7 @@ public class MatchesRepoImpl implements MatchesRepository {
         String sql = "SELECT MatchId , StartDatetime, Team1,Team2, t1.Name as team1long, t1.ShortName as team1short, " +
                 "t1.TeamLogo as team1logo, t2.Name as team2long, t2.ShortName as team2short, t2.TeamLogo as team2logo, v.Name as venue, MinimumPoints, WinnerTeamId, ResultStatus, TournamentId  " +
                 "FROM Matches as m INNER JOIN Venue as v on m.VenueId=v.VenueId left JOIN Team as t1 on m.Team1=t1.TeamId left JOIN Team as t2 on m.Team2=t2.TeamId " +
-                "where TournamentId=:tournamentId";
+                "where TournamentId=:tournamentId ORDER BY MatchId";
         MapSqlParameterSource params = new MapSqlParameterSource("tournamentId", tournamentId);
         return namedParameterJdbcTemplate.query(sql, params, new MatchesRowMapper());
     }
@@ -51,7 +51,7 @@ public class MatchesRepoImpl implements MatchesRepository {
         String sql = "SELECT MatchId , StartDatetime, Team1,Team2, t1.Name as team1long, t1.ShortName as team1short, " +
                 "t1.TeamLogo as team1logo, t2.Name as team2long, t2.ShortName as team2short, t2.TeamLogo as team2logo, v.Name as venue, MinimumPoints, WinnerTeamId, ResultStatus, TournamentId  " +
                 "FROM Matches as m INNER JOIN Venue as v on m.VenueId=v.VenueId left JOIN Team as t1 on m.Team1=t1.TeamId left JOIN Team as t2 on m.Team2=t2.TeamId " +
-                "where m.VenueId=:venueId";
+                "where m.VenueId=:venueId ORDER BY MatchId";
         MapSqlParameterSource params = new MapSqlParameterSource("venueId", venueId);
         return namedParameterJdbcTemplate.query(sql, params, new MatchesRowMapper());
     }
@@ -61,7 +61,7 @@ public class MatchesRepoImpl implements MatchesRepository {
         String sql = "SELECT MatchId , StartDatetime, Team1,Team2, t1.Name as team1long, t1.ShortName as team1short, " +
                 "t1.TeamLogo as team1logo, t2.Name as team2long, t2.ShortName as team2short, t2.TeamLogo as team2logo, v.Name as venue, MinimumPoints, WinnerTeamId, ResultStatus, TournamentId  " +
                 "FROM Matches as m INNER JOIN Venue as v on m.VenueId=v.VenueId left JOIN Team as t1 on m.Team1=t1.TeamId left JOIN Team as t2 on m.Team2=t2.TeamId " +
-                "where m.Team1=:teamId or m.Team2=:teamId";
+                "where m.Team1=:teamId or m.Team2=:teamId ORDER BY MatchId";
         MapSqlParameterSource params = new MapSqlParameterSource("teamId", teamId);
         return namedParameterJdbcTemplate.query(sql, params, new MatchesRowMapper());
     }

@@ -96,7 +96,7 @@ public class PlayerController {
     @PreAuthorize("hasRole('Admin')")
 //    @RequestBody(required = true) @Valid Player player
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Player> addPlayer(@RequestParam("playerId") int playerId,@RequestParam("teamId") int teamId,@RequestParam("name") String name,@RequestParam("typeId") int typeId,@RequestParam("profilePicture") MultipartFile multipartFile, @RequestParam("credits") Double credits) throws Exception {
+    public ResponseEntity<Player> addPlayer(@RequestParam("playerId") int playerId, @RequestParam("teamId") int teamId, @RequestParam("name") String name, @RequestParam("typeId") int typeId, @RequestParam("profilePicture") MultipartFile multipartFile) throws Exception {
        String filename = multipartFile.getOriginalFilename();
        Player player = Player.builder()
                .playerId(playerId)
@@ -120,7 +120,7 @@ public class PlayerController {
     @PreAuthorize("hasRole('Admin')")
 //    @RequestBody(required = true) @Valid Player player
     @PutMapping(value = "/{playerId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Player> updatePlayer(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int playerId, @RequestParam("teamId") int teamId,@RequestParam("name") String name,@RequestParam("typeId") int typeId,@RequestParam("profilePicture") MultipartFile multipartFile,@RequestParam("credits") Double credits) throws Exception {
+    public ResponseEntity<Player> updatePlayer(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int playerId, @RequestParam("teamId") int teamId,@RequestParam("name") String name,@RequestParam("typeId") int typeId,@RequestParam("profilePicture") MultipartFile multipartFile) throws Exception {
         String filename = multipartFile.getOriginalFilename();
         Player player = Player.builder()
                 .teamId(teamId)

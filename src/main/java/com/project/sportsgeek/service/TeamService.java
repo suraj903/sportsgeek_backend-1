@@ -67,8 +67,8 @@ public class TeamService {
         {
             throw new ResultException(new Result<>(400, "Unable to upload Team Image."));
         }
-
     }
+
     public Result<Team> updateTeam(int teamId, Team team,MultipartFile multipartFile) throws Exception {
         File file = imageUploadService.uploadImage(multipartFile);
         if (file.toString() != "")
@@ -88,6 +88,7 @@ public class TeamService {
             throw new ResultException(new Result<>(400, "Unable to upload Team Image."));
         }
     }
+
     public Result<Integer> deleteTeam(int teamId) throws Exception{
         if (teamRepository.deleteTeam(teamId)) {
             return new Result<>(200,"Team Deleted Successfully");

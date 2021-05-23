@@ -2,6 +2,7 @@ package com.project.sportsgeek.controller;
 
 import com.project.sportsgeek.exception.ResultException;
 import com.project.sportsgeek.jwtconfig.JwtTokenUtil;
+import com.project.sportsgeek.model.Team;
 import com.project.sportsgeek.model.profile.*;
 import com.project.sportsgeek.response.Result;
 import com.project.sportsgeek.service.UserService;
@@ -19,6 +20,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -35,7 +37,8 @@ public class UserController {
     private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
 //	---------------------------------------------------------------------------------------------------------------------------------------------
-//	------------------------------------------------- SELECT CONTROLLER -------------------------------------------------------------------------
+//	------------------------------------------------- SELECT CONTROLLER
+//	-------------------------------------------------------------------------
 //	---------------------------------------------------------------------------------------------------------------------------------------------
 
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Success"),
@@ -111,7 +114,8 @@ public class UserController {
     }
 
 //	---------------------------------------------------------------------------------------------------------------------------------------------
-//	------------------------------------------------- INSERT CONTROLLER --------------------------------------------------------------------------
+//	------------------------------------------------- INSERT CONTROLLER
+//	--------------------------------------------------------------------------
 //	---------------------------------------------------------------------------------------------------------------------------------------------
 
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Success"),
@@ -122,12 +126,36 @@ public class UserController {
             throws Exception {
         userWithPassword.setPassword(bCryptPasswordEncoder.encode(userWithPassword.getPassword()));
         Result<User> userResult = userService.addUser(userWithPassword);
-        System.out.println(userWithPassword);
+        return new ResponseEntity<>(userResult.getData(), HttpStatus.valueOf(userResult.getCode()));
+    }
+
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Success"),
+            @ApiResponse(code = 500, message = "Internal server error"),
+            @ApiResponse(code = 404, message = "Bad Request")})
+    @PostMapping("/register-with-profile-picture")
+    public ResponseEntity<User> addUserWithProfilePicture(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName, @RequestParam("genderId") int genderId, @RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("email") String email, @RequestParam("mobileNumber") String mobileNumber, @RequestParam("availablePoints") int availablePoints ,@RequestParam("profilePicture") MultipartFile multipartFile) throws Exception {
+        System.out.println("MultipartFile : ");
+        System.out.println(multipartFile);
+        String filename = multipartFile.getOriginalFilename();
+        System.out.println("Filename : '" + filename + "'");
+        System.out.println(multipartFile.getOriginalFilename().length());
+        UserWithPassword userWithPassword = new UserWithPassword();
+        userWithPassword.setFirstName(firstName);
+        userWithPassword.setLastName(lastName);
+        userWithPassword.setGenderId(genderId);
+        userWithPassword.setUsername(username);
+        userWithPassword.setPassword(bCryptPasswordEncoder.encode(password));
+        userWithPassword.setEmail(email);
+        userWithPassword.setMobileNumber(mobileNumber);
+        userWithPassword.setAvailablePoints(availablePoints);
+
+        Result<User> userResult = userService.addUserWithProfilePicture(userWithPassword, multipartFile);
         return new ResponseEntity<>(userResult.getData(), HttpStatus.valueOf(userResult.getCode()));
     }
 
 //	---------------------------------------------------------------------------------------------------------------------------------------------
-//	------------------------------------------------- UPDATE CONTROLLER --------------------------------------------------------------------------
+//	------------------------------------------------- UPDATE CONTROLLER
+//	--------------------------------------------------------------------------
 //	---------------------------------------------------------------------------------------------------------------------------------------------
 
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully updated schema"),
@@ -177,7 +205,8 @@ public class UserController {
         return new ResponseEntity<>(userResult, HttpStatus.valueOf(userResult.getCode()));
     }
 
-//	------------------------------------------------- FORGET PASSWORD CONTROLLER -----------------------------------------------------------------
+//	------------------------------------------------- FORGET PASSWORD CONTROLLER
+//	-----------------------------------------------------------------
 
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully updated schema"),
             @ApiResponse(code = 404, message = "Schema not found"),
@@ -203,7 +232,8 @@ public class UserController {
     }
 
 //	---------------------------------------------------------------------------------------------------------------------------------------------
-//	------------------------------------------------- DELETE CONTROLLER -------------------------------------------------------------------------
+//	------------------------------------------------- DELETE CONTROLLER
+//	-------------------------------------------------------------------------
 //	---------------------------------------------------------------------------------------------------------------------------------------------
 
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully deleted schema"),
@@ -218,7 +248,8 @@ public class UserController {
     }
 
 //	---------------------------------------------------------------------------------------------------------------------------------------------
-//	------------------------------------------------- AUTHENTICATION CONTROLLER -----------------------------------------------------------------
+//	------------------------------------------------- AUTHENTICATION CONTROLLER
+//	-----------------------------------------------------------------
 //	---------------------------------------------------------------------------------------------------------------------------------------------
 
     @PostMapping("/authenticate")
@@ -238,10 +269,10 @@ public class UserController {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         } catch (DisabledException e) {
 //            throw new Exception("USER_DISABLED", e);
-            throw new ResultException((new Result<>(401,"Sorry! you have been blocked by the admin.")));
+            throw new ResultException((new Result<>(401, "Sorry! you have been blocked by the admin.")));
         } catch (BadCredentialsException e) {
 //            throw new Exception("INVALID_CREDENTIALS", e);
-            throw new ResultException((new Result<>(400,"Invalid username or password!")));
+            throw new ResultException((new Result<>(400, "Invalid username or password!")));
         }
     }
 }

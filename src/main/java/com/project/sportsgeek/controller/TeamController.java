@@ -65,7 +65,7 @@ public class TeamController {
     @PreAuthorize("hasRole('Admin')")
 //    @RequestBody(required = true) @Valid Team team
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Team> addTeam( @RequestParam("name") String name,@RequestParam("shortName") String shortName,@RequestParam("teamLogo") MultipartFile multipartFile) throws  Exception {
+    public ResponseEntity<Team> addTeam (@RequestParam("name") String name,@RequestParam("shortName") String shortName,@RequestParam("teamLogo") MultipartFile multipartFile) throws  Exception {
         String filename = multipartFile.getOriginalFilename();
         Team team = Team.builder()
                 .name(name)

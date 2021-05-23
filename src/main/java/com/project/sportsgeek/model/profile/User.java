@@ -1,17 +1,20 @@
 package com.project.sportsgeek.model.profile;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.annotations.ApiModel;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@Data
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Builder
 @EqualsAndHashCode
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class User {
 
     private int userId;

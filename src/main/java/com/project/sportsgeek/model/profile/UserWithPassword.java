@@ -1,5 +1,6 @@
 package com.project.sportsgeek.model.profile;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;

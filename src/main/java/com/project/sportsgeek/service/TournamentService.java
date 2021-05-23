@@ -61,16 +61,16 @@ public class TournamentService {
         if(tournamentRepository.deactivateTournament())
         {
             if (tournamentRepository.updateActiveTournament(tournamentId)) {
-                return new Result<>(200,"Tournament Activated Successfully");
+                return new Result<>(200, "Tournament Activated Successfully");
             }
             else
             {
-                return new Result<>(404,"No Tournament's found to Activate ,please try again");
+                return new Result<>(404, "No Tournament's found to Activate ,please try again");
             }
         }
         else
         {
-            return new Result<>(404,"Deactivation Failed of tournament ,please try again");
+            return new Result<>(404, "Deactivation Failed of tournament ,please try again");
         }
     }
 

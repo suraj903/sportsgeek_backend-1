@@ -229,7 +229,7 @@ public class UserService implements UserDetailsService {
 		throw new ResultException(new Result<>(404, "User with userId: " + userId + " not found."));
 	}
 
-	public Result<User> updateStatus(int userId, boolean status) throws Exception {
+	public Result<String> updateStatus(int userId, boolean status) throws Exception {
 		if (userRepository.updateStatus(userId, status)) {
 			UserResponse user = userRepository.findUserByUserId(userId);
 			String sub = "Account Approved!!";

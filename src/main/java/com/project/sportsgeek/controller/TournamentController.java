@@ -108,9 +108,9 @@ public class TournamentController {
     )
     @PreAuthorize("hasRole('Admin')")
     @PutMapping(value = "/activate-tournament/{tournamentId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> updateActiveTournament(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int tournamentId) throws Exception {
+    public ResponseEntity<Result<String>> updateActiveTournament(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int tournamentId) throws Exception {
         Result<String> tournamentResult = tournamentService.updateActiveTournament(tournamentId);
-        return new ResponseEntity(tournamentResult.getData(), HttpStatus.valueOf(tournamentResult.getCode()));
+        return new ResponseEntity(tournamentResult, HttpStatus.valueOf(tournamentResult.getCode()));
     }
 
     @ApiResponses(value =

@@ -54,8 +54,7 @@ public class ImageUploadService {
     private String uploadFile(File file, String fileName) throws IOException {
         BlobId blobId = BlobId.of("sportsgeek-74e1e.appspot.com", fileName);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("media").build();
-//        GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream("D:\\HIVE_PROJECT\\sportsgeek\\sportsgeek-74e1e-firebase-adminsdk-4s62v-7cc67b989e.json"));
-        GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream("C:\\SportsGeek\\sportsgeek_backend\\sportsgeek-74e1e-firebase-adminsdk-4s62v-7cc67b989e.json"));
+        GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream("sportsgeek-74e1e-firebase-adminsdk-4s62v-7cc67b989e.json"));
         Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
         storage.create(blobInfo, Files.readAllBytes(file.toPath()));
         return String.format("https://firebasestorage.googleapis.com/v0/b/sportsgeek-74e1e.appspot.com/o/", URLEncoder.encode(fileName, String.valueOf(StandardCharsets.UTF_8)));

@@ -148,9 +148,9 @@ public class UserController {
             @ApiResponse(code = 500, message = "Internal error")})
     @PreAuthorize("hasRole('Admin')")
     @PutMapping("/{userId}/update-status/{status}")
-    public ResponseEntity<String> updateStatus(@PathVariable int userId, @PathVariable boolean status) throws Exception {
-        Result<User> userResult = userService.updateStatus(userId, status);
-        return new ResponseEntity<>(userResult.getMessage(), HttpStatus.valueOf(userResult.getCode()));
+    public ResponseEntity<Result<String>> updateStatus(@PathVariable int userId, @PathVariable boolean status) throws Exception {
+        Result<String> userResult = userService.updateStatus(userId, status);
+        return new ResponseEntity<>(userResult, HttpStatus.valueOf(userResult.getCode()));
     }
 
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully updated schema"),
@@ -171,10 +171,10 @@ public class UserController {
             @ApiResponse(code = 500, message = "Internal error")})
     @PreAuthorize("hasRole('Admin')")
     @PutMapping("/{userId}/update-user-role/{roleId}")
-    public ResponseEntity<String> updateUserRole(@PathVariable int userId, @PathVariable int roleId)
+    public ResponseEntity<Result<String>> updateUserRole(@PathVariable int userId, @PathVariable int roleId)
             throws Exception {
         Result<String> userResult = userService.updateUserRole(userId, roleId);
-        return new ResponseEntity<>(userResult.getData(), HttpStatus.valueOf(userResult.getCode()));
+        return new ResponseEntity<>(userResult, HttpStatus.valueOf(userResult.getCode()));
     }
 
 //	------------------------------------------------- FORGET PASSWORD CONTROLLER -----------------------------------------------------------------
@@ -196,10 +196,10 @@ public class UserController {
             @ApiResponse(code = 500, message = "Internal error")})
 //    @PreAuthorize("hasAnyRole('Admin','User')")
     @PutMapping("/forget-password")
-    public ResponseEntity<String> forgetPassword(@RequestBody(required = true) UserWithOtp userWithOtp)
+    public ResponseEntity<Result<String>> forgetPassword(@RequestBody(required = true) UserWithOtp userWithOtp)
             throws Exception {
         Result<String> userResult = userService.updateForgetPassword(userWithOtp);
-        return new ResponseEntity<>(userResult.getMessage(), HttpStatus.valueOf(userResult.getCode()));
+        return new ResponseEntity<>(userResult, HttpStatus.valueOf(userResult.getCode()));
     }
 
 //	---------------------------------------------------------------------------------------------------------------------------------------------

@@ -88,9 +88,9 @@ public class ContestController {
     )
     @PreAuthorize("hasAnyRole('Admin','User')")
     @PutMapping(value = "/contest/{contestId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> updateContest(@PathVariable int contestId, @RequestBody(required = true) Contest contest) throws Exception {
+    public ResponseEntity<Contest> updateContest(@PathVariable int contestId, @RequestBody(required = true) Contest contest) throws Exception {
         Result<Contest> contestResult = contestService.updateContest(contestId, contest);
-        return new ResponseEntity(contestResult.getMessage(),HttpStatus.valueOf(contestResult.getCode()));
+        return new ResponseEntity(contestResult.getData(),HttpStatus.valueOf(contestResult.getCode()));
     }
 
     @ApiResponses(value =

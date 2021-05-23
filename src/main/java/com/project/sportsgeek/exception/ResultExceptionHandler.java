@@ -25,7 +25,7 @@ public class ResultExceptionHandler extends ResponseEntityExceptionHandler {
     private static Logger logger = LoggerFactory.getLogger(ResultException.class);
 
     @ExceptionHandler({Exception.class})
-    private ResponseEntity<Result<String>> exception(Exception ex) {
+    private ResponseEntity<Result<String>> handleException(Exception ex) {
         List<Result.SportsGeekSystemError> error = new ArrayList<>();
         if (ex.getCause() == null) {
             error.add(new Result.SportsGeekSystemError((ex.getMessage().hashCode()),
@@ -40,12 +40,10 @@ public class ResultExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler({ResultException.class})
-//    private ResponseEntity<Result<Object>> resultException(ResultException ex) {
-    private ResponseEntity<ResponseMessage> resultException(ResultException ex) {
+    private ResponseEntity<ResponseMessage> handleResultException(ResultException ex) {
         logger.error("\n" + ex.hashCode() + " ---- " + ex.getMessage());
         Result<Object> result = ex.getResultException();
         return new ResponseEntity<>(new ResponseMessage(result.getMessage()), HttpStatus.valueOf(result.getCode()));
-//        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getCode()));
     }
 
     @Override

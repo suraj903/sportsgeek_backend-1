@@ -3,7 +3,7 @@ package com.project.sportsgeek.controller;
 import com.project.sportsgeek.exception.ResultException;
 import com.project.sportsgeek.model.Player;
 import com.project.sportsgeek.model.PlayerResponse;
-import com.project.sportsgeek.model.Player;
+import com.project.sportsgeek.response.ResponseMessage;
 import com.project.sportsgeek.response.Result;
 import com.project.sportsgeek.service.PlayerService;
 import io.swagger.annotations.ApiResponse;
@@ -50,9 +50,9 @@ public class PlayerController {
             }
     )
     @PreAuthorize("hasAnyRole('Admin','User')")
-    @GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PlayerResponse> getPlayerById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id) throws Exception {
-        Result<PlayerResponse> playerResult = playerService.findPlayerById(id);
+    @GetMapping(value = "/{playerId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<PlayerResponse> getPlayerById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int playerId) throws Exception {
+        Result<PlayerResponse> playerResult = playerService.findPlayerById(playerId);
         return new ResponseEntity<>(playerResult.getData(), HttpStatus.valueOf(playerResult.getCode()));
     }
 
@@ -65,9 +65,9 @@ public class PlayerController {
             }
     )
     @PreAuthorize("hasAnyRole('Admin','User')")
-    @GetMapping(value = "/player-type/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<PlayerResponse>> getPlayerByPlayerType(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id) throws Exception {
-        Result<List<PlayerResponse>> playerResult = playerService.findPlayerByPlayerType(id);
+    @GetMapping(value = "/player-type/{playerTypeId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<PlayerResponse>> getPlayerByPlayerType(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int playerTypeId) throws Exception {
+        Result<List<PlayerResponse>> playerResult = playerService.findPlayerByPlayerType(playerTypeId);
         return new ResponseEntity<>(playerResult.getData(), HttpStatus.valueOf(playerResult.getCode()));
     }
 
@@ -80,9 +80,9 @@ public class PlayerController {
             }
     )
     @PreAuthorize("hasAnyRole('Admin','User')")
-    @GetMapping(value = "/team/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<PlayerResponse>> getPlayerByTeam(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id) throws Exception {
-        Result<List<PlayerResponse>> playerResult = playerService.findPlayerByTeamId(id);
+    @GetMapping(value = "/team/{teamId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<PlayerResponse>> getPlayerByTeamId(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int teamId) throws Exception {
+        Result<List<PlayerResponse>> playerResult = playerService.findPlayerByTeamId(teamId);
         return new ResponseEntity<>(playerResult.getData(), HttpStatus.valueOf(playerResult.getCode()));
     }
 
@@ -97,7 +97,7 @@ public class PlayerController {
     @PreAuthorize("hasRole('Admin')")
 //    @RequestBody(required = true) @Valid Player player
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Player> addPlayer(@RequestParam("playerId") int playerId,@RequestParam("teamId") int teamId,@RequestParam("name") String name,@RequestParam("typeId") int typeId,@RequestParam("profilePicture") MultipartFile multipartFile,@RequestParam("credits") Double credits ) throws Exception {
+    public ResponseEntity<Player> addPlayer(@RequestParam("playerId") int playerId,@RequestParam("teamId") int teamId,@RequestParam("name") String name,@RequestParam("typeId") int typeId,@RequestParam("profilePicture") MultipartFile multipartFile, @RequestParam("credits") Double credits) throws Exception {
        String filename = multipartFile.getOriginalFilename();
        Player player = Player.builder()
                .playerId(playerId)
@@ -120,8 +120,8 @@ public class PlayerController {
     )
     @PreAuthorize("hasRole('Admin')")
 //    @RequestBody(required = true) @Valid Player player
-    @PutMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Player> updatePlayer(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id,@RequestParam("teamId") int teamId,@RequestParam("name") String name,@RequestParam("typeId") int typeId,@RequestParam("profilePicture") MultipartFile multipartFile,@RequestParam("credits") Double credits) throws Exception {
+    @PutMapping(value = "/{playerId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Player> updatePlayer(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int playerId, @RequestParam("teamId") int teamId,@RequestParam("name") String name,@RequestParam("typeId") int typeId,@RequestParam("profilePicture") MultipartFile multipartFile,@RequestParam("credits") Double credits) throws Exception {
         String filename = multipartFile.getOriginalFilename();
         Player player = Player.builder()
                 .teamId(teamId)
@@ -129,7 +129,7 @@ public class PlayerController {
                 .typeId(typeId)
                 .profilePicture(filename)
                 .credits(credits).build();
-        Result<Player> playerResult = playerService.updatePlayer(id, player,multipartFile);
+        Result<Player> playerResult = playerService.updatePlayer(playerId, player, multipartFile);
         return new ResponseEntity(playerResult.getData(),HttpStatus.valueOf(playerResult.getCode()));
     }
 
@@ -142,10 +142,10 @@ public class PlayerController {
             }
     )
     @PreAuthorize("hasRole('Admin')")
-    @PutMapping(value = "/{id}/update-player-type/{typeId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> updatePlayerType(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id, @PathVariable @Valid @Pattern(regexp = "[0-9]*") int typeId) throws Exception {
-        Result<String> playerResult = playerService.updatePlayerType(id, typeId);
-        return new ResponseEntity(playerResult.getData(),HttpStatus.valueOf(playerResult.getCode()));
+    @PutMapping(value = "/{playerId}/update-player-type/{playerTypeId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseMessage> updatePlayerType(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int playerId, @PathVariable @Valid @Pattern(regexp = "[0-9]*") int playerTypeId) throws Exception {
+        Result<String> playerResult = playerService.updatePlayerType(playerId, playerTypeId);
+        return new ResponseEntity(new ResponseMessage(playerResult.getMessage()), HttpStatus.valueOf(playerResult.getCode()));
     }
 
     @ApiResponses(value =
@@ -157,9 +157,9 @@ public class PlayerController {
             }
     )
     @PreAuthorize("hasRole('Admin')")
-    @DeleteMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Result<Player>> deletePlayerById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id) throws Exception {
-        Result<Integer> integerResult =  playerService.deletePlayer(id);
-        return new ResponseEntity(integerResult,HttpStatus.valueOf(integerResult.getCode()));
+    @DeleteMapping(value = "/{playerId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseMessage> deletePlayerById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int playerId) throws Exception {
+        Result<String> result =  playerService.deletePlayer(playerId);
+        return new ResponseEntity(new ResponseMessage(result.getMessage()), HttpStatus.valueOf(result.getCode()));
     }
 }

@@ -4,6 +4,7 @@ import com.project.sportsgeek.mapper.PlayerTypeRowMapper;
 import com.project.sportsgeek.model.PlayerType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -22,11 +23,10 @@ public class PlayerTypeRepoImpl implements PlayerTypeRepository{
     }
 
     @Override
-    public PlayerType findPlayerTypeById(int i) throws Exception {
+    public PlayerType findPlayerTypeById(int playerTypeId) throws Exception {
         String sql = "SELECT * FROM PlayerType WHERE PlayerTypeId=:playerTypeId";
-        PlayerType playerType = new PlayerType();
-        playerType.setPlayerTypeId(i);
-        List<PlayerType> playerTypeList = jdbcTemplate.query(sql,new BeanPropertySqlParameterSource(playerType),new PlayerTypeRowMapper());
+        MapSqlParameterSource params = new MapSqlParameterSource("playerTypeId", playerTypeId);
+        List<PlayerType> playerTypeList = jdbcTemplate.query(sql, params, new PlayerTypeRowMapper());
         if(playerTypeList.size() > 0){
             return playerTypeList.get(0);
         }else{
@@ -36,23 +36,26 @@ public class PlayerTypeRepoImpl implements PlayerTypeRepository{
 
     @Override
     public int addPlayerType(PlayerType playerType) throws Exception {
+        KeyHolder holder = new GeneratedKeyHolder();
         String sql = "INSERT INTO PlayerType (TypeName) VALUES(:typeName)";
-        return jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(playerType));
+        int n = jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(playerType), holder);
+        if(n > 0) {
+            return holder.getKey().intValue();
+        }
+        return 0;
     }
 
     @Override
-    public boolean updatePlayerType(int id, PlayerType playerType) throws Exception {
-        String sql = "UPDATE `" + "PlayerType" + "` set "
-                + "`TypeName` = :typeName where `PlayerTypeId`=:playerTypeId";
-        playerType.setPlayerTypeId(id);
+    public boolean updatePlayerType(int playerTypeId, PlayerType playerType) throws Exception {
+        String sql = "UPDATE PlayerType set TypeName = :typeName where PlayerTypeId=:playerTypeId";
+        playerType.setPlayerTypeId(playerTypeId);
         return jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(playerType)) > 0;
     }
 
     @Override
-    public int deletePlayerType(int id) throws Exception {
+    public boolean deletePlayerType(int playerTypeId) throws Exception {
         String sql = "DELETE FROM PlayerType WHERE PlayerTypeId =:playerTypeId";
-        PlayerType playerType = new PlayerType();
-        playerType.setPlayerTypeId(id);
-        return  jdbcTemplate.update(sql,new BeanPropertySqlParameterSource(playerType));
+        MapSqlParameterSource params = new MapSqlParameterSource("playerTypeId", playerTypeId);
+        return  jdbcTemplate.update(sql, params) > 0;
     }
 }

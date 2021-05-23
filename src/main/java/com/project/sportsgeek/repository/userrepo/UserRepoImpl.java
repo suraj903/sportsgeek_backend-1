@@ -102,10 +102,15 @@ public class UserRepoImpl implements UserRepository {
 	}
 
 	@Override
-	public List<UserWithPassword> findUserByUserName(String username) throws Exception {
+	public UserWithPassword findUserByUserName(String username) throws Exception {
 		String sql = "SELECT u.UserName as UserName,u.Password as Password,r.Name as Role FROM User as u INNER JOIN Role as r on u.RoleId=r.RoleId WHERE UserName = :username";
 		MapSqlParameterSource params = new MapSqlParameterSource("username", username);
-		return jdbcTemplate.query(sql, params, new UserWithPasswordRowMapper());
+		List<UserWithPassword> userList = jdbcTemplate.query(sql, params, new UserWithPasswordRowMapper());
+		if(userList.size() > 0){
+			return userList.get(0);
+		}else{
+			return null;
+		}
 	}
 
 //	---------------------------------------------------------------------------------------------------------------------------------------------
@@ -166,27 +171,27 @@ public class UserRepoImpl implements UserRepository {
 	}
 
 	@Override
-	public int updateUserPassword(UserWithNewPassword userWithNewPassword) throws Exception {
+	public boolean updateUserPassword(UserWithNewPassword userWithNewPassword) throws Exception {
 		String sql = "UPDATE User SET Password = :newPassword WHERE UserId = :userId";
-		return jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(userWithNewPassword));
+		return jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(userWithNewPassword)) > 0;
 	}
 
 	@Override
-	public int updateForgetPassword(UserWithOtp userWithOtp) throws Exception {
+	public boolean updateForgetPassword(UserWithOtp userWithOtp) throws Exception {
 		System.out.println("Password : " + userWithOtp.getPassword());
 		String encodedPassword = bCryptPasswordEncoder.encode(userWithOtp.getPassword());
 		String sql = "UPDATE User SET Password = :encodedPassword WHERE UserId = :userId";
 		MapSqlParameterSource params = new MapSqlParameterSource("encodedPassword", encodedPassword);
 		params.addValue("userId", userWithOtp.getUserId());
-		return jdbcTemplate.update(sql, params);
+		return jdbcTemplate.update(sql, params) > 0;
 	}
 
 	@Override
-	public int updateUserRole(int userId, int roleId) throws Exception {
+	public boolean updateUserRole(int userId, int roleId) throws Exception {
 		String sql = "UPDATE User SET RoleId = :roleId WHERE UserId = :userId";
 		MapSqlParameterSource params = new MapSqlParameterSource("roleId", roleId);
 		params.addValue("userId", userId);
-		return jdbcTemplate.update(sql, params);
+		return jdbcTemplate.update(sql, params) > 0;
 	}
 
 	@Override
@@ -205,19 +210,19 @@ public class UserRepoImpl implements UserRepository {
 	}
 
 	@Override
-	public int addAvailablePoints(int userId, int points) throws Exception {
+	public boolean addAvailablePoints(int userId, int points) throws Exception {
 		String sql = "UPDATE User SET AvailablePoints = AvailablePoints + :points WHERE UserId = :userId";
 		MapSqlParameterSource params = new MapSqlParameterSource("points", points);
 		params.addValue("userId", userId);
-		return jdbcTemplate.update(sql, params);
+		return jdbcTemplate.update(sql, params) > 0;
 	}
 
 	@Override
-	public int deductAvailablePoints(int userId, int points) throws Exception {
+	public boolean deductAvailablePoints(int userId, int points) throws Exception {
 		String sql = "UPDATE User SET AvailablePoints = AvailablePoints-:points WHERE UserId = :userId";
 		MapSqlParameterSource params = new MapSqlParameterSource("points", points);
 		params.addValue("userId", userId);
-		return jdbcTemplate.update(sql, params);
+		return jdbcTemplate.update(sql, params) > 0;
 	}
 
 	@Override

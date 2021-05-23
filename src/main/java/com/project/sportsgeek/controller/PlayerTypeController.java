@@ -3,6 +3,7 @@ package com.project.sportsgeek.controller;
 import com.project.sportsgeek.exception.ResultException;
 import com.project.sportsgeek.model.PlayerType;
 import com.project.sportsgeek.model.PlayerType;
+import com.project.sportsgeek.response.ResponseMessage;
 import com.project.sportsgeek.response.Result;
 import com.project.sportsgeek.service.PlayerTypeService;
 import io.swagger.annotations.ApiResponse;
@@ -48,9 +49,9 @@ public class PlayerTypeController {
             }
     )
     @PreAuthorize("hasRole('Admin')")
-    @GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PlayerType> getPlayerTypeById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id) throws Exception {
-        Result<PlayerType> playerTypeList = playerTypeService.findPlayerTypeById(id);
+    @GetMapping(value = "/{playerTypeId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<PlayerType> getPlayerTypeById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int playerTypeId) throws Exception {
+        Result<PlayerType> playerTypeList = playerTypeService.findPlayerTypeById(playerTypeId);
         return new ResponseEntity<>(playerTypeList.getData(), HttpStatus.valueOf(playerTypeList.getCode()));
     }
 
@@ -78,9 +79,9 @@ public class PlayerTypeController {
             }
     )
     @PreAuthorize("hasRole('Admin')")
-    @PutMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PlayerType> updatePlayerType(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id,@RequestBody(required = true) @Valid PlayerType PlayerType) throws Exception {
-        Result<PlayerType> playerTypeResult = playerTypeService.updatePlayerType(id,PlayerType);
+    @PutMapping(value = "/{playerTypeId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<PlayerType> updatePlayerType(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int playerTypeId,@RequestBody(required = true) @Valid PlayerType PlayerType) throws Exception {
+        Result<PlayerType> playerTypeResult = playerTypeService.updatePlayerType(playerTypeId, PlayerType);
         return new ResponseEntity(playerTypeResult.getData(), HttpStatus.valueOf(playerTypeResult.getCode()));
     }
 
@@ -93,9 +94,9 @@ public class PlayerTypeController {
             }
     )
     @PreAuthorize("hasRole('Admin')")
-    @DeleteMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Result<PlayerType>> deletePlayerTypeById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id) throws Exception {
-        Result<Integer> integerResult =  playerTypeService.deletePlayerType(id);
-        return new ResponseEntity(integerResult,HttpStatus.valueOf(integerResult.getCode()));
+    @DeleteMapping(value = "/{playerTypeId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseMessage> deletePlayerTypeById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int playerTypeId) throws Exception {
+        Result<String> result =  playerTypeService.deletePlayerType(playerTypeId);
+        return new ResponseEntity(new ResponseMessage(result.getMessage()), HttpStatus.valueOf(result.getCode()));
     }
 }

@@ -14,7 +14,7 @@ public interface UserRepository {
 
     UserWithPassword findUserWithPasswordByUserId(int userId) throws Exception;
 
-    List<UserWithPassword> findUserByUserName(String userName) throws Exception;
+    UserWithPassword findUserByUserName(String userName) throws Exception;
 
     List<UserResponse> findAllUsersByRole(int roleId) throws Exception;
 
@@ -32,11 +32,11 @@ public interface UserRepository {
 
     boolean updateStatus(int id, boolean status) throws Exception;
 
-    int updateUserPassword(UserWithNewPassword userWithNewPassword) throws Exception;
+    boolean updateUserPassword(UserWithNewPassword userWithNewPassword) throws Exception;
 
-    int updateForgetPassword(UserWithOtp userWithOtp) throws Exception;
+    boolean updateForgetPassword(UserWithOtp userWithOtp) throws Exception;
 
-    int updateUserRole(int userId, int roleId) throws Exception;
+    boolean updateUserRole(int userId, int roleId) throws Exception;
 
     boolean updateUserProfilePicture(int userId, String profilePicture) throws Exception;
 
@@ -46,9 +46,9 @@ public interface UserRepository {
 
     boolean deleteUser(int id) throws Exception;
 
-    int addAvailablePoints(int userId, int points) throws Exception;
+    boolean addAvailablePoints(int userId, int points) throws Exception;
 
-    int deductAvailablePoints(int userId, int points) throws Exception;
+    boolean deductAvailablePoints(int userId, int points) throws Exception;
 
     int getUsersCountByUsername(String username) throws Exception;
 }

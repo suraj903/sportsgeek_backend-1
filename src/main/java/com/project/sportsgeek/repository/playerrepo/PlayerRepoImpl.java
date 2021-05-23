@@ -5,6 +5,7 @@ import com.project.sportsgeek.model.Player;
 import com.project.sportsgeek.model.PlayerResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -26,13 +27,12 @@ public class PlayerRepoImpl implements PlayerRepository {
     }
 
     @Override
-    public PlayerResponse findPlayerByPlayerId(int id) throws Exception {
+    public PlayerResponse findPlayerByPlayerId(int playerId) throws Exception {
 //        String sql = "SELECT PlayerId,TeamId,Name,TypeId,ProfilePicture FROM Player WHERE PlayerId="+id;
         String sql = "SELECT p.Credits as Credits,p.PlayerId as PlayerId, t.Name as TeamName, p.Name as Name,pt.TypeName as PlayerType, p.ProfilePicture as ProfilePicture " +
                 "FROM Player as p INNER JOIN PlayerType as pt on p.TypeId = pt.PlayerTypeId INNER JOIN Team as t on p.TeamId=t.TeamId WHERE p.PlayerId=:playerId";
-        Player player = new Player();
-        player.setPlayerId(id);
-        List<PlayerResponse> playerList = jdbcTemplate.query(sql,new BeanPropertySqlParameterSource(player), new PlayerRowMapper());
+        MapSqlParameterSource params = new MapSqlParameterSource("playerId", playerId);
+        List<PlayerResponse> playerList = jdbcTemplate.query(sql, params, new PlayerRowMapper());
         if(playerList.size() > 0){
             return playerList.get(0);
         }else{
@@ -41,53 +41,54 @@ public class PlayerRepoImpl implements PlayerRepository {
     }
 
     @Override
-    public List<PlayerResponse> findPlayerByPlayerType(int id) throws Exception {
+    public List<PlayerResponse> findPlayerByPlayerType(int playerTypeId) throws Exception {
 //        String sql = "SELECT PlayerId,TeamId,Name,TypeId,ProfilePicture FROM Player WHERE TypeId="+id;
         String sql = "SELECT p.Credits as Credits,p.PlayerId as PlayerId, t.Name as TeamName, p.Name as Name,pt.TypeName as PlayerType, p.ProfilePicture as ProfilePicture " +
-                "FROM Player as p INNER JOIN PlayerType as pt on p.TypeId = pt.PlayerTypeId INNER JOIN Team as t on p.TeamId=t.TeamId WHERE p.TypeId=:typeId";
-      Player player = new Player();
-      player.setTypeId(id);
-        return jdbcTemplate.query(sql, new BeanPropertySqlParameterSource(player),new PlayerRowMapper());
+                "FROM Player as p INNER JOIN PlayerType as pt on p.TypeId = pt.PlayerTypeId INNER JOIN Team as t on p.TeamId=t.TeamId WHERE p.TypeId=:playerTypeId";
+        MapSqlParameterSource params = new MapSqlParameterSource("playerTypeId", playerTypeId);
+        return jdbcTemplate.query(sql, params, new PlayerRowMapper());
     }
 
     @Override
-    public List<PlayerResponse> findPlayerByTeamId(int id) throws Exception {
+    public List<PlayerResponse> findPlayerByTeamId(int teamId) throws Exception {
 //        String sql = "SELECT PlayerId,TeamId,Name,TypeId,ProfilePicture FROM Player WHERE TeamId="+id;
         String sql = "SELECT p.Credits as Credits,p.PlayerId as PlayerId, t.Name as TeamName, p.Name as Name,pt.TypeName as PlayerType, p.ProfilePicture as ProfilePicture " +
                 "FROM Player as p INNER JOIN PlayerType as pt on p.TypeId = pt.PlayerTypeId INNER JOIN Team as t on p.TeamId=t.TeamId WHERE p.TeamId=:teamId";
-      Player player = new Player();
-      player.setTeamId(id);
-        return jdbcTemplate.query(sql,new BeanPropertySqlParameterSource(player), new PlayerRowMapper());
+        MapSqlParameterSource params = new MapSqlParameterSource("teamId", teamId);
+        return jdbcTemplate.query(sql, params, new PlayerRowMapper());
     }
 
     @Override
     public int addPlayer(Player player) throws Exception {
+        KeyHolder holder = new GeneratedKeyHolder();
         String sql = "INSERT INTO Player (TeamId,Name,TypeId,ProfilePicture,Credits) VALUES(:teamId,:name,:typeId,:profilePicture,:credits)";
-        return jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(player));
+        int n = jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(player), holder);
+        if(n > 0) {
+            return holder.getKey().intValue();
+        }
+        return 0;
     }
 
     @Override
-    public boolean updatePlayer(int id, Player player) throws Exception {
-        String sql = "UPDATE `" + "player" + "` set "
-                + "`TeamId` = :teamId, `Name` = :name, `TypeId` = :typeId,`ProfilePicture` = :profilePicture, `Credits` = :credits where `PlayerId`=:playerId";
-        player.setPlayerId(id);
+    public boolean updatePlayer(int playerId, Player player) throws Exception {
+        String sql = "UPDATE Player SET TeamId = :teamId, Name = :name, TypeId = :typeId, ProfilePicture = :profilePicture, Credits = :credits where PlayerId=:playerId";
+        player.setPlayerId(playerId);
         return jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(player)) > 0;
     }
 
     @Override
-    public boolean updatePlayerType(int id, int playerTypeId) throws Exception {
-       String sql = "UPDATE Player SET TypeId=:typeId WHERE PlayerId=:playerId";
-       Player player = new Player();
-       player.setPlayerId(id);
-       player.setTypeId(playerTypeId);
-        return jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(player))> 0;
+    public boolean updatePlayerType(int playerId, int playerTypeId) throws Exception {
+        String sql = "UPDATE Player SET TypeId=:typeId WHERE PlayerId=:playerId";
+        Player player = new Player();
+        MapSqlParameterSource params = new MapSqlParameterSource("playerId", playerId);
+        params.addValue("typeId", playerTypeId);
+        return jdbcTemplate.update(sql, params)> 0;
     }
 
     @Override
-    public int deletePlayer(int id) throws Exception {
+    public boolean deletePlayer(int playerId) throws Exception {
         String sql = "DELETE FROM Player WHERE PlayerId=:playerId";
-        Player player = new Player();
-        player.setPlayerId(id);
-        return  jdbcTemplate.update(sql,new BeanPropertySqlParameterSource(player));
+        MapSqlParameterSource params = new MapSqlParameterSource("playerId", playerId);
+        return  jdbcTemplate.update(sql, params) > 0;
     }
 }

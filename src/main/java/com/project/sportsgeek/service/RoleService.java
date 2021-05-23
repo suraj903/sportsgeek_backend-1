@@ -27,29 +27,29 @@ public class RoleService {
         if (role != null) {
             return new Result<>(200, role);
         }
-        throw new ResultException((new Result<>(404, "No Role's found,please try again", "Role with id=('" + roleId + "') not found")));
+        throw new ResultException(new Result<>(404, "Role with RoleId: " + roleId + " not found."));
     }
 
     public Result<Role> addRole(Role role) throws Exception {
         int id = roleRepository.addRole(role);
-        role.setRoleId(id);
         if (id > 0) {
+            role.setRoleId(id);
             return new Result<>(201, role);
         }
-        throw new ResultException(new Result<>(400, "Error in adding the Role"));
+        throw new ResultException(new Result<>(400, "Unable to add Gender."));
     }
 
     public Result<Role> updateRole(int roleId, Role role) throws Exception {
         if (roleRepository.updateRole(roleId, role)) {
             return new Result<>(200, role);
         }
-        throw new ResultException(new Result<>(400, "Error in updating the Role!!. Role with Role Id=(" + roleId + ") not found"));
+        throw new ResultException(new Result<>(404, "Role with RoleId: " + roleId + " not found."));
     }
 
     public Result<String> deleteRole(int roleId) throws Exception {
         if (roleRepository.deleteRole(roleId)) {
             return new Result<>(200, "Role deleted successfully.");
         }
-        throw new ResultException(new Result<>(404, "Error in deleting the Role!!. Role with Role Id=(" + roleId + ") not found"));
+        throw new ResultException(new Result<>(404, "Role with RoleId: " + roleId + " not found."));
     }
 }

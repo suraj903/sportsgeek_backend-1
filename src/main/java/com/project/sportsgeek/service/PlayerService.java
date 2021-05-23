@@ -39,27 +39,25 @@ public class PlayerService {
 
     public Result<List<PlayerResponse>> findAllPlayer() {
         List<PlayerResponse> playerList = playerRepository.findAllPlayers();
-        return new Result<>(200,"Venue Details Retrieved Successfully",playerList);
+        return new Result<>(200, playerList);
     }
 
-    public Result<PlayerResponse> findPlayerById(int id) throws Exception {
-        PlayerResponse player = playerRepository.findPlayerByPlayerId(id);
+    public Result<PlayerResponse> findPlayerById(int playerId) throws Exception {
+        PlayerResponse player = playerRepository.findPlayerByPlayerId(playerId);
         if (player != null) {
-            return new Result<>(200,"Player Details Retrieved Successfully", player);
+            return new Result<>(200, player);
         }
-        else {
-            return new Result<>(404,"No Player's found with Player id=('"+id+"'),please try again");
-        }
+        throw new ResultException(new Result<>(404, "Player with PlayerId: " + playerId + " not found."));
     }
 
-    public Result<List<PlayerResponse>> findPlayerByPlayerType(int id) throws Exception {
-        List<PlayerResponse> playerList = playerRepository.findPlayerByPlayerType(id);
-        return new Result<>(200,"Player's Details Retrieved Successfully", playerList);
+    public Result<List<PlayerResponse>> findPlayerByPlayerType(int playerTypeId) throws Exception {
+        List<PlayerResponse> playerList = playerRepository.findPlayerByPlayerType(playerTypeId);
+        return new Result<>(200, playerList);
     }
 
-    public Result<List<PlayerResponse>> findPlayerByTeamId(int id) throws Exception {
-        List<PlayerResponse> playerList = playerRepository.findPlayerByTeamId(id);
-        return new Result<>(200,"Player's Details Retrieved Successfully", playerList);
+    public Result<List<PlayerResponse>> findPlayerByTeamId(int teamId) throws Exception {
+        List<PlayerResponse> playerList = playerRepository.findPlayerByTeamId(teamId);
+        return new Result<>(200, playerList);
     }
 
     public Result<Player> addPlayer(Player player, MultipartFile multipartFile) throws Exception {
@@ -67,55 +65,40 @@ public class PlayerService {
         if (file.toString() != "") {
             String playerlogo = "https://firebasestorage.googleapis.com/v0/b/sportsgeek-74e1e.appspot.com/o/" +file+"?alt=media&token=e9924ea4-c2d9-4782-bc2d-0fe734431c86";
             player.setProfilePicture(playerlogo);
-            int id = playerRepository.addPlayer(player);
-            player.setPlayerId(id);
-            if (id > 0) {
+            int playerId = playerRepository.addPlayer(player);
+            player.setPlayerId(playerId);
+            if (playerId > 0) {
                 return new Result<>(201,"Player Details Added Successfully",player);
             }
-            else
-            {
-                throw new ResultException(new Result<>(400, "Error!, please try again!", new ArrayList<>(Arrays
-                        .asList(new Result.SportsGeekSystemError(player.hashCode(), "unable to add the given Player")))));
-            }
+            throw new ResultException(new Result<>(400, "Unable to add Player."));
         }
-        else {
-            throw new ResultException(new Result<>(400, "Error!, please try again!", new ArrayList<>(Arrays
-                    .asList(new Result.SportsGeekSystemError(player.hashCode(), "unable to upload the image")))));
-        }
+        throw new ResultException(new Result<>(400, "Unable to upload Player Image."));
     }
 
-    public Result<Player> updatePlayer(int id, Player player, MultipartFile multipartFile) throws Exception {
+    public Result<Player> updatePlayer(int playerId, Player player, MultipartFile multipartFile) throws Exception {
         File file = imageUploadService.uploadImage(multipartFile);
         if (file.toString() != "") {
             String playerlogo = "https://firebasestorage.googleapis.com/v0/b/sportsgeek-74e1e.appspot.com/o/" + file + "?alt=media&token=e9924ea4-c2d9-4782-bc2d-0fe734431c86";
             player.setProfilePicture(playerlogo);
-            if (playerRepository.updatePlayer(id, player)) {
+            if (playerRepository.updatePlayer(playerId, player)) {
                 return new Result<>(200, "Player Details Updated Successfully", player);
-            } else {
-                throw new ResultException(new Result<>(400, "Unable to update the given Player details! Please try again!", new ArrayList<>(Arrays
-                        .asList(new Result.SportsGeekSystemError(player.hashCode(), "given PlayerId('" + id + "') does not exists")))));
             }
+            throw new ResultException(new Result<>(400, "Player with PlayerId: " + playerId + " not found."));
         }
-        else {
-            throw new ResultException(new Result<>(400, "Error!, please try again!", new ArrayList<>(Arrays
-                    .asList(new Result.SportsGeekSystemError(player.hashCode(), "unable to upload the image")))));
-        }
+        throw new ResultException(new Result<>(400, "Unable to upload the image."));
     }
 
-    public Result<String> updatePlayerType(int id, int PlayerTypeId) throws Exception {
-        if (playerRepository.updatePlayerType(id, PlayerTypeId)) {
-            return new Result<>(200,"PlayerType Updated Successfully");
+    public Result<String> updatePlayerType(int playerId, int PlayerTypeId) throws Exception {
+        if (playerRepository.updatePlayerType(playerId, PlayerTypeId)) {
+            return new Result<>(200, "PlayerType Updated Successfully");
         }
-        return new Result<>(400,"Couldn't Update PlayerType with id='"+id+"'");
+        throw new ResultException(new Result<>(400, "Player with PlayerId: " + playerId + " not found."));
     }
 
-    public Result<Integer> deletePlayer(int id) throws Exception{
-        int data = playerRepository.deletePlayer(id);
-        if (data > 0) {
-            return new Result<>(200,"Player Deleted Successfully", data);
+    public Result<String> deletePlayer(int playerId) throws Exception{
+        if (playerRepository.deletePlayer(playerId)) {
+            return new Result<>(200, "Player Deleted Successfully");
         }
-        else {
-            throw new ResultException((new Result<>(404,"No Player found to delete,please try again","Player with id=('"+ id +"') not found")));
-        }
+        throw new ResultException(new Result<>(400, "Player with PlayerId: " + playerId + " not found."));
     }
 }

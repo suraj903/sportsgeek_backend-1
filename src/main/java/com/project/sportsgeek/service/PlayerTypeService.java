@@ -25,41 +25,34 @@ public class PlayerTypeService {
         return new Result<>(200,playerTypeList);
     }
 
-    public Result<PlayerType> findPlayerTypeById(int id) throws Exception {
-        PlayerType playerType = playerTypeRepository.findPlayerTypeById(id);
+    public Result<PlayerType> findPlayerTypeById(int playerTypeId) throws Exception {
+        PlayerType playerType = playerTypeRepository.findPlayerTypeById(playerTypeId);
         if (playerType != null) {
             return new Result<>(200, playerType);
         }
-        else {
-            throw new ResultException((new Result<>(404,"No PlayerType's found,please try again","PlayerType with id=('"+ id +"') not found")));
-        }
+        throw new ResultException(new Result<>(404, "PlayerType with PlayerTypeId: " + playerTypeId + " not found."));
     }
 
     public Result<PlayerType> addPlayerType(PlayerType playerType) throws Exception {
-        int id = playerTypeRepository.addPlayerType(playerType);
-        playerType.setPlayerTypeId(id);
-        if (id > 0) {
+        int playerTypeId = playerTypeRepository.addPlayerType(playerType);
+        if (playerTypeId > 0) {
+            playerType.setPlayerTypeId(playerTypeId);
             return new Result<>(201,playerType);
         }
-        throw new ResultException(new Result<>(400, "Error!, please try again!", new ArrayList<>(Arrays
-                .asList(new Result.SportsGeekSystemError(playerType.hashCode(), "unable to add the given PlayerType")))));
+        throw new ResultException(new Result<>(400, "Unable to add Player Type."));
     }
 
-    public Result<PlayerType> updatePlayerType(int id, PlayerType playerType) throws Exception {
-        if (playerTypeRepository.updatePlayerType(id,playerType)) {
+    public Result<PlayerType> updatePlayerType(int playerTypeId, PlayerType playerType) throws Exception {
+        if (playerTypeRepository.updatePlayerType(playerTypeId,playerType)) {
             return new Result<>(200,playerType);
         }
-        throw new ResultException(new Result<>(400, "Unable to update the given PlayerType details! Please try again!", new ArrayList<>(Arrays
-                .asList(new Result.SportsGeekSystemError(playerType.hashCode(), "given PlayerTypeId('"+id+"') does not exists")))));
+        throw new ResultException(new Result<>(404, "Player Type with PlayerTypeId: " + playerTypeId + " not found."));
     }
 
-    public Result<Integer> deletePlayerType(int id) throws Exception{
-        int data = playerTypeRepository.deletePlayerType(id);
-        if (data > 0) {
-            return new Result<>(200,data);
+    public Result<String> deletePlayerType(int playerTypeId) throws Exception{
+        if (playerTypeRepository.deletePlayerType(playerTypeId)) {
+            return new Result<>(200, "Player Type deleted successfully.");
         }
-        else {
-            throw new ResultException((new Result<>(404,"No PlayerType's found to delete,please try again","PlayerType with id=('"+ id +"') not found")));
-        }
+        throw new ResultException(new Result<>(404, "Player Type with PlayerTypeId: " + playerTypeId + " not found."));
     }
 }

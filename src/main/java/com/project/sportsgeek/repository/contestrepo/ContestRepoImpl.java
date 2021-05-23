@@ -3,9 +3,11 @@ package com.project.sportsgeek.repository.contestrepo;
 import java.util.List;
 
 import com.project.sportsgeek.mapper.ContestRowMapper;
+import com.project.sportsgeek.mapper.GenderRowMapper;
 import com.project.sportsgeek.model.Contest;
 import com.project.sportsgeek.model.ContestWithResult;
 import com.project.sportsgeek.model.ContestWithUser;
+import com.project.sportsgeek.model.Gender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -28,6 +30,17 @@ public class ContestRepoImpl implements ContestRepository {
         String sql = "SELECT ContestId, UserId, MatchId, TeamId, ContestPoints, WinningPoints from Contest WHERE UserId = :userId and MatchId = :matchId";
         MapSqlParameterSource params = new MapSqlParameterSource("userId", userId);
         params.addValue("matchId", matchId);
+        List<Contest> contestList = jdbcTemplate.query(sql, params, new ContestWithMatchRowMapper());
+        if (contestList.size() > 0) {
+            return contestList.get(0);
+        }
+        return null;
+    }
+
+    @Override
+    public Contest findContestById(int contestId) throws Exception {
+        String sql = "SELECT ContestId, UserId, MatchId, TeamId, ContestPoints, WinningPoints from Contest WHERE ContestId = :contestId";
+        MapSqlParameterSource params = new MapSqlParameterSource("contestId", contestId);
         List<Contest> contestList = jdbcTemplate.query(sql, params, new ContestWithMatchRowMapper());
         if (contestList.size() > 0) {
             return contestList.get(0);
@@ -78,6 +91,13 @@ public class ContestRepoImpl implements ContestRepository {
         String sql = "SELECT ContestId, UserId, MatchId, TeamId, ContestPoints, WinningPoints FROM Contest WHERE ContestId = :contestId";
         MapSqlParameterSource params = new MapSqlParameterSource("contestId", contestId);
         return jdbcTemplate.query(sql, params, new ContestWithMatchRowMapper()).get(0).getContestPoints();
+    }
+
+    @Override
+    public boolean deleteContestById(int contestId) throws Exception {
+        String sql = "DELETE FROM Contest WHERE ContestId = :contestId";
+        MapSqlParameterSource params = new MapSqlParameterSource("contestId", contestId);
+        return jdbcTemplate.update(sql, params) > 0;
     }
 
     @Override

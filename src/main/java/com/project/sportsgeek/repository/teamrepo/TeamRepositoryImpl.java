@@ -43,8 +43,7 @@ public class TeamRepositoryImpl implements TeamRepository {
 
     @Override
     public boolean updateTeam(int teamId, Team team) throws Exception {
-        String sql = "UPDATE `" + "Team" + "` set "
-                + "`Name` = :name,`ShortName` = :shortName, TeamLogo = :teamLogo where `TeamId`=:teamId";
+        String sql = "UPDATE Team SET Name = :name, ShortName = :shortName, TeamLogo = :teamLogo where TeamId=:teamId";
         team.setTeamId(teamId);
         return jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(team)) > 0;
     }

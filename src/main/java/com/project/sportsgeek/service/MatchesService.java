@@ -30,170 +30,103 @@ public class MatchesService {
 
     public Result<List<MatchesWithVenue>> findAllMatches() throws Exception {
         Tournament tournament = tournamentRepository.findTournamentByActive();
-        List<MatchesWithVenue> matchesList = matchesRepository.findAllMatches(tournament.getTournamentId());
-        return new Result<>(200,"Matches Detail Retrieved Successfully",matchesList);
-//        if(tournaments.size() > 0)
-//        {
-//            List<MatchesWithVenue> matchesList = matchesRepository.findAllMatches(tournaments.get(0).getTournamentId());
-//            return new Result<>(200,"Matches Detail Retrieved Successfully",matchesList);
-//        }
-//        else
-//        {
-//            return new Result<>(404,"Unable to find the Active Tournaments");
-//        }
+        if(tournament != null)
+        {
+            List<MatchesWithVenue> matchesList = matchesRepository.findAllMatches(tournament.getTournamentId());
+            return new Result<>(200, matchesList);
+        }
+        throw new ResultException(new Result<>(404, "Unable to find the Active Tournament."));
     }
     
     public Result<MatchesWithVenue> findMatchesById(int matchId) throws Exception {
-        Tournament tournament = tournamentRepository.findTournamentByActive();
-        if (tournament != null)
-        {
-            List<MatchesWithVenue> matchesList = matchesRepository.findMatchesById(matchId, tournament.getTournamentId());
-            return new Result<>(200,"Matches Detail Retrieved Successfully", matchesList.get(0));
-//            if (matchesList.size() > 0) {
-//                return new Result<>(200,"Matches Detail Retrieved Successfully", matchesList.get(0));
-//            }
-//            else {
-//                throw new ResultException((new Result<>(404,"No Match's found,please try again","Match with id=('"+ id +"') not found")));
-//            }
+        MatchesWithVenue matchesWithVenue = matchesRepository.findMatchesById(matchId);
+        if(matchesWithVenue != null){
+            return new Result<>(200, matchesWithVenue);
         }
-        else
-        {
-            throw new ResultException((new Result<>(404,"No Active Tournaments found,please try again")));
-        }
+        throw new ResultException(new Result<>(404, "Match with MatchId: " + matchId + " not found."));
     }
 
     public Result<List<MatchesWithVenue>> findMatchesByTournament(int tournamentId) throws Exception {
         List<MatchesWithVenue> matchesList = matchesRepository.findAllMatchesByTournament(tournamentId);
-        return new Result<>(200,"Matches Detail Retrieved Successfully", matchesList);
-//        if (matchesList.size() > 0) {
-//            return new Result<>(200,"Matches Detail Retrieved Successfully", matchesList);
-//        }
-//        else {
-//            throw new ResultException((new Result<>(404,"No Match's found,please try again","Tournament with id=('"+ id +"') not found")));
-//        }
+        return new Result<>(200, matchesList);
     }
 
     public Result<List<MatchesWithVenue>> findMatchesByVenue(int venueId) throws Exception {
         List<MatchesWithVenue> matchesList = matchesRepository.findAllMatchesByVenue(venueId);
-        return new Result<>(200,"Matches Detail Retrieved Successfully", matchesList);
-//        if (matchesList.size() > 0) {
-//            return new Result<>(200,"Matches Detail Retrieved Successfully", matchesList);
-//        }
-//        else {
-//            throw new ResultException((new Result<>(404,"No Match's found,please try again","Venue with id=('"+ id +"') not found")));
-//        }
+        return new Result<>(200, matchesList);
     }
 
     public Result<List<MatchesWithVenue>> findMatchesByTeam(int teamId) throws Exception {
         List<MatchesWithVenue> matchesList = matchesRepository.findAllMatchesByTeam(teamId);
-        return new Result<>(200,"Matches Detail Retrieved Successfully", matchesList);
-//        if (matchesList.size() > 0) {
-//            return new Result<>(200,"Matches Detail Retrieved Successfully", matchesList);
-//        }
-//        else {
-//            throw new ResultException((new Result<>(404,"No Match's found,please try again","Team with id=('"+ id +"') not found")));
-//        }
+        return new Result<>(200, matchesList);
     }
 
     public Result<List<MatchesWithVenue>> findMatchesByMinPoints(int minPoints) throws Exception {
         List<MatchesWithVenue> matchesList = matchesRepository.findAllMatchesByMinimumPoints(minPoints);
-        return new Result<>(200,"Matches Detail Retrieved Successfully", matchesList);
-//        if (matchesList.size() > 0) {
-//            return new Result<>(200,"Matches Detail Retrieved Successfully", matchesList);
-//        }
-//        else {
-//            throw new ResultException((new Result<>(404,"No Match's found,please try again","MinPoints=('"+ minPoints +"') not found")));
-//        }
-    }
-
-    public Result<Matches> addMatches(Matches matches) throws Exception {
-        int id = matchesRepository.addMatch(matches);
-        return new Result<>(201,"Matches Added Successfully",matches);
-//        if (id > 0) {
-//            return new Result<>(201,"Matches Added Successfully",matches);
-//        }
-//        throw new ResultException(new Result<>(400, "Error!, please try again!", new ArrayList<>(Arrays
-//                .asList(new Result.SportsGeekSystemError(matches.hashCode(), "unable to add the given gender")))));
-    }
-
-    public Result<Matches> updateMatch(int matchId, Matches matches) throws Exception {
-        if (matchesRepository.updateMatch(matchId, matches)) {
-            return new Result<>(200,"Match Details Updated Successfully",matches);
-        }
-        throw new ResultException(new Result<>(400, "Unable to update the given Match details! Please try again!", new ArrayList<>(Arrays
-                .asList(new Result.SportsGeekSystemError(matches.hashCode(), "given MatchId('"+matchId+"') does not exists")))));
+        return new Result<>(200, matchesList);
     }
 
     public Result<List<MatchesWithVenue>> findAllMatchesByPreviousDateAndResultStatus() throws Exception {
         Tournament tournament = tournamentRepository.findTournamentByActive();
         List<MatchesWithVenue> matchesList = matchesRepository.findAllMatchesByPreviousDateAndResultStatus(tournament.getTournamentId());
         return new Result<>(200,matchesList);
-//        if(tournaments.size() >0)
-//        {
-//            List<MatchesWithVenue> matchesList = matchesRepository.findAllMatchesByPreviousDateAndResultStatus(tournaments.get(0).getTournamentId());
-//            return new Result<>(200,matchesList);
-//        }
-//        else
-//        {
-//            return new Result<>(404,"Unable to find the Active Tournaments");
-//        }
+    }
+
+    public Result<Matches> addMatches(Matches matches) throws Exception {
+        int matchId = matchesRepository.addMatch(matches);
+        if(matchId > 0){
+            matches.setMatchId(matchId);
+            return new Result<>(201, matches);
+        }
+        throw new ResultException(new Result<>(404, "Unable to add Match"));
+    }
+
+    public Result<Matches> updateMatch(int matchId, Matches matches) throws Exception {
+        if (matchesRepository.updateMatch(matchId, matches)) {
+            return new Result<>(200, matches);
+        }
+        throw new ResultException(new Result<>(404, "Match with MatchId: " + matchId + " not found."));
     }
 
     public Result<String> updateMatchWinningTeam(int matchId, int ResultStatus, int winningTeamId) throws Exception {
-            if(matchesRepository.updateMatchWinningTeam(matchId,ResultStatus,winningTeamId)== true) {
-                return new Result<>(200, "Match Result updated successfully!!");
-            }else {
-                return new Result<>(400, "Failed to Update Match Result!!");
-            }
+        if(matchesRepository.updateMatchWinningTeam(matchId, ResultStatus, winningTeamId)== true) {
+            return new Result<>(200, "Match Result updated successfully!!");
+        }
+        throw new ResultException(new Result<>(404, "Failed to Update Match Result!!"));
     }
 
     public Result<String> updateMinimumPoints(int matchId, int minPoints) throws Exception {
-        int result = matchesRepository.updateMinimumPoints(matchId, minPoints);
-        if(result > 0) {
+        if(matchesRepository.updateMinimumPoints(matchId, minPoints)) {
             return new Result<>(200, "Successfully Updated Minimum Points for Match");
         }
-        else {
-            return new Result<>(500, "Internal Server error!, Unable to update the Minimum Points");
-        }
+        throw new ResultException(new Result<>(500, "Internal Server error!, Unable to update the Minimum Points"));
     }
 
     public Result<String> updateMatchVenue(int matchId, int venueId) throws Exception {
-        int result = matchesRepository.updateMatchVenue(matchId, venueId);
-        if(result > 0) {
+        if(matchesRepository.updateMatchVenue(matchId, venueId)) {
             return new Result<>(200, "Successfully Updated Venue for Match");
         }
-        else {
-            return new Result<>(500, "Internal Server error!, Unable to update the Venue");
-        }
+        throw new ResultException(new Result<>(500, "Internal Server error!, Unable to update the Venue"));
     }
 
     public Result<String> updateMatchResultStatus(int matchId, boolean status) throws Exception {
-        int result = matchesRepository.updateResultStatus(matchId, status);
-        if(result > 0) {
+        if(matchesRepository.updateResultStatus(matchId, status)) {
             return new Result<>(200, "Successfully Updated Result Status for Match");
         }
-        else {
-            return new Result<>(500, "Internal Server error!, Unable to update the Result Status");
-        }
+        throw new ResultException(new Result<>(500, "Internal Server error!, Unable to update the Result Status"));
     }
 
     public Result<String> updateMatchStartDateTime(int matchId, Timestamp date) throws Exception {
-        int result = matchesRepository.updateMatchScheduleDate(matchId, date);
-        if(result > 0) {
+        if(matchesRepository.updateMatchScheduleDate(matchId, date)) {
             return new Result<>(200, "Successfully Updated Match StartDateTime");
         }
-        else {
-            return new Result<>(500, "Internal Server error!, Unable to update the Match StartDateTime");
-        }
+        throw new ResultException(new Result<>(500, "Internal Server error!, Unable to update the Match StartDateTime"));
     }
 
-    public Result<Integer> deleteMatch(int matchId) throws Exception{
-        int data = matchesRepository.deleteMatches(matchId);
-        if (data > 0) {
-            return new Result<>(200,"Match Deleted Successfully",data);
+    public Result<String> deleteMatch(int matchId) throws Exception{
+        if (matchesRepository.deleteMatches(matchId)) {
+            return new Result<>(200,"Match Deleted Successfully");
         }
-        else {
-            throw new ResultException((new Result<>(404,"No Match found to delete,please try again","Match with id=('"+ matchId +"') not found")));
-        }
+        throw new ResultException((new Result<>(404,"No Match found to delete,please try again")));
     }
 }

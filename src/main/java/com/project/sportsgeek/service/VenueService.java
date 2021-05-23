@@ -20,43 +20,37 @@ public class VenueService {
 
     public Result<List<Venue>> findAllVenue() {
         List<Venue> VenueList = venueRepository.findAllVenue();
-        return new Result<>(200,"Venue Details Retrieved Successfully",VenueList);
+        return new Result<>(200,VenueList);
     }
 
     public Result<Venue> findVenueById(int venueId) throws Exception {
         Venue venue = venueRepository.findVenueById(venueId);
         if (venue != null) {
-            return new Result<>(200,"Venue Details Retrieved Successfully", venue);
+            return new Result<>(200, venue);
         }
-        else {
-            throw new ResultException((new Result<>(404,"No Venue's found,please try again","Venue with id=('"+ venueId +"') not found")));
-        }
+        throw new ResultException(new Result<>(404, "Venue with VenueId: " + venueId + " not found."));
     }
 
-    public Result<Venue> addVenue(Venue Venue) throws Exception {
-        int venueId = venueRepository.addVenue(Venue);
-        Venue.setVenueId(venueId);
+    public Result<Venue> addVenue(Venue venue) throws Exception {
+        int venueId = venueRepository.addVenue(venue);
+        venue.setVenueId(venueId);
         if (venueId > 0) {
-            return new Result<>(201,"Venue Details Added Successfully",Venue);
+            return new Result<>(201, venue);
         }
-        throw new ResultException(new Result<>(400, "Error!, please try again!", new ArrayList<>(Arrays
-                .asList(new Result.SportsGeekSystemError(Venue.hashCode(), "unable to add the given Venue")))));
+        throw new ResultException(new Result<>(400, "Unable to add Venue."));
     }
 
-    public Result<Venue> updateVenue(int venueId, Venue Venue) throws Exception {
-        if (venueRepository.updateVenue(venueId,Venue)) {
-            return new Result<>(200,"Venue Details Updated Successfully",Venue);
+    public Result<Venue> updateVenue(int venueId, Venue venue) throws Exception {
+        if (venueRepository.updateVenue(venueId,venue)) {
+            return new Result<>(200, venue);
         }
-        throw new ResultException(new Result<>(400, "Unable to update the given Venue details! Please try again!", new ArrayList<>(Arrays
-                .asList(new Result.SportsGeekSystemError(Venue.hashCode(), "given VenueId('"+venueId+"') does not exists")))));
+        throw new ResultException(new Result<>(404, "Venue with VenueId: " + venueId + " not found."));
     }
 
-    public Result<Integer> deleteVenue(int venueId) throws Exception{
+    public Result<String> deleteVenue(int venueId) throws Exception{
         if (venueRepository.deleteVenue(venueId)) {
             return new Result<>(200,"Venue Deleted Successfully");
         }
-        else {
-            throw new ResultException((new Result<>(404,"No Venue's found to delete,please try again","Venue with id=('"+ venueId +"') not found")));
-        }
+        throw new ResultException(new Result<>(404, "Venue with VenueId: " + venueId + " not found."));
     }
 }

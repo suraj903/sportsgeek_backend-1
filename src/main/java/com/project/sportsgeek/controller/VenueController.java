@@ -2,6 +2,7 @@ package com.project.sportsgeek.controller;
 
 import com.project.sportsgeek.exception.ResultException;
 import com.project.sportsgeek.model.Venue;
+import com.project.sportsgeek.response.ResponseMessage;
 import com.project.sportsgeek.response.Result;
 import com.project.sportsgeek.service.VenueService;
 import io.swagger.annotations.ApiResponse;
@@ -92,8 +93,8 @@ public class VenueController {
     )
     @PreAuthorize("hasRole('Admin')")
     @DeleteMapping(value = "/{venueId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Result<Venue>> deleteVenueById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int venueId) throws Exception {
-        Result<Integer> integerResult =  venueService.deleteVenue(venueId);
-        return new ResponseEntity(integerResult, HttpStatus.valueOf(integerResult.getCode()));
+    public ResponseEntity<ResponseMessage> deleteVenueById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int venueId) throws Exception {
+        Result<String> result =  venueService.deleteVenue(venueId);
+        return new ResponseEntity(new ResponseMessage(result.getMessage()), HttpStatus.valueOf(result.getCode()));
     }
 }

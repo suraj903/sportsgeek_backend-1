@@ -74,77 +74,55 @@ public class UserService implements UserDetailsService {
 		UserResponse user = userRepository.findUserByUserId(userId);
 		if (user != null) {
 			return new Result<>(200, user);
-		} else {
-			throw new ResultException(new Result<>(404, "no user's found, please try again!",
-					new ArrayList<>(Arrays.asList(new Result.SportsGeekSystemError((userId + "").hashCode(),
-							"user with given id('" + userId + "') does not exists")))));
 		}
+		throw new ResultException(new Result<>(404, "User with userId: " + userId + " not found."));
 	}
 
 	public Result<UserWinningAndLossingPoints> findUserLoosingPoints(int userId) throws Exception {
 		List<UserWinningAndLossingPoints> userList = userRepository.findLoosingPointsByUserId(userId);
 		if (userList.size() > 0) {
 			return new Result<>(200, userList.get(0));
-		} else {
-			throw new ResultException(new Result<>(404, "no user's found, please try again!",
-					new ArrayList<>(Arrays.asList(new Result.SportsGeekSystemError((userId + "").hashCode(),
-							"user with given id('" + userId + "') does not exists")))));
 		}
+		throw new ResultException(new Result<>(404, "User with userId: " + userId + " not found."));
 	}
 
 	public Result<UserWinningAndLossingPoints> findUserWinningPoints(int userId) throws Exception {
 		List<UserWinningAndLossingPoints> userList = userRepository.findWinningPointsByUserId(userId);
 		if (userList.size() > 0) {
 			return new Result<>(200, userList.get(0));
-		} else {
-			throw new ResultException(new Result<>(404, "no user's found, please try again!",
-					new ArrayList<>(Arrays.asList(new Result.SportsGeekSystemError((userId + "").hashCode(),
-							"user with given id('" + userId + "') does not exists")))));
 		}
+		throw new ResultException(new Result<>(404, "User with userId: " + userId + " not found."));
 	}
 
 	public Result<UserWithPassword> findUserByUserName(String username) throws Exception {
-		List<UserWithPassword> userList = userRepository.findUserByUserName(username);
-		if (userList.size() > 0) {
-			return new Result<>(200, userList.get(0));
-		} else {
-			throw new ResultException(new Result<>(404, "no user's found, please try again!",
-					new ArrayList<>(Arrays.asList(new Result.SportsGeekSystemError((username + "").hashCode(),
-							"user with given Username('" + username + "') does not exists")))));
+		UserWithPassword userWithPassword = userRepository.findUserByUserName(username);
+		if (userWithPassword != null) {
+			return new Result<>(200, userWithPassword);
 		}
+		throw new ResultException(new Result<>(404, "User with Username: " + username + " not found."));
 	}
 
 	public Result<List<UserResponse>> findUsersByStatus(boolean status) throws Exception {
 		List<UserResponse> userList = userRepository.findUsersByStatus(status);
-		if (userList.size() > 0) {
-			return new Result<>(200, userList);
-		} else {
-
-			return new Result<>(400, "No User's Found, Please try again!");
-		}
+		return new Result<>(200, userList);
 	}
 
 	public Result<List<UserResponse>> findUsersByRole(int roleId) throws Exception {
 		List<UserResponse> userList = userRepository.findAllUsersByRole(roleId);
-		if (userList.size() > 0) {
-			return new Result<>(200, userList);
-		} else {
-
-			return new Result<>(400, "No User's Found, Please try again!");
-		}
+		return new Result<>(200, userList);
 	}
 
 	@SneakyThrows
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		List<UserWithPassword> userList = userRepository.findUserByUserName(username);
+		UserWithPassword userWithPassword = userRepository.findUserByUserName(username);
 		Set<SimpleGrantedAuthority> authorities = new HashSet<>();
-		authorities.add(new SimpleGrantedAuthority("ROLE_" + userList.get(0).getRole()));
-		if (userList == null) {
+		authorities.add(new SimpleGrantedAuthority("ROLE_" + userWithPassword.getRole()));
+		if (userWithPassword == null) {
 			throw new UsernameNotFoundException("User not found with username: " + username);
 		} else {
-			return new org.springframework.security.core.userdetails.User(userList.get(0).getUsername(),
-					userList.get(0).getPassword(), authorities);
+			return new org.springframework.security.core.userdetails.User(userWithPassword.getUsername(),
+					userWithPassword.getPassword(), authorities);
 		}
 	}
 
@@ -248,8 +226,7 @@ public class UserService implements UserDetailsService {
 			mobileContactRepository.updateMobileContactByUserId(userId, mobileContact);
 			return new Result<>(200, user);
 		}
-//		return new Result<>(400, "Given User Id does not exists");
-		throw new ResultException((new Result<>(404, "No User's found,please try again", "User with id=('" + userId + "') not found")));
+		throw new ResultException(new Result<>(404, "User with userId: " + userId + " not found."));
 	}
 
 	public Result<User> updateStatus(int userId, boolean status) throws Exception {
@@ -266,16 +243,14 @@ public class UserService implements UserDetailsService {
 			emailService.sendEmail(email);
 			return new Result<>(200, "status of given id(" + userId + ") has been successfully updated");
 		}
-		return new Result<>(400, "No User's Found, Please try again!");
+		throw new ResultException(new Result<>(404, "User with userId: " + userId + " not found."));
 	}
 
 	public Result<String> updateUserRole(int userId, int roleId) throws Exception {
-		int result = userRepository.updateUserRole(userId, roleId);
-		if (result > 0) {
+		if (userRepository.updateUserRole(userId, roleId)) {
 			return new Result<>(200, "Successfully Assigned Role to User");
-		} else {
-			return new Result<>(500, "Internal Server error!, Unable to update the Role");
 		}
+		throw new ResultException(new Result<>(500, "Internal Server error!, Unable to update the Role"));
 	}
 
 //	------------------------------------------------- UPDATE PASSWORD SERVICE --------------------------------------------------------------------
@@ -285,21 +260,18 @@ public class UserService implements UserDetailsService {
 		System.out.println(userWithOldPassword);
 		if (userWithOldPassword != null && bCryptPasswordEncoder.matches(userWithNewPassword.getOldPassword(), userWithOldPassword.getPassword())) {
 			userWithNewPassword.setNewPassword(bCryptPasswordEncoder.encode(userWithNewPassword.getNewPassword()));
-			int result = userRepository.updateUserPassword(userWithNewPassword);
-			System.out.println(result);
-			if (result > 0) {
+			if (userRepository.updateUserPassword(userWithNewPassword)) {
 				return new Result<>(200, "Password has been successfully updated");
 			} else {
-				return new Result<>(500, "Internal Server error!, Unable to update the password");
+				throw new ResultException(new Result<>(500, "Internal Server error!, Unable to update the password"));
 			}
 		}
-		return new Result<>(400,"Old Password does not match!");
+		throw new ResultException(new Result<>(400, "Old Password does not match!"));
 	}
 
 //	------------------------------------------------- UPDATE FORGOT PASSWORD SERVICE -------------------------------------------------------------
 
 	public int generateOTP() {
-
 		Random random = new Random();
 		otp = 100000 + random.nextInt(900000);
 		return otp;
@@ -320,7 +292,7 @@ public class UserService implements UserDetailsService {
 			emailService.sendEmail(email);
 			return new Result<>(200, foundUser);
 		} else {
-			return new Result<>(404, "Email Id And Mobile Number Not Found");
+			throw new ResultException(new Result<>(404, "Email Id or Mobile Number Not Found"));
 		}
 	}
 
@@ -328,14 +300,13 @@ public class UserService implements UserDetailsService {
 		System.out.println("Send OTP in Update Password Service:" + sendOtp);
 		System.out.println("Otp Received by service" + userWithOtp.getOtp());
 		if (userWithOtp.getOtp() == sendOtp) {
-			int result = userRepository.updateForgetPassword(userWithOtp);
-			if (result > 0) {
+			if (userRepository.updateForgetPassword(userWithOtp)) {
 				return new Result<>(200, "password has been successfully Changed");
 			} else {
-				return new Result<>(500, "Internal Server error!, Unable to update the password");
+				throw new ResultException(new Result<>(500, "Internal Server error!, Unable to update the password"));
 			}
 		} else {
-			return new Result<>(404, "OTP Not Match");
+			throw new ResultException(new Result<>(404, "OTP Not Match"));
 		}
 	}
 
@@ -354,7 +325,7 @@ public class UserService implements UserDetailsService {
 			userRepository.deleteUser(userId);
 			return new Result<>(200, "User Deleted Successfully!!");
 		}
-		return new Result<>(404, "Given User Id does not exists");
+		throw new ResultException(new Result<>(404, "User with userId: " + userId + " not found."));
 	}
 
 }

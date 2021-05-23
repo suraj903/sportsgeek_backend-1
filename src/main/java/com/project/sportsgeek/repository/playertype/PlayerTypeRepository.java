@@ -10,12 +10,12 @@ public interface PlayerTypeRepository {
 
     List<PlayerType> findAllPlayerType();
 
-    PlayerType findPlayerTypeById(int i) throws Exception;
+    PlayerType findPlayerTypeById(int playerTypeId) throws Exception;
 
     int addPlayerType(PlayerType PlayerType) throws Exception;
 
-    boolean updatePlayerType(int id, PlayerType PlayerType) throws Exception;
+    boolean updatePlayerType(int playerTypeId, PlayerType PlayerType) throws Exception;
 
-    int deletePlayerType(int id) throws Exception;
+    boolean deletePlayerType(int playerTypeId) throws Exception;
 
 }

@@ -28,17 +28,15 @@ public class GenderService {
             return new Result<>(200, gender);
         }
         throw new ResultException(new Result<>(404, "Gender with GenderId: " + genderId + " not found."));
-//        throw new ResultException(new Result<>("Gender with GenderId: " + genderId + " not found."));
-//        throw new ResponseException(new ResponseMessage(404, "Gender with GenderId: " + genderId + " not found."));
     }
 
     public Result<Gender> addGender(Gender gender) throws Exception {
         int genderId = genderRepository.addGender(gender);
-        gender.setGenderId(genderId);
         if (genderId > 0) {
+            gender.setGenderId(genderId);
             return new Result<>(201, gender);
         }
-        throw new ResultException(new Result<>(400, "Something went wrong, Please try again after sometime."));
+        throw new ResultException(new Result<>(400, "Unable to add Gender."));
     }
 
     public Result<Gender> updateGender(int genderId, Gender gender) throws Exception {

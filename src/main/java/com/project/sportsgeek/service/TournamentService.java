@@ -30,9 +30,7 @@ public class TournamentService {
         if (tournament != null) {
             return new Result<>(200,"Tournament Details Retrieved Successfully", tournament);
         }
-        else {
-            throw new ResultException((new Result<>(404,"No Tournament's found,please try again","Tournament with id=('"+ tournamentId +"') not found")));
-        }
+        throw new ResultException(new Result<>(404, "Tournament with TournamentId: " + tournamentId + " not found."));
     }
 
     public Result<Tournament> findTournamentByActive() throws Exception{
@@ -40,31 +38,26 @@ public class TournamentService {
         if (tournament != null) {
             return new Result<>(200,"Active Tournament Details Retrieved Successfully", tournament);
         }
-        else {
-            throw new ResultException((new Result<>(404,"No Active Tournament's found,please try again","No Active Tournament's found,please try again")));
-        }
+        throw new ResultException(new Result<>(404, "No Active Tournament's found,please try again."));
     }
 
     public Result<Tournament> addTournament(Tournament tournament) throws Exception {
         int id = tournamentRepository.addTournament(tournament);
-        tournament.setTournamentId(id);
         if (id > 0) {
+            tournament.setTournamentId(id);
             return new Result<>(201,"Tournament Added Successfully",tournament);
         }
-        throw new ResultException(new Result<>(400, "Error!, please try again!", new ArrayList<>(Arrays
-                .asList(new Result.SportsGeekSystemError(tournament.hashCode(), "unable to add the given Tournament")))));
+        throw new ResultException(new Result<>(404, "Unable to add Tournament."));
     }
 
     public Result<Tournament> updateTournament(int tournamentId, Tournament tournament) throws Exception {
         if (tournamentRepository.updateTournament(tournamentId,tournament)) {
             return new Result<>(200,"Tournament Updated Successfully",tournament);
         }
-        throw new ResultException(new Result<>(400, "Unable to update the given tournament details! Please try again!", new ArrayList<>(Arrays
-                .asList(new Result.SportsGeekSystemError(tournament.hashCode(), "given tournamentId('"+tournamentId+"') does not exists")))));
+        throw new ResultException(new Result<>(404, "Tournament with TournamentId: " + tournamentId + " not found."));
     }
 
     public Result<String> updateActiveTournament(int tournamentId) throws Exception {
-
         if(tournamentRepository.deactivateTournament())
         {
             if (tournamentRepository.updateActiveTournament(tournamentId)) {
@@ -81,10 +74,10 @@ public class TournamentService {
         }
     }
 
-    public Result<Integer> deleteTournament(int tournamentId) throws Exception{
+    public Result<String> deleteTournament(int tournamentId) throws Exception{
         if (tournamentRepository.deleteTournament(tournamentId)) {
-            return new Result<>(200,"Tournament Deleted Successfully");
+            return new Result<>(200, "Tournament deleted Successfully");
         }
-        throw new ResultException((new Result<>(404,"No Tournament's found to delete ,please try again","Tournament with id=('"+ tournamentId +"') not found")));
+        throw new ResultException(new Result<>(404, "Tournament with TournamentId: " + tournamentId + " not found."));
     }
 }

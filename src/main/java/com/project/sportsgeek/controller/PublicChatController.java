@@ -3,6 +3,7 @@ package com.project.sportsgeek.controller;
 import com.project.sportsgeek.exception.ResultException;
 import com.project.sportsgeek.model.PublicChat;
 import com.project.sportsgeek.model.PublicChatWithUser;
+import com.project.sportsgeek.response.ResponseMessage;
 import com.project.sportsgeek.response.Result;
 import com.project.sportsgeek.service.PublicChatService;
 import io.swagger.annotations.ApiResponse;
@@ -89,8 +90,8 @@ public class PublicChatController {
     )
     @PreAuthorize("hasAnyRole('Admin','User')")
     @DeleteMapping(value = "/{publicChatId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Result<PublicChat>> deletePublicChatById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int publicChatId) throws Exception {
-        Result<Integer> integerResult =  publicChatService.deletePublicChat(publicChatId);
-        return new ResponseEntity(integerResult,HttpStatus.valueOf(integerResult.getCode()));
+    public ResponseEntity<ResponseMessage> deletePublicChatById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int publicChatId) throws Exception {
+        Result<String> result =  publicChatService.deletePublicChat(publicChatId);
+        return new ResponseEntity(new ResponseMessage(result.getMessage()), HttpStatus.valueOf(result.getCode()));
     }
 }

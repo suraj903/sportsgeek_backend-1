@@ -1,6 +1,7 @@
 package com.project.sportsgeek.controller;
 
 import com.project.sportsgeek.model.profile.Role;
+import com.project.sportsgeek.response.ResponseMessage;
 import com.project.sportsgeek.response.Result;
 import com.project.sportsgeek.service.RoleService;
 import io.swagger.annotations.ApiResponse;
@@ -57,8 +58,8 @@ public class RoleController {
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully deleted schema"), @ApiResponse(code = 404, message = "Schema not found"), @ApiResponse(code = 409, message = "Schema is in use"), @ApiResponse(code = 500, message = "Error deleting schema")})
     @PreAuthorize("hasRole('Admin')")
     @DeleteMapping("/{roleId}")
-    public ResponseEntity<Result<String>> deleteRoleById(@PathVariable int roleId) throws Exception {
+    public ResponseEntity<ResponseMessage> deleteRoleById(@PathVariable int roleId) throws Exception {
         Result<String> result = roleService.deleteRole(roleId);
-        return new ResponseEntity(result, HttpStatus.valueOf(result.getCode()));
+        return new ResponseEntity(new ResponseMessage(result.getMessage()), HttpStatus.valueOf(result.getCode()));
     }
 }

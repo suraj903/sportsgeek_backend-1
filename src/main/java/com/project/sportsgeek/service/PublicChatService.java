@@ -28,38 +28,32 @@ public class PublicChatService {
     public Result<PublicChatWithUser> findPublicChatById(int publicChatId) throws Exception {
         PublicChatWithUser publicChat = publicChatRepository.findPublicChatById(publicChatId);
         if (publicChat != null) {
-            return new Result<>(200,"PublicChat Details Retrieved Successfully" ,publicChat);
+            return new Result<>(200, publicChat);
         }
-        else {
-            throw new ResultException((new Result<>(404,"No Public Chat's found,please try again","Public Chat with id=('"+ publicChatId +"') not found")));
-        }
+        throw new ResultException(new Result<>(404, "Public Chat with PublicChatId: " + publicChatId + " not found."));
     }
 
     public Result<PublicChat> addPublicChat(PublicChat publicChat) throws Exception {
         int id = publicChatRepository.addPublicChat(publicChat);
-        publicChat.setPublicChatId(id);
-        publicChat.setStatus(true);
         if (id > 0) {
-            return new Result<>(201,"Public Chat Added Successfully", publicChat);
+            publicChat.setPublicChatId(id);
+            publicChat.setStatus(true);
+            return new Result<>(201, publicChat);
         }
-        throw new ResultException(new Result<>(400, "Error!, please try again!", new ArrayList<>(Arrays
-                .asList(new Result.SportsGeekSystemError(publicChat.hashCode(), "unable to add the given Public Chat")))));
+        throw new ResultException(new Result<>(404, "Unable to add Public Chat."));
     }
 
     public Result<PublicChat> updatePublicChat(int publicChatId, PublicChat publicChat) throws Exception {
         if (publicChatRepository.updatePublicChat(publicChatId,publicChat)) {
-            return new Result<>(200,"Public Chat Details Updated Successfully",publicChat);
+            return new Result<>(200, publicChat);
         }
-        throw new ResultException(new Result<>(400, "Unable to update the given Public Chat details! Please try again!", new ArrayList<>(Arrays
-                .asList(new Result.SportsGeekSystemError(publicChat.hashCode(), "given PublicChatId('"+publicChatId+"') does not exists")))));
+        throw new ResultException(new Result<>(404, "Public Chat with PublicChatId: " + publicChatId + " not found."));
     }
 
-    public Result<Integer> deletePublicChat(int publicChatId) throws Exception{
+    public Result<String> deletePublicChat(int publicChatId) throws Exception{
         if (publicChatRepository.deletePublicChat(publicChatId)) {
             return new Result<>(200,"Public Chat Deleted Successfully");
         }
-        else {
-            throw new ResultException((new Result<>(404,"No Public Chat found to delete,please try again","PublicChat with id=('"+ publicChatId +"') not found")));
-        }
+        throw new ResultException(new Result<>(404, "Public Chat with PublicChatId: " + publicChatId + " not found."));
     }
 }

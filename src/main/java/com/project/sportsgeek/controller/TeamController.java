@@ -1,9 +1,8 @@
 package com.project.sportsgeek.controller;
 
 import com.project.sportsgeek.exception.ResultException;
-import com.project.sportsgeek.exception.ResultException;
 import com.project.sportsgeek.model.Team;
-import com.project.sportsgeek.model.Team;
+import com.project.sportsgeek.response.ResponseMessage;
 import com.project.sportsgeek.response.Result;
 import com.project.sportsgeek.service.TeamService;
 import io.swagger.annotations.ApiResponse;
@@ -50,9 +49,9 @@ public class TeamController {
             }
     )
     @PreAuthorize("hasRole('Admin')")
-    @GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Team> getTeamById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id) throws Exception {
-        Result<Team> teamList = teamService.findTeamById(id);
+    @GetMapping(value = "/{teamId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Team> getTeamById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int teamId) throws Exception {
+        Result<Team> teamList = teamService.findTeamById(teamId);
         return new ResponseEntity<>(teamList.getData(), HttpStatus.valueOf(teamList.getCode()));
     }
 
@@ -87,14 +86,14 @@ public class TeamController {
     )
     @PreAuthorize("hasRole('Admin')")
 //    @RequestBody(required = true) @Valid Team team
-    @PutMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Team> updateTeam(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id,@RequestParam("name") String name,@RequestParam("shortName") String shortName,@RequestParam("teamLogo") MultipartFile multipartFile) throws Exception {
+    @PutMapping(value = "/{teamId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Team> updateTeam(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int teamId,@RequestParam("name") String name,@RequestParam("shortName") String shortName,@RequestParam("teamLogo") MultipartFile multipartFile) throws Exception {
         String filename = multipartFile.getOriginalFilename();
         Team team = Team.builder()
                 .name(name)
                 .shortName(shortName)
                 .teamLogo(filename).build();
-        Result<Team> teamResult = teamService.updateTeam(id,team,multipartFile);
+        Result<Team> teamResult = teamService.updateTeam(teamId,team,multipartFile);
         return new ResponseEntity(teamResult.getData(), HttpStatus.valueOf(teamResult.getCode()));
     }
 
@@ -107,9 +106,9 @@ public class TeamController {
             }
     )
     @PreAuthorize("hasRole('Admin')")
-    @DeleteMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Result<Team>> deleteTeamById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int id) throws Exception {
-        Result<Integer> teamResult =  teamService.deleteTeam(id);
-        return new ResponseEntity(teamResult,HttpStatus.valueOf(teamResult.getCode()));
+    @DeleteMapping(value = "/{teamId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseMessage> deleteTeamById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int teamId) throws Exception {
+        Result<Integer> teamResult =  teamService.deleteTeam(teamId);
+        return new ResponseEntity(new ResponseMessage(teamResult.getMessage()), HttpStatus.valueOf(teamResult.getCode()));
     }
 }

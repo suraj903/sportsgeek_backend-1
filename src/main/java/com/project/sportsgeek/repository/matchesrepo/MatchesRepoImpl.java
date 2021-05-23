@@ -85,17 +85,20 @@ public class MatchesRepoImpl implements MatchesRepository {
         MapSqlParameterSource params = new MapSqlParameterSource("minPoints", minPoints);
         return namedParameterJdbcTemplate.query(sql, params, new MatchesRowMapper());
     }
-//Pending
+
     @Override
     public int addMatch(Matches matches) throws Exception {
+        KeyHolder holder = new GeneratedKeyHolder();
         String sql = "INSERT INTO Matches (MatchId,TournamentId,Name,StartDatetime,VenueId,Team1,Team2,MinimumPoints) VALUES(:matchId,:tournamentId,:name,:startDatetime,:venueId,:team1,:team2,:MinimumPoints)";
-        return namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(matches));
+        int n = jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(matches), holder);
+        if(n > 0) {
+            return holder.getKey().intValue();
+        }
+        return 0;
     }
 
-    //Pending
     @Override
     public boolean updateMatch(int matchId, Matches matches) throws Exception {
-//        System.out.println("WinnerTeamId : " + matches.getWinnerTeamId());
 //        String sql = "UPDATE Matches SET TournamentId = :tournamentId, Name = :name, StartDatetime = :startDatetime, VenueId=:venueId, Team1=:team1, Team2=:team2, WinnerTeamId=:winnerTeamId, ResultStatus=:resultStatus,MinimumPoints=:MinimumPoints WHERE MatchId=:matchId";
         String sql = "UPDATE Matches SET TournamentId = :tournamentId, Name = :name, StartDatetime = :startDatetime, VenueId=:venueId, Team1=:team1, Team2=:team2, MinimumPoints=:MinimumPoints WHERE MatchId=:matchId";
         matches.setMatchId(matchId);
@@ -122,54 +125,58 @@ public class MatchesRepoImpl implements MatchesRepository {
     }
 
     @Override
-    public int updateMatchVenue(int matchId, int venueId) throws Exception {
+    public boolean updateMatchVenue(int matchId, int venueId) throws Exception {
         String sql = "UPDATE Matches SET VenueId=:venueId WHERE MatchId=:matchId";
         MapSqlParameterSource params = new MapSqlParameterSource("matchId", matchId);
         params.addValue("venueId", venueId);
-        return namedParameterJdbcTemplate.update(sql, params);
+        return namedParameterJdbcTemplate.update(sql, params) > 0;
     }
 
     @Override
-    public int updateResultStatus(int matchId, boolean status) throws Exception {
+    public boolean updateResultStatus(int matchId, boolean status) throws Exception {
         String sql = "UPDATE Matches SET ResultStatus=:resultStatus WHERE MatchId=:matchId";
         MapSqlParameterSource params = new MapSqlParameterSource("matchId", matchId);
         params.addValue("status", status);
-        return namedParameterJdbcTemplate.update(sql, params);
+        return namedParameterJdbcTemplate.update(sql, params) > 0;
     }
 
     @Override
-    public int updateMinimumPoints(int matchId, int minPoints) throws Exception {
+    public boolean updateMinimumPoints(int matchId, int minPoints) throws Exception {
        String sql = "UPDATE Matches SET MinimumPoints=:minPoints WHERE MatchId=:matchId";
        MapSqlParameterSource params = new MapSqlParameterSource("matchId", matchId);
        params.addValue("minPoints", minPoints);
-       return namedParameterJdbcTemplate.update(sql, params);
+       return namedParameterJdbcTemplate.update(sql, params) > 0;
     }
 
     @Override
-    public int updateMatchScheduleDate(int matchId, Timestamp date) throws Exception {
+    public boolean updateMatchScheduleDate(int matchId, Timestamp date) throws Exception {
         String sql = "UPDATE Matches SET StartDatetime=:startDatetime WHERE MatchId=:matchId";
         MapSqlParameterSource params = new MapSqlParameterSource("matchId", matchId);
         params.addValue("startDatetime", date);
-        return namedParameterJdbcTemplate.update(sql, params);
+        return namedParameterJdbcTemplate.update(sql, params) > 0;
     }
 
     @Override
-    public int deleteMatches(int matchId) throws Exception {
+    public boolean deleteMatches(int matchId) throws Exception {
        String sql = "DELETE FROM Matches WHERE MatchId=:matchId";
        MapSqlParameterSource params = new MapSqlParameterSource("matchId", matchId);
-       return namedParameterJdbcTemplate.update(sql, params);
+       return namedParameterJdbcTemplate.update(sql, params) > 0;
     }
 
 	@Override
-	public List<MatchesWithVenue> findMatchesById(int matchId, int tournamentId) throws Exception {
+	public MatchesWithVenue findMatchesById(int matchId) throws Exception {
 //		String tournament_sql = "SELECT * from Tournament WHERE active = true";
 //        int tournamentid = jdbcTemplate.query(tournament_sql,new TournamentRowMapper()).get(0).getTournamentId();
        String sql = "SELECT MatchId , StartDatetime, Team1,Team2, t1.Name as team1long, t1.ShortName as team1short, " +
                "t1.TeamLogo as team1logo, t2.Name as team2long, t2.ShortName as team2short, t2.TeamLogo as team2logo, v.Name as venue, MinimumPoints, WinnerTeamId, ResultStatus, TournamentId  " +
                "FROM Matches as m INNER JOIN Venue as v on m.VenueId=v.VenueId left JOIN Team as t1 on m.Team1=t1.TeamId left JOIN Team as t2 on m.Team2=t2.TeamId " +
-               "where TournamentId=:tournamentId AND MatchId=:matchId";
+               "where MatchId=:matchId";
        MapSqlParameterSource params = new MapSqlParameterSource("matchId", matchId);
-       params.addValue("tournamentId", tournamentId);
-       return namedParameterJdbcTemplate.query(sql, params, new MatchesRowMapper());
+       List<MatchesWithVenue> matchList = namedParameterJdbcTemplate.query(sql, params, new MatchesRowMapper());
+       if(matchList.size() > 0){
+           return matchList.get(0);
+       }else{
+           return null;
+       }
 	}
 }

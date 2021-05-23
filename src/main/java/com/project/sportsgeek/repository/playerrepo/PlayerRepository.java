@@ -11,18 +11,18 @@ public interface PlayerRepository {
 
     List<PlayerResponse> findAllPlayers();
 
-    PlayerResponse findPlayerByPlayerId(int id) throws Exception;
+    PlayerResponse findPlayerByPlayerId(int playerId) throws Exception;
 
-    List<PlayerResponse> findPlayerByPlayerType(int id) throws Exception;
+    List<PlayerResponse> findPlayerByPlayerType(int playerTypeId) throws Exception;
 
-    List<PlayerResponse> findPlayerByTeamId(int id) throws Exception;
+    List<PlayerResponse> findPlayerByTeamId(int teamId) throws Exception;
 
     int addPlayer(Player player) throws Exception;
 
-    boolean updatePlayer(int id, Player player) throws Exception;
+    boolean updatePlayer(int playerId, Player player) throws Exception;
 
-    boolean updatePlayerType(int id,int playerTypeId) throws Exception;
+    boolean updatePlayerType(int playerId, int playerTypeId) throws Exception;
 
-    int deletePlayer(int id) throws Exception;
+    boolean deletePlayer(int playerId) throws Exception;
 
 }

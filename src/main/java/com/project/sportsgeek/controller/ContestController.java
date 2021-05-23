@@ -4,6 +4,7 @@ import com.project.sportsgeek.exception.ResultException;
 import com.project.sportsgeek.model.Contest;
 import com.project.sportsgeek.model.ContestWithResult;
 import com.project.sportsgeek.model.ContestWithUser;
+import com.project.sportsgeek.response.ResponseMessage;
 import com.project.sportsgeek.response.Result;
 import com.project.sportsgeek.service.ContestService;
 import io.swagger.annotations.ApiResponse;
@@ -91,5 +92,19 @@ public class ContestController {
     public ResponseEntity<String> updateContest(@PathVariable int contestId, @RequestBody(required = true) Contest contest) throws Exception {
         Result<Contest> contestResult = contestService.updateContest(contestId, contest);
         return new ResponseEntity(contestResult.getMessage(),HttpStatus.valueOf(contestResult.getCode()));
+    }
+
+    @ApiResponses(value =
+            {
+                    @ApiResponse(code = 201, message = "success", response = Contest.class),
+                    @ApiResponse(code = 400, message = "Bad request", response = ResultException.class),
+                    @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = ResultException.class)
+            }
+    )
+    @PreAuthorize("hasRole('Admin')")
+    @DeleteMapping("/{contestId}")
+    public ResponseEntity<ResponseMessage> deleteContestById(@PathVariable int contestId) throws Exception {
+        Result<String> result = contestService.deleteContest(contestId);
+        return new ResponseEntity<>(new ResponseMessage(result.getMessage()), HttpStatus.valueOf(result.getCode()));
     }
 }

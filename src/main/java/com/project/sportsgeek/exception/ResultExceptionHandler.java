@@ -1,6 +1,5 @@
 package com.project.sportsgeek.exception;
 
-import com.project.sportsgeek.response.ResponseMessage;
 import com.project.sportsgeek.response.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,10 +39,10 @@ public class ResultExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler({ResultException.class})
-    private ResponseEntity<ResponseMessage> handleResultException(ResultException ex) {
+    private ResponseEntity<Result<Object>> handleResultException(ResultException ex) {
         logger.error("\n" + ex.hashCode() + " ---- " + ex.getMessage());
         Result<Object> result = ex.getResultException();
-        return new ResponseEntity<>(new ResponseMessage(result.getMessage()), HttpStatus.valueOf(result.getCode()));
+        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getCode()));
     }
 
     @Override

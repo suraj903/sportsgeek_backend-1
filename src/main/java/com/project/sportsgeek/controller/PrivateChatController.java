@@ -2,7 +2,6 @@ package com.project.sportsgeek.controller;
 
 import com.project.sportsgeek.exception.ResultException;
 import com.project.sportsgeek.model.PrivateChat;
-import com.project.sportsgeek.response.ResponseMessage;
 import com.project.sportsgeek.response.Result;
 import com.project.sportsgeek.service.PrivateChatService;
 import io.swagger.annotations.ApiResponse;
@@ -76,8 +75,8 @@ public class PrivateChatController {
     )
     @PreAuthorize("hasAnyRole('Admin','User')")
     @DeleteMapping(value = "/{privateChatId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ResponseMessage> deletePrivateChatById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int privateChatId) throws Exception {
+    public ResponseEntity<Result<String>> deletePrivateChatById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int privateChatId) throws Exception {
         Result<String> result =  privateChatService.deletePrivateChat(privateChatId);
-        return new ResponseEntity(new ResponseMessage(result.getMessage()), HttpStatus.valueOf(result.getCode()));
+        return new ResponseEntity(result, HttpStatus.valueOf(result.getCode()));
     }
 }

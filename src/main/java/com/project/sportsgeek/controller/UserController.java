@@ -3,7 +3,6 @@ package com.project.sportsgeek.controller;
 import com.project.sportsgeek.exception.ResultException;
 import com.project.sportsgeek.jwtconfig.JwtTokenUtil;
 import com.project.sportsgeek.model.profile.*;
-import com.project.sportsgeek.response.ResponseMessage;
 import com.project.sportsgeek.response.Result;
 import com.project.sportsgeek.service.UserService;
 import io.swagger.annotations.ApiResponse;
@@ -137,10 +136,10 @@ public class UserController {
             @ApiResponse(code = 500, message = "Internal error")})
     @PreAuthorize("hasAnyRole('Admin','User')")
     @PutMapping("/update-password")
-    public ResponseEntity<ResponseMessage> updatePassword(@RequestBody(required = true) UserWithNewPassword userWithNewPassword) throws Exception {
+    public ResponseEntity<Result<String>> updatePassword(@RequestBody(required = true) UserWithNewPassword userWithNewPassword) throws Exception {
         System.out.println(userWithNewPassword);
         Result<String> userResult = userService.updatePassword(userWithNewPassword);
-        return new ResponseEntity<>(new ResponseMessage(userResult.getMessage()), HttpStatus.valueOf(userResult.getCode()));
+        return new ResponseEntity<>(userResult, HttpStatus.valueOf(userResult.getCode()));
     }
 
     @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully updated schema"),
@@ -213,8 +212,8 @@ public class UserController {
             @ApiResponse(code = 500, message = "Error deleting schema")})
     @PreAuthorize("hasRole('Admin')")
     @DeleteMapping("/{userId}")
-    public ResponseEntity<Result<User>> deleteUser(@PathVariable int userId) throws Exception {
-        Result<User> userResult = userService.deleteUser(userId);
+    public ResponseEntity<Result<String>> deleteUser(@PathVariable int userId) throws Exception {
+        Result<String> userResult = userService.deleteUser(userId);
         return new ResponseEntity<>(userResult, HttpStatus.valueOf(userResult.getCode()));
     }
 

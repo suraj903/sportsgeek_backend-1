@@ -4,7 +4,6 @@ import com.project.sportsgeek.exception.ResultException;
 import com.project.sportsgeek.model.Contest;
 import com.project.sportsgeek.model.ContestWithResult;
 import com.project.sportsgeek.model.ContestWithUser;
-import com.project.sportsgeek.response.ResponseMessage;
 import com.project.sportsgeek.response.Result;
 import com.project.sportsgeek.service.ContestService;
 import io.swagger.annotations.ApiResponse;
@@ -103,8 +102,8 @@ public class ContestController {
     )
     @PreAuthorize("hasRole('Admin')")
     @DeleteMapping("/{contestId}")
-    public ResponseEntity<ResponseMessage> deleteContestById(@PathVariable int contestId) throws Exception {
+    public ResponseEntity<Result<String>> deleteContestById(@PathVariable int contestId) throws Exception {
         Result<String> result = contestService.deleteContest(contestId);
-        return new ResponseEntity<>(new ResponseMessage(result.getMessage()), HttpStatus.valueOf(result.getCode()));
+        return new ResponseEntity<>(result, HttpStatus.valueOf(result.getCode()));
     }
 }

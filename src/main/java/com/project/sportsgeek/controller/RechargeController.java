@@ -2,7 +2,6 @@ package com.project.sportsgeek.controller;
 
 import com.project.sportsgeek.exception.ResultException;
 import com.project.sportsgeek.model.Recharge;
-import com.project.sportsgeek.response.ResponseMessage;
 import com.project.sportsgeek.response.Result;
 import com.project.sportsgeek.service.RechargeService;
 import io.swagger.annotations.ApiResponse;
@@ -100,8 +99,8 @@ public class RechargeController {
     )
     @PreAuthorize("hasRole('Admin')")
     @DeleteMapping(value = "/recharge/{rechargeId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ResponseMessage> deleteRechargeById(@PathVariable int rechargeId) throws Exception {
+    public ResponseEntity<Result<String>> deleteRechargeById(@PathVariable int rechargeId) throws Exception {
         Result<String> result =  rechargeService.deleteRecharge(rechargeId);
-        return new ResponseEntity(new ResponseMessage(result.getMessage()), HttpStatus.valueOf(result.getCode()));
+        return new ResponseEntity(result, HttpStatus.valueOf(result.getCode()));
     }
 }

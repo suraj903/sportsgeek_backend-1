@@ -314,7 +314,7 @@ public class UserService implements UserDetailsService {
 //	------------------------------------------------- DELETE SERVICE ----------------------------------------------------------------------------
 //	---------------------------------------------------------------------------------------------------------------------------------------------
 
-	public Result<User> deleteUser(int userId) throws Exception {
+	public Result<String> deleteUser(int userId) throws Exception {
 		UserResponse user = userRepository.findUserByUserId(userId);
 		System.out.println(user);
 		if (user != null) {

@@ -2,7 +2,6 @@ package com.project.sportsgeek.controller;
 
 import com.project.sportsgeek.exception.ResultException;
 import com.project.sportsgeek.model.Team;
-import com.project.sportsgeek.response.ResponseMessage;
 import com.project.sportsgeek.response.Result;
 import com.project.sportsgeek.service.TeamService;
 import io.swagger.annotations.ApiResponse;
@@ -107,8 +106,8 @@ public class TeamController {
     )
     @PreAuthorize("hasRole('Admin')")
     @DeleteMapping(value = "/{teamId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ResponseMessage> deleteTeamById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int teamId) throws Exception {
+    public ResponseEntity<Result<String>> deleteTeamById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int teamId) throws Exception {
         Result<Integer> teamResult =  teamService.deleteTeam(teamId);
-        return new ResponseEntity(new ResponseMessage(teamResult.getMessage()), HttpStatus.valueOf(teamResult.getCode()));
+        return new ResponseEntity(teamResult, HttpStatus.valueOf(teamResult.getCode()));
     }
 }

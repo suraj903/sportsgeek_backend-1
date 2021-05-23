@@ -16,7 +16,6 @@ public class PlayerRowMapper implements RowMapper<PlayerResponse> {
         player.setPlayerType(rs.getString("PlayerType"));
         player.setProfilePicture(rs.getString("ProfilePicture"));
         player.setTeam(rs.getString("TeamName"));
-        player.setCredits(rs.getDouble("Credits"));
         return player;
     }
 }

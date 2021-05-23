@@ -3,7 +3,6 @@ package com.project.sportsgeek.controller;
 import com.project.sportsgeek.exception.ResultException;
 import com.project.sportsgeek.model.Player;
 import com.project.sportsgeek.model.PlayerResponse;
-import com.project.sportsgeek.response.ResponseMessage;
 import com.project.sportsgeek.response.Result;
 import com.project.sportsgeek.service.PlayerService;
 import io.swagger.annotations.ApiResponse;
@@ -105,7 +104,7 @@ public class PlayerController {
                .name(name)
                .typeId(typeId)
                .profilePicture(filename)
-               .credits(credits).build();
+               .build();
         Result<Player> playerResult = playerService.addPlayer(player,multipartFile);
         return new ResponseEntity(playerResult.getData(),HttpStatus.valueOf(playerResult.getCode()));
     }
@@ -128,7 +127,7 @@ public class PlayerController {
                 .name(name)
                 .typeId(typeId)
                 .profilePicture(filename)
-                .credits(credits).build();
+                .build();
         Result<Player> playerResult = playerService.updatePlayer(playerId, player, multipartFile);
         return new ResponseEntity(playerResult.getData(),HttpStatus.valueOf(playerResult.getCode()));
     }
@@ -143,9 +142,9 @@ public class PlayerController {
     )
     @PreAuthorize("hasRole('Admin')")
     @PutMapping(value = "/{playerId}/update-player-type/{playerTypeId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ResponseMessage> updatePlayerType(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int playerId, @PathVariable @Valid @Pattern(regexp = "[0-9]*") int playerTypeId) throws Exception {
+    public ResponseEntity<Result<String>> updatePlayerType(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int playerId, @PathVariable @Valid @Pattern(regexp = "[0-9]*") int playerTypeId) throws Exception {
         Result<String> playerResult = playerService.updatePlayerType(playerId, playerTypeId);
-        return new ResponseEntity(new ResponseMessage(playerResult.getMessage()), HttpStatus.valueOf(playerResult.getCode()));
+        return new ResponseEntity(playerResult, HttpStatus.valueOf(playerResult.getCode()));
     }
 
     @ApiResponses(value =
@@ -158,8 +157,8 @@ public class PlayerController {
     )
     @PreAuthorize("hasRole('Admin')")
     @DeleteMapping(value = "/{playerId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ResponseMessage> deletePlayerById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int playerId) throws Exception {
+    public ResponseEntity<Result<String>> deletePlayerById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int playerId) throws Exception {
         Result<String> result =  playerService.deletePlayer(playerId);
-        return new ResponseEntity(new ResponseMessage(result.getMessage()), HttpStatus.valueOf(result.getCode()));
+        return new ResponseEntity(result, HttpStatus.valueOf(result.getCode()));
     }
 }

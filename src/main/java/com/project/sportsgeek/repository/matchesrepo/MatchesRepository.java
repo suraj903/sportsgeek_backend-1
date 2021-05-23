@@ -14,6 +14,8 @@ public interface MatchesRepository {
 
     List<MatchesWithVenue> findAllMatches(int tournamentId) throws Exception;
 
+    List<MatchesWithVenue> findAllUpcomingMatches(int tournamentId) throws Exception;
+
     MatchesWithVenue findMatchesById(int matchId) throws Exception;
 
     List<MatchesWithVenue> findAllMatchesByTournament(int tournamentId) throws Exception;

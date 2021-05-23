@@ -46,13 +46,27 @@ public class MatchesController {
     @ApiResponses(value =
             {
                     @ApiResponse(code = 200, message = "success", response = Matches.class),
+                    @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = ResultException.class),
+                    @ApiResponse(code = 403 , message = "Forbidden!! Access is Denied!")
+            }
+    )
+    @PreAuthorize("hasAnyRole('Admin','User')")
+    @GetMapping(value = "/upcoming", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<MatchesWithVenue>> getAllUpcomingMatches() throws Exception {
+        Result<List<MatchesWithVenue>> matchesList = matchesService.findAllUpcomingMatches();
+        return new ResponseEntity<>(matchesList.getData(), HttpStatus.valueOf(matchesList.getCode()));
+    }
+
+    @ApiResponses(value =
+            {
+                    @ApiResponse(code = 200, message = "success", response = Matches.class),
                     @ApiResponse(code = 404, message = "Bad request", response = ResultException.class),
                     @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = ResultException.class),
                     @ApiResponse(code = 403 , message = "Forbidden!! Access is Denied!")
             }
     )
     @PreAuthorize("hasAnyRole('Admin','User')")
-    @GetMapping(value = "/{matchId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{matchId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MatchesWithVenue> getMatchesById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int matchId) throws Exception {
         Result<MatchesWithVenue> matchesList = matchesService.findMatchesById(matchId);
         return new ResponseEntity<>(matchesList.getData(), HttpStatus.valueOf(matchesList.getCode()));
@@ -127,7 +141,7 @@ public class MatchesController {
     )
     @PreAuthorize("hasRole('Admin')")
     @GetMapping(value = "/old-matches",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<MatchesWithVenue>> findAllMatchesByPreviousDateAndResultStatus() throws Exception {
+    public ResponseEntity<List<MatchesWithVenue>> getAllMatchesByPreviousDateAndResultStatus() throws Exception {
         Result<List<MatchesWithVenue>> matchesList = matchesService.findAllMatchesByPreviousDateAndResultStatus();
         return new ResponseEntity<>(matchesList.getData(), HttpStatus.valueOf(matchesList.getCode()));
     }

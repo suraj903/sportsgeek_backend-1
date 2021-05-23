@@ -37,6 +37,16 @@ public class MatchesService {
         }
         throw new ResultException(new Result<>(404, "Unable to find the Active Tournament."));
     }
+
+    public Result<List<MatchesWithVenue>> findAllUpcomingMatches() throws Exception {
+        Tournament tournament = tournamentRepository.findTournamentByActive();
+        if(tournament != null)
+        {
+            List<MatchesWithVenue> matchesList = matchesRepository.findAllUpcomingMatches(tournament.getTournamentId());
+            return new Result<>(200, matchesList);
+        }
+        throw new ResultException(new Result<>(404, "Unable to find the Active Tournament."));
+    }
     
     public Result<MatchesWithVenue> findMatchesById(int matchId) throws Exception {
         MatchesWithVenue matchesWithVenue = matchesRepository.findMatchesById(matchId);

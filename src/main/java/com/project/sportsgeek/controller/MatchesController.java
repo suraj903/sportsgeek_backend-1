@@ -126,7 +126,7 @@ public class MatchesController {
             }
     )
     @PreAuthorize("hasRole('Admin')")
-    @GetMapping(value = "/old-match",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/old-matches",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<MatchesWithVenue>> findAllMatchesByPreviousDateAndResultStatus() throws Exception {
         Result<List<MatchesWithVenue>> matchesList = matchesService.findAllMatchesByPreviousDateAndResultStatus();
         return new ResponseEntity<>(matchesList.getData(), HttpStatus.valueOf(matchesList.getCode()));

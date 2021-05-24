@@ -15,5 +15,5 @@ public class UserWinningAndLosingPoints implements Serializable {
 
     private int userId;
     private int winningPoints;
-    private int loosingPoints;
+    private int losingPoints;
 }

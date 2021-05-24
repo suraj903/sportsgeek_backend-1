@@ -104,9 +104,9 @@ public class UserRepoImpl implements UserRepository {
 				String sql = "SELECT SUM(ContestPoints) as LoosingPoints FROM Contest as c INNER JOIN Matches as m ON c.MatchId = m.MatchId WHERE WinningPoints=0 AND m.ResultStatus=1 AND UserId = :userId";
 				MapSqlParameterSource params = new MapSqlParameterSource("userId", userId);
 				int losingPoints = jdbcTemplate.queryForObject(sql, params, Integer.class);
-				userWinningAndLosingPoints.setLoosingPoints(losingPoints);
+				userWinningAndLosingPoints.setLosingPoints(losingPoints);
 			}catch(Exception ex){
-				userWinningAndLosingPoints.setLoosingPoints(0);
+				userWinningAndLosingPoints.setLosingPoints(0);
 			}
 			return userWinningAndLosingPoints;
 		}else{

@@ -25,6 +25,7 @@ public class MatchesWithVenue implements Serializable {
     private int tournamentId;
     @NotNull
     private String name;
+    private int venueId;
     @NotNull
     private String venue;
     @NotNull

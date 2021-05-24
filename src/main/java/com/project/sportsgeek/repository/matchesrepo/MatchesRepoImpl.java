@@ -98,11 +98,10 @@ public class MatchesRepoImpl implements MatchesRepository {
 
     @Override
     public int addMatch(Matches matches) throws Exception {
-        KeyHolder holder = new GeneratedKeyHolder();
-        String sql = "INSERT INTO Matches (MatchId,TournamentId,Name,StartDatetime,VenueId,Team1,Team2,MinimumPoints) VALUES(:matchId,:tournamentId,:name,:startDatetime,:venueId,:team1,:team2,:MinimumPoints)";
-        int n = jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(matches), holder);
+        String sql = "INSERT INTO Matches (MatchId,TournamentId,Name,StartDatetime,VenueId,Team1,Team2,MinimumPoints) VALUES(:matchId,:tournamentId,:name,:startDatetime,:venueId,:team1,:team2,:minimumPoints)";
+        int n = namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(matches));
         if(n > 0) {
-            return holder.getKey().intValue();
+            return matches.getMatchId();
         }
         return 0;
     }
@@ -110,7 +109,7 @@ public class MatchesRepoImpl implements MatchesRepository {
     @Override
     public boolean updateMatch(int matchId, Matches matches) throws Exception {
 //        String sql = "UPDATE Matches SET TournamentId = :tournamentId, Name = :name, StartDatetime = :startDatetime, VenueId=:venueId, Team1=:team1, Team2=:team2, WinnerTeamId=:winnerTeamId, ResultStatus=:resultStatus,MinimumPoints=:MinimumPoints WHERE MatchId=:matchId";
-        String sql = "UPDATE Matches SET TournamentId = :tournamentId, Name = :name, StartDatetime = :startDatetime, VenueId=:venueId, Team1=:team1, Team2=:team2, MinimumPoints=:MinimumPoints WHERE MatchId=:matchId";
+        String sql = "UPDATE Matches SET TournamentId = :tournamentId, Name = :name, StartDatetime = :startDatetime, VenueId=:venueId, Team1=:team1, Team2=:team2, MinimumPoints=:minimumPoints WHERE MatchId=:matchId";
         matches.setMatchId(matchId);
         return namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(matches)) > 0;
     }

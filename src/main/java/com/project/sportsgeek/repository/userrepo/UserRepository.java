@@ -10,7 +10,7 @@ public interface UserRepository {
 
     List<UserResponse> findAllUsers() ;
 
-    UserResponse findUserByUserId(int id) throws Exception;
+    UserResponse findUserByUserId(int userId) throws Exception;
 
     UserWithPassword findUserWithPasswordByUserId(int userId) throws Exception;
 
@@ -20,17 +20,17 @@ public interface UserRepository {
 
     UserResponse findUserByEmailIdAndMobileNumber(User user) throws Exception;
 
-    List<UserWinningAndLossingPoints> findLoosingPointsByUserId(int userId) throws Exception;
-
-    List<UserWinningAndLossingPoints> findWinningPointsByUserId(int userId) throws Exception;
+    UserWinningAndLosingPoints findWinningAndLosingPointsByUserId(int userId) throws Exception;
 
     List<UserResponse> findUsersByStatus(boolean status) throws Exception;
 
     int addUser(UserWithPassword userWithPassword) throws Exception;
 
-    boolean updateUser(int id, User user) throws Exception;
+    boolean updateUser(int userId, User user) throws Exception;
 
-    boolean updateStatus(int id, boolean status) throws Exception;
+    boolean updateUserWithProfilePicture(int userId, User user) throws Exception;
+
+    boolean updateStatus(int userId, boolean status) throws Exception;
 
     boolean updateUserPassword(UserWithNewPassword userWithNewPassword) throws Exception;
 
@@ -44,7 +44,7 @@ public interface UserRepository {
 
     UserForLoginState authenticate(UserAtLogin userAtLogin) throws Exception;
 
-    boolean deleteUser(int id) throws Exception;
+    boolean deleteUser(int userId) throws Exception;
 
     boolean addAvailablePoints(int userId, int points) throws Exception;
 

@@ -2,7 +2,6 @@ package com.project.sportsgeek.controller;
 
 import com.project.sportsgeek.exception.ResultException;
 import com.project.sportsgeek.jwtconfig.JwtTokenUtil;
-import com.project.sportsgeek.model.Team;
 import com.project.sportsgeek.model.profile.*;
 import com.project.sportsgeek.response.Result;
 import com.project.sportsgeek.service.UserService;
@@ -75,21 +74,10 @@ public class UserController {
             @ApiResponse(code = 500, message = "Internal server error"),
             @ApiResponse(code = 404, message = "Bad Request")})
     @PreAuthorize("hasAnyRole('Admin','User')")
-    @GetMapping("/{userId}/loosing-points")
-    public ResponseEntity<UserWinningAndLossingPoints> getUserLoosingPoints(@PathVariable int userId)
+    @GetMapping("/{userId}/winning-losing-points")
+    public ResponseEntity<UserWinningAndLosingPoints> getUserWinningAndLosingPoints(@PathVariable int userId)
             throws Exception {
-        Result<UserWinningAndLossingPoints> userResult = userService.findUserLoosingPoints(userId);
-        return new ResponseEntity<>(userResult.getData(), HttpStatus.valueOf(userResult.getCode()));
-    }
-
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "Success"),
-            @ApiResponse(code = 500, message = "Internal server error"),
-            @ApiResponse(code = 404, message = "Bad Request")})
-    @PreAuthorize("hasAnyRole('Admin','User')")
-    @GetMapping("/{userId}/winning-points")
-    public ResponseEntity<UserWinningAndLossingPoints> getUserWinningPoints(@PathVariable int userId)
-            throws Exception {
-        Result<UserWinningAndLossingPoints> userResult = userService.findUserWinningPoints(userId);
+        Result<UserWinningAndLosingPoints> userResult = userService.findUserWinningAndLosingPoints(userId);
         return new ResponseEntity<>(userResult.getData(), HttpStatus.valueOf(userResult.getCode()));
     }
 
@@ -134,11 +122,11 @@ public class UserController {
             @ApiResponse(code = 404, message = "Bad Request")})
     @PostMapping("/register-with-profile-picture")
     public ResponseEntity<User> addUserWithProfilePicture(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName, @RequestParam("genderId") int genderId, @RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("email") String email, @RequestParam("mobileNumber") String mobileNumber, @RequestParam("availablePoints") int availablePoints ,@RequestParam("profilePicture") MultipartFile multipartFile) throws Exception {
-        System.out.println("MultipartFile : ");
-        System.out.println(multipartFile);
+//        System.out.println("MultipartFile : ");
+//        System.out.println(multipartFile);
         String filename = multipartFile.getOriginalFilename();
-        System.out.println("Filename : '" + filename + "'");
-        System.out.println(multipartFile.getOriginalFilename().length());
+//        System.out.println("Filename : '" + filename + "'");
+//        System.out.println(multipartFile.getOriginalFilename().length());
         UserWithPassword userWithPassword = new UserWithPassword();
         userWithPassword.setFirstName(firstName);
         userWithPassword.setLastName(lastName);
@@ -187,9 +175,19 @@ public class UserController {
             @ApiResponse(code = 500, message = "Internal error")})
     @PreAuthorize("hasAnyRole('Admin','User')")
     @PutMapping("/{userId}")
-    public ResponseEntity<User> updateUser(@PathVariable int userId, @RequestBody(required = true) User user)
-            throws Exception {
-        Result<User> userResult = userService.updateUser(userId, user);
+    public ResponseEntity<User> updateUser(@PathVariable int userId, @RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName, @RequestParam("genderId") int genderId, @RequestParam("username") String username, @RequestParam("email") String email, @RequestParam("mobileNumber") String mobileNumber, @RequestParam("profilePicture") MultipartFile multipartFile) throws Exception {
+        String filename = multipartFile.getOriginalFilename();
+//        System.out.println("Filename : '" + filename + "'");
+//        System.out.println(multipartFile.getOriginalFilename().length());
+        User user = new User();
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setGenderId(genderId);
+        user.setUsername(username);
+        user.setEmail(email);
+        user.setMobileNumber(mobileNumber);
+
+        Result<User> userResult = userService.updateUser(userId, user, multipartFile);
         return new ResponseEntity<>(userResult.getData(), HttpStatus.valueOf(userResult.getCode()));
     }
 
@@ -198,7 +196,7 @@ public class UserController {
             @ApiResponse(code = 400, message = "Missing or invalid request body"),
             @ApiResponse(code = 500, message = "Internal error")})
     @PreAuthorize("hasRole('Admin')")
-    @PutMapping("/{userId}/update-user-role/{roleId}")
+    @PutMapping("/{userId}/update-role/{roleId}")
     public ResponseEntity<Result<String>> updateUserRole(@PathVariable int userId, @PathVariable int roleId)
             throws Exception {
         Result<String> userResult = userService.updateUserRole(userId, roleId);

@@ -92,7 +92,7 @@ public class TeamController {
                 .name(name)
                 .shortName(shortName)
                 .teamLogo(filename).build();
-        Result<Team> teamResult = teamService.updateTeam(teamId,team,multipartFile);
+        Result<Team> teamResult = teamService.updateTeam(teamId, team, multipartFile);
         return new ResponseEntity(teamResult.getData(), HttpStatus.valueOf(teamResult.getCode()));
     }
 

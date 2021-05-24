@@ -11,7 +11,7 @@ import java.io.Serializable;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserWinningAndLossingPoints implements Serializable {
+public class UserWinningAndLosingPoints implements Serializable {
 
     private int userId;
     private int winningPoints;

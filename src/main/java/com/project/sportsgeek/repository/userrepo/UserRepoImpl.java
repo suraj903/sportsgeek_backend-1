@@ -86,19 +86,32 @@ public class UserRepoImpl implements UserRepository {
 	}
 
 	@Override
-	public List<UserWinningAndLossingPoints> findLoosingPointsByUserId(int userId) throws Exception {
-		String sql = "SELECT SUM(ContestPoints) as LoosingPoints,c.UserId \n"
-				+ "FROM Contest as c INNER JOIN Matches as m ON c.MatchId = m.MatchId\n"
-				+ "WHERE WinningPoints=0 AND m.ResultStatus=1 AND UserId = :userId";
-		MapSqlParameterSource params = new MapSqlParameterSource("userId", userId);
-		return jdbcTemplate.query(sql, params, new userWithLoosingPointsRowMapper());
-	}
-
-	@Override
-	public List<UserWinningAndLossingPoints> findWinningPointsByUserId(int userId) throws Exception {
-		String sql = "select sum(WinningPoints) as WinningPoints,UserId from Contest where UserId = :userId";
-		MapSqlParameterSource params = new MapSqlParameterSource("userId", userId);
-		return jdbcTemplate.query(sql, params, new UserWithWinningPointsRowMapper());
+	public UserWinningAndLosingPoints findWinningAndLosingPointsByUserId(int userId) throws Exception {
+		if(findUserByUserId(userId) != null){
+			UserWinningAndLosingPoints userWinningAndLosingPoints = new UserWinningAndLosingPoints();
+			userWinningAndLosingPoints.setUserId(userId);
+			// Winning Points
+			try{
+				String sql = "select sum(WinningPoints) as WinningPoints from Contest where UserId = :userId";
+				MapSqlParameterSource params = new MapSqlParameterSource("userId", userId);
+				int winningPoints = jdbcTemplate.queryForObject(sql, params, Integer.class);
+				userWinningAndLosingPoints.setWinningPoints(winningPoints);
+			}catch(Exception ex){
+				userWinningAndLosingPoints.setWinningPoints(0);
+			}
+			// Losing Points
+			try{
+				String sql = "SELECT SUM(ContestPoints) as LoosingPoints FROM Contest as c INNER JOIN Matches as m ON c.MatchId = m.MatchId WHERE WinningPoints=0 AND m.ResultStatus=1 AND UserId = :userId";
+				MapSqlParameterSource params = new MapSqlParameterSource("userId", userId);
+				int losingPoints = jdbcTemplate.queryForObject(sql, params, Integer.class);
+				userWinningAndLosingPoints.setLoosingPoints(losingPoints);
+			}catch(Exception ex){
+				userWinningAndLosingPoints.setLoosingPoints(0);
+			}
+			return userWinningAndLosingPoints;
+		}else{
+			return null;
+		}
 	}
 
 	@Override
@@ -141,9 +154,9 @@ public class UserRepoImpl implements UserRepository {
 	@Override
 	public int addUser(UserWithPassword userWithPassword) throws Exception {
 		KeyHolder holder = new GeneratedKeyHolder();
-		String insert_sql = "INSERT INTO User (FirstName,LastName,GenderId,Username,Password,ProfilePicture,RoleId,AvailablePoints,Status)"
+		String sql = "INSERT INTO User (FirstName,LastName,GenderId,Username,Password,ProfilePicture,RoleId,AvailablePoints,Status)"
 				+ "values(:firstName,:lastName,:genderId,:Username,:password,:profilePicture,:roleId,:availablePoints,:status)";
-		int n = jdbcTemplate.update(insert_sql, new BeanPropertySqlParameterSource(userWithPassword), holder);
+		int n = jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(userWithPassword), holder);
 		if(n > 0){
 			return holder.getKey().intValue();
 		}else{
@@ -157,17 +170,24 @@ public class UserRepoImpl implements UserRepository {
 
 	@Override
 	public boolean updateUser(int userId, User user) throws Exception {
-		String update_query = "UPDATE User SET FirstName =:firstName, LastName =:lastName, GenderId =:genderId WHERE UserId=:userId";
+		String sql = "UPDATE User SET FirstName = :firstName, LastName = :lastName, GenderId = :genderId, Username = :username WHERE UserId=:userId";
 		user.setUserId(userId);
-		return jdbcTemplate.update(update_query, new BeanPropertySqlParameterSource(user)) > 0;
+		return jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(user)) > 0;
+	}
+
+	@Override
+	public boolean updateUserWithProfilePicture(int userId, User user) throws Exception {
+		String sql = "UPDATE User SET FirstName = :firstName, LastName = :lastName, GenderId = :genderId, Username = :username, ProfilePicture = :profilePicture WHERE UserId=:userId";
+		user.setUserId(userId);
+		return jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(user)) > 0;
 	}
 
 	@Override
 	public boolean updateStatus(int userId, boolean status) throws Exception {
-		String update_status = "UPDATE User set Status = :status WHERE UserId = :userId";
+		String sql = "UPDATE User set Status = :status WHERE UserId = :userId";
 		MapSqlParameterSource params = new MapSqlParameterSource("status", status);
 		params.addValue("userId", userId);
-		return jdbcTemplate.update(update_status, params) > 0;
+		return jdbcTemplate.update(sql, params) > 0;
 	}
 
 	@Override

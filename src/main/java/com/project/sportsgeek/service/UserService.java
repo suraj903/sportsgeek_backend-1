@@ -1,8 +1,6 @@
 package com.project.sportsgeek.service;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
@@ -83,18 +81,10 @@ public class UserService implements UserDetailsService {
 		throw new ResultException(new Result<>(404, "User with userId: " + userId + " not found."));
 	}
 
-	public Result<UserWinningAndLossingPoints> findUserLoosingPoints(int userId) throws Exception {
-		List<UserWinningAndLossingPoints> userList = userRepository.findLoosingPointsByUserId(userId);
-		if (userList.size() > 0) {
-			return new Result<>(200, userList.get(0));
-		}
-		throw new ResultException(new Result<>(404, "User with userId: " + userId + " not found."));
-	}
-
-	public Result<UserWinningAndLossingPoints> findUserWinningPoints(int userId) throws Exception {
-		List<UserWinningAndLossingPoints> userList = userRepository.findWinningPointsByUserId(userId);
-		if (userList.size() > 0) {
-			return new Result<>(200, userList.get(0));
+	public Result<UserWinningAndLosingPoints> findUserWinningAndLosingPoints(int userId) throws Exception {
+		UserWinningAndLosingPoints userWinningAndLosingPoints = userRepository.findWinningAndLosingPointsByUserId(userId);
+		if (userWinningAndLosingPoints != null) {
+			return new Result<>(200, userWinningAndLosingPoints);
 		}
 		throw new ResultException(new Result<>(404, "User with userId: " + userId + " not found."));
 	}
@@ -291,9 +281,26 @@ public class UserService implements UserDetailsService {
 //	------------------------------------------------- UPDATE SERVICE ----------------------------------------------------------------------------
 //	---------------------------------------------------------------------------------------------------------------------------------------------
 
-	public Result<User> updateUser(int userId, User user) throws Exception {
+	public Result<User> updateUser(int userId, User user, MultipartFile multipartFile) throws Exception {
+		boolean result = false;
+		// Upload Image
+		if(multipartFile.getOriginalFilename().length() != 0){
+			File file = imageUploadService.uploadImage(multipartFile);
+			if (file.toString() != "") {
+				String profilePicture = "https://firebasestorage.googleapis.com/v0/b/sportsgeek-74e1e.appspot.com/o/" +file+"?alt=media&token=e9924ea4-c2d9-4782-bc2d-0fe734431c86";
+				user.setProfilePicture(profilePicture);
+				result = userRepository.updateUserWithProfilePicture(userId, user);
+			}
+			else
+			{
+				throw new ResultException(new Result<>(400, "Unable to upload User Image."));
+			}
+		}
+		else{  // If image not passed
+			result = userRepository.updateUser(userId, user);
+		}
 		// Update User
-		if (userRepository.updateUser(userId, user)) {
+		if (result == true) {
 			// Update Email
 			EmailContact emailContact = new EmailContact();
 			emailContact.setEmailId(user.getEmail());

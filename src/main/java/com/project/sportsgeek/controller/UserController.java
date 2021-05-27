@@ -110,23 +110,7 @@ public class UserController {
             @ApiResponse(code = 500, message = "Internal server error"),
             @ApiResponse(code = 404, message = "Bad Request")})
     @PostMapping("/register")
-    public ResponseEntity<User> addUser(@RequestBody(required = true) UserWithPassword userWithPassword)
-            throws Exception {
-        userWithPassword.setPassword(bCryptPasswordEncoder.encode(userWithPassword.getPassword()));
-        Result<User> userResult = userService.addUser(userWithPassword);
-        return new ResponseEntity<>(userResult.getData(), HttpStatus.valueOf(userResult.getCode()));
-    }
-
-    @ApiResponses(value = {@ApiResponse(code = 200, message = "Success"),
-            @ApiResponse(code = 500, message = "Internal server error"),
-            @ApiResponse(code = 404, message = "Bad Request")})
-    @PostMapping("/register-with-profile-picture")
-    public ResponseEntity<User> addUserWithProfilePicture(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName, @RequestParam("genderId") int genderId, @RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("email") String email, @RequestParam("mobileNumber") String mobileNumber, @RequestParam("availablePoints") int availablePoints ,@RequestParam("profilePicture") MultipartFile multipartFile) throws Exception {
-//        System.out.println("MultipartFile : ");
-//        System.out.println(multipartFile);
-        String filename = multipartFile.getOriginalFilename();
-//        System.out.println("Filename : '" + filename + "'");
-//        System.out.println(multipartFile.getOriginalFilename().length());
+    public ResponseEntity<User> addUser(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName, @RequestParam("genderId") int genderId, @RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("email") String email, @RequestParam("mobileNumber") String mobileNumber, @RequestParam("availablePoints") int availablePoints ,@RequestParam("profilePicture") MultipartFile multipartFile) throws Exception {
         UserWithPassword userWithPassword = new UserWithPassword();
         userWithPassword.setFirstName(firstName);
         userWithPassword.setLastName(lastName);
@@ -137,7 +121,7 @@ public class UserController {
         userWithPassword.setMobileNumber(mobileNumber);
         userWithPassword.setAvailablePoints(availablePoints);
 
-        Result<User> userResult = userService.addUserWithProfilePicture(userWithPassword, multipartFile);
+        Result<User> userResult = userService.addUser(userWithPassword, multipartFile);
         return new ResponseEntity<>(userResult.getData(), HttpStatus.valueOf(userResult.getCode()));
     }
 
@@ -175,8 +159,8 @@ public class UserController {
             @ApiResponse(code = 500, message = "Internal error")})
     @PreAuthorize("hasAnyRole('Admin','User')")
     @PutMapping("/{userId}")
-    public ResponseEntity<User> updateUser(@PathVariable int userId, @RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName, @RequestParam("genderId") int genderId, @RequestParam("username") String username, @RequestParam("email") String email, @RequestParam("mobileNumber") String mobileNumber, @RequestParam("profilePicture") MultipartFile multipartFile) throws Exception {
-        String filename = multipartFile.getOriginalFilename();
+    public ResponseEntity<User> updateUser(@PathVariable int userId, @RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName, @RequestParam("genderId") int genderId, @RequestParam("username") String username, @RequestParam("email") String email, @RequestParam("mobileNumber") String mobileNumber, @RequestParam(value="profilePicture", required=false) MultipartFile multipartFile) throws Exception {
+//        String filename = multipartFile.getOriginalFilename();
 //        System.out.println("Filename : '" + filename + "'");
 //        System.out.println(multipartFile.getOriginalFilename().length());
         User user = new User();

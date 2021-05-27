@@ -14,6 +14,7 @@ public class StatisticsRowMapper implements RowMapper<Statistics> {
         statistics.setFirstName(rs.getString("FirstName"));
         statistics.setUserName(rs.getString("UserName"));
         statistics.setUserId(rs.getInt("UserId"));
+        statistics.setProfilePicture(rs.getString("ProfilePicture"));
         statistics.setTotalWinningPoints(rs.getInt("TotalWinningPoints"));
         return statistics;
     }

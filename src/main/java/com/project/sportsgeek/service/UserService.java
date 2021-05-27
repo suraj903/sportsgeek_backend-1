@@ -149,64 +149,7 @@ public class UserService implements UserDetailsService {
 //	------------------------------------------------- INSERT SERVICE ----------------------------------------------------------------------------
 //	---------------------------------------------------------------------------------------------------------------------------------------------
 
-	public Result<User> addUser(UserWithPassword userWithPassword) throws Exception {
-		int usernameCount = userRepository.getUsersCountByUsername(userWithPassword.getUsername());
-		int emailCount = emailContactRepository.getCountByEmailId(userWithPassword.getEmail());
-		if (usernameCount > 0) {
-			throw new ResultException(new Result<>(404, "Username already exists."));
-		}
-		else if(emailCount > 0){
-			throw new ResultException(new Result<>(400, "Email already exists."));
-		}
-		else {
-			if(userWithPassword.getRoleId() == 0){
-				userWithPassword.setRoleId(2);
-			}
-			int userId = userRepository.addUser(userWithPassword);
-			userWithPassword.setUserId(userId);
-			if (userId > 0) {
-				// Add Email
-				EmailContact emailContact = new EmailContact();
-				emailContact.setUserId(userId);
-				emailContact.setEmailId(userWithPassword.getEmail());
-				emailContactRepository.addEmailContact(emailContact);
-				// Add Mobile Number
-				MobileContact mobileContact = new MobileContact();
-				mobileContact.setUserId(userId);
-				mobileContact.setMobileNumber(userWithPassword.getMobileNumber());
-				mobileContactRepository.addMobileContact(mobileContact);
-
-				// Send Email to User
-				String subject = "SportsGeek Registration Successful!!";
-				String msg = "Hello " + userWithPassword.getFirstName() + " " + userWithPassword.getLastName() +
-						"\n\nYou have successfully registered on SportsGeek." +
-						"\n\nYour account is pending for approval by the Admin. Please wait until admin approves your account." +
-						"\n\nThanking you\nSportsGeek Team";
-				Email email = Email.builder().setSubject(subject).setTo(userWithPassword.getEmail()).message(msg)
-						.build();
-				emailService.sendEmail(email);
-
-				// Send Email to Admin
-				String admin_subject = "New User Registration Approval!!";
-				String adm_msg = "Hello Admin\n\nA new user has registered on SportsGeek with the following details :\n" +
-						"\nName : " + userWithPassword.getFirstName() + " " + userWithPassword.getLastName() +
-						"\nEmail : " + userWithPassword.getEmail() +
-						"\nMobile Number : " + userWithPassword.getMobileNumber() +
-						"\nGender : " + (userWithPassword.getGenderId() == 1 ? "Male" : "Female") +
-						"\nUsername : " + userWithPassword.getUsername() +
-						"\n\nPlease Approve if " + (userWithPassword.getGenderId() == 1 ? "he" : "she") + " is a valid user." +
-						"\n\nThanking you\n" + "SportsGeek Team";
-				String adminEmailId = "admn.sportsgeek@gmail.com";
-				Email adminEmail = Email.builder().setSubject(admin_subject).setTo(adminEmailId).message(adm_msg)
-						.build();
-				emailService.sendEmail(adminEmail);
-				return new Result<>(201, userWithPassword);
-			} else {
-				throw new ResultException(new Result<>(500, "Unable to add User"));
-			}
-		}
-	}
-	public Result<User> addUserWithProfilePicture(UserWithPassword userWithPassword, MultipartFile multipartFile) throws Exception {
+	public Result<User> addUser(UserWithPassword userWithPassword, MultipartFile multipartFile) throws Exception {
 		int usernameCount = userRepository.getUsersCountByUsername(userWithPassword.getUsername());
 		int emailCount = emailContactRepository.getCountByEmailId(userWithPassword.getEmail());
 		if (usernameCount > 0) {
@@ -220,7 +163,8 @@ public class UserService implements UserDetailsService {
 				userWithPassword.setRoleId(2);
 			}
 			// Upload Image
-			if(multipartFile.getOriginalFilename().length() != 0){
+//			if(multipartFile.getOriginalFilename().length() != 0){
+			if(multipartFile != null){
 				File file = imageUploadService.uploadImage(multipartFile);
 				if (file.toString() != "") {
 					String profilePicture = "https://firebasestorage.googleapis.com/v0/b/sportsgeek-74e1e.appspot.com/o/" +file+"?alt=media&token=e9924ea4-c2d9-4782-bc2d-0fe734431c86";
@@ -230,6 +174,8 @@ public class UserService implements UserDetailsService {
 				{
 					throw new ResultException(new Result<>(400, "Unable to upload User Image."));
 				}
+			}else{
+				userWithPassword.setProfilePicture("");
 			}
 			// Add User
 			int userId = userRepository.addUser(userWithPassword);
@@ -284,12 +230,13 @@ public class UserService implements UserDetailsService {
 	public Result<User> updateUser(int userId, User user, MultipartFile multipartFile) throws Exception {
 		boolean result = false;
 		// Upload Image
-		if(multipartFile.getOriginalFilename().length() != 0){
+//		if(multipartFile.getOriginalFilename().length() != 0){
+		if(multipartFile != null){
 			File file = imageUploadService.uploadImage(multipartFile);
 			if (file.toString() != "") {
 				String profilePicture = "https://firebasestorage.googleapis.com/v0/b/sportsgeek-74e1e.appspot.com/o/" +file+"?alt=media&token=e9924ea4-c2d9-4782-bc2d-0fe734431c86";
 				user.setProfilePicture(profilePicture);
-				result = userRepository.updateUserWithProfilePicture(userId, user);
+//				result = userRepository.updateUserWithProfilePicture(userId, user);
 			}
 			else
 			{
@@ -297,8 +244,10 @@ public class UserService implements UserDetailsService {
 			}
 		}
 		else{  // If image not passed
-			result = userRepository.updateUser(userId, user);
+//			result = userRepository.updateUser(userId, user);
+			user.setProfilePicture("");
 		}
+		result = userRepository.updateUserWithProfilePicture(userId, user);
 		// Update User
 		if (result == true) {
 			// Update Email

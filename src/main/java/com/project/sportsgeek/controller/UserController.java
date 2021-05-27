@@ -110,7 +110,7 @@ public class UserController {
             @ApiResponse(code = 500, message = "Internal server error"),
             @ApiResponse(code = 404, message = "Bad Request")})
     @PostMapping("/register")
-    public ResponseEntity<User> addUser(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName, @RequestParam("genderId") int genderId, @RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("email") String email, @RequestParam("mobileNumber") String mobileNumber, @RequestParam("availablePoints") int availablePoints ,@RequestParam("profilePicture") MultipartFile multipartFile) throws Exception {
+    public ResponseEntity<User> addUser(@RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName, @RequestParam("genderId") int genderId, @RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("email") String email, @RequestParam("mobileNumber") String mobileNumber, @RequestParam("availablePoints") int availablePoints ,@RequestParam(value="profilePicture",required = false) MultipartFile multipartFile) throws Exception {
         UserWithPassword userWithPassword = new UserWithPassword();
         userWithPassword.setFirstName(firstName);
         userWithPassword.setLastName(lastName);

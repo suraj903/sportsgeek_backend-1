@@ -2,6 +2,7 @@ package com.project.sportsgeek.controller;
 
 import com.project.sportsgeek.exception.ResultException;
 import com.project.sportsgeek.model.Team;
+import com.project.sportsgeek.model.profile.User;
 import com.project.sportsgeek.response.Result;
 import com.project.sportsgeek.service.TeamService;
 import io.swagger.annotations.ApiResponse;
@@ -65,12 +66,11 @@ public class TeamController {
     @PreAuthorize("hasRole('Admin')")
 //    @RequestBody(required = true) @Valid Team team
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Team> addTeam (@RequestParam("name") String name,@RequestParam("shortName") String shortName,@RequestParam("teamLogo") MultipartFile multipartFile) throws  Exception {
-        String filename = multipartFile.getOriginalFilename();
-        Team team = Team.builder()
-                .name(name)
-                .shortName(shortName)
-                .teamLogo(filename).build();
+    public ResponseEntity<Team> addTeam (@RequestParam("name") String name, @RequestParam("shortName") String shortName, @RequestParam(value="teamLogo", required = false) MultipartFile multipartFile) throws  Exception {
+        Team team = new Team();
+        team.setName(name);
+        team.setShortName(shortName);
+
         Result<Team> teamResult = teamService.addTeam(team,multipartFile);
         return new ResponseEntity(teamResult.getData(), HttpStatus.valueOf(teamResult.getCode()));
     }
@@ -86,12 +86,10 @@ public class TeamController {
     @PreAuthorize("hasRole('Admin')")
 //    @RequestBody(required = true) @Valid Team team
     @PutMapping(value = "/{teamId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Team> updateTeam(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int teamId,@RequestParam("name") String name,@RequestParam("shortName") String shortName,@RequestParam("teamLogo") MultipartFile multipartFile) throws Exception {
-        String filename = multipartFile.getOriginalFilename();
-        Team team = Team.builder()
-                .name(name)
-                .shortName(shortName)
-                .teamLogo(filename).build();
+    public ResponseEntity<Team> updateTeam(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int teamId, @RequestParam("name") String name, @RequestParam("shortName") String shortName, @RequestParam(value="teamLogo", required = false) MultipartFile multipartFile) throws Exception {
+        Team team = new Team();
+        team.setName(name);
+
         Result<Team> teamResult = teamService.updateTeam(teamId, team, multipartFile);
         return new ResponseEntity(teamResult.getData(), HttpStatus.valueOf(teamResult.getCode()));
     }

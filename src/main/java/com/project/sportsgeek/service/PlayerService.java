@@ -61,31 +61,51 @@ public class PlayerService {
     }
 
     public Result<Player> addPlayer(Player player, MultipartFile multipartFile) throws Exception {
-        File file = imageUploadService.uploadImage(multipartFile);
-        if (file.toString() != "") {
-            String playerlogo = "https://firebasestorage.googleapis.com/v0/b/sportsgeek-74e1e.appspot.com/o/" +file+"?alt=media&token=e9924ea4-c2d9-4782-bc2d-0fe734431c86";
-            player.setProfilePicture(playerlogo);
-            int playerId = playerRepository.addPlayer(player);
-            player.setPlayerId(playerId);
-            if (playerId > 0) {
-                return new Result<>(201,"Player Details Added Successfully",player);
+        // Profile Picture
+        if(multipartFile != null){
+            File file = imageUploadService.uploadImage(multipartFile);
+            if (file.toString() != "") {
+                String playerlogo = "https://firebasestorage.googleapis.com/v0/b/sportsgeek-74e1e.appspot.com/o/" +file+"?alt=media&token=e9924ea4-c2d9-4782-bc2d-0fe734431c86";
+                player.setProfilePicture(playerlogo);
             }
-            throw new ResultException(new Result<>(400, "Unable to add Player."));
+            else{
+                throw new ResultException(new Result<>(400, "Unable to upload Player Image."));
+            }
         }
-        throw new ResultException(new Result<>(400, "Unable to upload Player Image."));
+        else{
+            player.setProfilePicture("");
+        }
+        // Add Player
+        int playerId = playerRepository.addPlayer(player);
+        player.setPlayerId(playerId);
+        if (playerId > 0) {
+            return new Result<>(201,"Player Added Successfully",player);
+        }
+        throw new ResultException(new Result<>(400, "Unable to add Player."));
     }
 
     public Result<Player> updatePlayer(int playerId, Player player, MultipartFile multipartFile) throws Exception {
-        File file = imageUploadService.uploadImage(multipartFile);
-        if (file.toString() != "") {
-            String playerlogo = "https://firebasestorage.googleapis.com/v0/b/sportsgeek-74e1e.appspot.com/o/" + file + "?alt=media&token=e9924ea4-c2d9-4782-bc2d-0fe734431c86";
-            player.setProfilePicture(playerlogo);
-            if (playerRepository.updatePlayer(playerId, player)) {
-                return new Result<>(200, "Player Details Updated Successfully", player);
+        boolean result = false;
+        // Profile Picture
+        if(multipartFile != null){
+            File file = imageUploadService.uploadImage(multipartFile);
+            if (file.toString() != "") {
+                String playerlogo = "https://firebasestorage.googleapis.com/v0/b/sportsgeek-74e1e.appspot.com/o/" + file + "?alt=media&token=e9924ea4-c2d9-4782-bc2d-0fe734431c86";
+                player.setProfilePicture(playerlogo);
+                result = playerRepository.updatePlayerWithProfilePicture(playerId, player);
             }
-            throw new ResultException(new Result<>(400, "Player with PlayerId: " + playerId + " not found."));
+            else{
+                throw new ResultException(new Result<>(400, "Unable to upload the image."));
+            }
         }
-        throw new ResultException(new Result<>(400, "Unable to upload the image."));
+        else{
+            result = playerRepository.updatePlayer(playerId, player);
+        }
+        // Update Player
+        if (result == true) {
+            return new Result<>(200, "Player Details Updated Successfully", player);
+        }
+        throw new ResultException(new Result<>(400, "Player with PlayerId: " + playerId + " not found."));
     }
 
     public Result<String> updatePlayerType(int playerId, int PlayerTypeId) throws Exception {

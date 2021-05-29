@@ -16,6 +16,8 @@ public interface TeamRepository {
 
     boolean updateTeam(int teamId, Team team) throws Exception;
 
+    boolean updateTeamWithLogo(int teamId, Team team) throws Exception;
+
     boolean deleteTeam(int teamId) throws Exception;
 
 }

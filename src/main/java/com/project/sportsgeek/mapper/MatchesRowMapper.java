@@ -30,6 +30,7 @@ public class MatchesRowMapper implements RowMapper<MatchesWithVenue> {
       matches.setTournamentId(rs.getInt("TournamentId"));
       matches.setTeam1Id(rs.getInt("Team1"));
       matches.setTeam2Id(rs.getInt("Team2"));
+      matches.setName(rs.getString("Name"));
       return matches;
     }
 }

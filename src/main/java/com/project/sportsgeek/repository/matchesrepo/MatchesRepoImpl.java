@@ -28,7 +28,7 @@ public class MatchesRepoImpl implements MatchesRepository {
 
     @Override
     public List<MatchesWithVenue> findAllMatches(int tournamentId) throws Exception {
-       String sql = "SELECT MatchId, StartDatetime, m.Name as MatchName, Team1, Team2, t1.Name as team1long, t1.ShortName as team1short, " +
+       String sql = "SELECT MatchId , StartDatetime, Team1,Team2, t1.Name as team1long, t1.ShortName as team1short, " +
                "t1.TeamLogo as team1logo, t2.Name as team2long, t2.ShortName as team2short, t2.TeamLogo as team2logo, m.venueId as venueId, v.Name as venue, MinimumPoints, WinnerTeamId, ResultStatus, TournamentId  " +
                "FROM Matches as m INNER JOIN Venue as v on m.VenueId=v.VenueId left JOIN Team as t1 on m.Team1=t1.TeamId left JOIN Team as t2 on m.Team2=t2.TeamId " +
                "order by StartDatetime";
@@ -38,7 +38,7 @@ public class MatchesRepoImpl implements MatchesRepository {
 
     @Override
     public List<MatchesWithVenue> findAllUpcomingMatches(int tournamentId) throws Exception {
-        String sql = "SELECT MatchId, StartDatetime, m.Name as MatchName, Team1, Team2, t1.Name as team1long, t1.ShortName as team1short, " +
+        String sql = "SELECT MatchId , StartDatetime, Team1,Team2, t1.Name as team1long, t1.ShortName as team1short, " +
                 "t1.TeamLogo as team1logo, t2.Name as team2long, t2.ShortName as team2short, t2.TeamLogo as team2logo, m.venueId as venueId, v.Name as venue, MinimumPoints, WinnerTeamId, ResultStatus, TournamentId  " +
                 "FROM Matches as m INNER JOIN Venue as v on m.VenueId=v.VenueId left JOIN Team as t1 on m.Team1=t1.TeamId left JOIN Team as t2 on m.Team2=t2.TeamId " +
                 "where TournamentId=:tournamentId and StartDatetime > CURRENT_TIMESTAMP order by StartDatetime";
@@ -48,7 +48,7 @@ public class MatchesRepoImpl implements MatchesRepository {
 
     @Override
     public List<MatchesWithVenue> findAllMatchesByTournament(int tournamentId) throws Exception {
-        String sql = "SELECT MatchId, StartDatetime, M.Name as MatchName, Team1, Team2, t1.Name as team1long, t1.ShortName as team1short, " +
+        String sql = "SELECT MatchId , StartDatetime, Team1,Team2, t1.Name as team1long, t1.ShortName as team1short, " +
                 "t1.TeamLogo as team1logo, t2.Name as team2long, t2.ShortName as team2short, t2.TeamLogo as team2logo, m.venueId as venueId, v.Name as venue, MinimumPoints, WinnerTeamId, ResultStatus, TournamentId  " +
                 "FROM Matches as m INNER JOIN Venue as v on m.VenueId=v.VenueId left JOIN Team as t1 on m.Team1=t1.TeamId left JOIN Team as t2 on m.Team2=t2.TeamId " +
                 "where TournamentId=:tournamentId ORDER BY MatchId";
@@ -58,7 +58,7 @@ public class MatchesRepoImpl implements MatchesRepository {
 
     @Override
     public List<MatchesWithVenue> findAllMatchesByVenue(int venueId) throws Exception {
-        String sql = "SELECT MatchId, StartDatetime, M.Name as MatchName, Team1, Team2, t1.Name as team1long, t1.ShortName as team1short, " +
+        String sql = "SELECT MatchId , StartDatetime, Team1,Team2, t1.Name as team1long, t1.ShortName as team1short, " +
                 "t1.TeamLogo as team1logo, t2.Name as team2long, t2.ShortName as team2short, t2.TeamLogo as team2logo, m.venueId as venueId, v.Name as venue, MinimumPoints, WinnerTeamId, ResultStatus, TournamentId  " +
                 "FROM Matches as m INNER JOIN Venue as v on m.VenueId=v.VenueId left JOIN Team as t1 on m.Team1=t1.TeamId left JOIN Team as t2 on m.Team2=t2.TeamId " +
                 "where m.VenueId=:venueId ORDER BY MatchId";
@@ -68,7 +68,7 @@ public class MatchesRepoImpl implements MatchesRepository {
 
     @Override
     public List<MatchesWithVenue> findAllMatchesByTeam(int teamId) throws Exception {
-        String sql = "SELECT MatchId, StartDatetime, M.Name as MatchName, Team1, Team2, t1.Name as team1long, t1.ShortName as team1short, " +
+        String sql = "SELECT MatchId , StartDatetime, Team1,Team2, t1.Name as team1long, t1.ShortName as team1short, " +
                 "t1.TeamLogo as team1logo, t2.Name as team2long, t2.ShortName as team2short, t2.TeamLogo as team2logo, m.venueId as venueId, v.Name as venue, MinimumPoints, WinnerTeamId, ResultStatus, TournamentId  " +
                 "FROM Matches as m INNER JOIN Venue as v on m.VenueId=v.VenueId left JOIN Team as t1 on m.Team1=t1.TeamId left JOIN Team as t2 on m.Team2=t2.TeamId " +
                 "where m.Team1=:teamId or m.Team2=:teamId ORDER BY MatchId";
@@ -78,7 +78,7 @@ public class MatchesRepoImpl implements MatchesRepository {
 
     @Override
     public List<MatchesWithVenue> findAllMatchesByPreviousDateAndResultStatus(int tournamentId) throws Exception {
-        String sql = "SELECT MatchId, StartDatetime, M.Name as MatchName, Team1, Team2, t1.Name as team1long, t1.ShortName as team1short, " +
+        String sql = "SELECT MatchId , StartDatetime, Team1,Team2, t1.Name as team1long, t1.ShortName as team1short, " +
                 "t1.TeamLogo as team1logo, t2.Name as team2long, t2.ShortName as team2short, t2.TeamLogo as team2logo, m.venueId as venueId, v.Name as venue, MinimumPoints, WinnerTeamId, ResultStatus, TournamentId  " +
                 "FROM Matches as m INNER JOIN Venue as v on m.VenueId=v.VenueId left JOIN Team as t1 on m.Team1=t1.TeamId left JOIN Team as t2 on m.Team2=t2.TeamId " +
                 "where TournamentId=:tournamentId and StartDatetime < CURRENT_TIMESTAMP and m.ResultStatus IS NULL order by StartDatetime";
@@ -88,7 +88,7 @@ public class MatchesRepoImpl implements MatchesRepository {
 
     @Override
     public List<MatchesWithVenue> findAllMatchesByMinimumPoints(int minPoints) throws Exception {
-        String sql = "SELECT MatchId, StartDatetime, M.Name as MatchName, Team1,Team2, t1.Name as team1long, t1.ShortName as team1short, " +
+        String sql = "SELECT MatchId , StartDatetime, Team1,Team2, t1.Name as team1long, t1.ShortName as team1short, " +
                 "t1.TeamLogo as team1logo, t2.Name as team2long, t2.ShortName as team2short, t2.TeamLogo as team2logo, m.venueId as venueId, v.Name as venue, MinimumPoints, WinnerTeamId, ResultStatus, TournamentId  " +
                 "FROM Matches as m INNER JOIN Venue as v on m.VenueId=v.VenueId left JOIN Team as t1 on m.Team1=t1.TeamId left JOIN Team as t2 on m.Team2=t2.TeamId " +
                 "where m.MinimumPoints = :minPoints";
@@ -98,7 +98,7 @@ public class MatchesRepoImpl implements MatchesRepository {
 
     @Override
     public int addMatch(Matches matches) throws Exception {
-        String sql = "INSERT INTO Matches (MatchId, TournamentId, Name, StartDatetime, VenueId, Team1, Team2, MinimumPoints) VALUES(:matchId, :tournamentId, :name, :startDatetime, :venueId, :team1, :team2, :minimumPoints)";
+        String sql = "INSERT INTO Matches (MatchId,TournamentId,Name,StartDatetime,VenueId,Team1,Team2,MinimumPoints) VALUES(:matchId,:tournamentId,:name,:startDatetime,:venueId,:team1,:team2,:minimumPoints)";
         int n = namedParameterJdbcTemplate.update(sql, new BeanPropertySqlParameterSource(matches));
         if(n > 0) {
             return matches.getMatchId();
@@ -176,10 +176,10 @@ public class MatchesRepoImpl implements MatchesRepository {
 	public MatchesWithVenue findMatchesById(int matchId) throws Exception {
 //		String tournament_sql = "SELECT * from Tournament WHERE active = true";
 //        int tournamentid = jdbcTemplate.query(tournament_sql,new TournamentRowMapper()).get(0).getTournamentId();
-       String sql = "SELECT MatchId, StartDatetime, m.Name as MatchName, Team1, Team2, t1.Name as team1long, t1.ShortName as team1short," +
-               "t1.TeamLogo as team1logo, t2.Name as team2long, t2.ShortName as team2short, t2.TeamLogo as team2logo, m.venueId as venueId, v.Name as venue, MinimumPoints, WinnerTeamId, ResultStatus, TournamentId " +
+       String sql = "SELECT MatchId , StartDatetime, Team1,Team2, t1.Name as team1long, t1.ShortName as team1short, " +
+               "t1.TeamLogo as team1logo, t2.Name as team2long, t2.ShortName as team2short, t2.TeamLogo as team2logo, m.venueId as venueId, v.Name as venue, MinimumPoints, WinnerTeamId, ResultStatus, TournamentId  " +
                "FROM Matches as m INNER JOIN Venue as v on m.VenueId=v.VenueId left JOIN Team as t1 on m.Team1=t1.TeamId left JOIN Team as t2 on m.Team2=t2.TeamId " +
-               "where MatchId = :matchId";
+               "where MatchId=:matchId";
        MapSqlParameterSource params = new MapSqlParameterSource("matchId", matchId);
        List<MatchesWithVenue> matchList = namedParameterJdbcTemplate.query(sql, params, new MatchesRowMapper());
        if(matchList.size() > 0){

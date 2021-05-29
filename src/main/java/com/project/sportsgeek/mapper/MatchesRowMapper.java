@@ -15,6 +15,7 @@ public class MatchesRowMapper implements RowMapper<MatchesWithVenue> {
       MatchesWithVenue matches = new MatchesWithVenue();
       matches.setMatchId(rs.getInt("MatchId"));
       matches.setStartDatetime(rs.getTimestamp("StartDatetime"));
+      matches.setName(rs.getString("MatchName"));
       matches.setTeam1(rs.getString("team1long"));
       matches.setTeam1Short(rs.getString("team1short"));
       matches.setTeam1Logo(rs.getString("team1logo"));

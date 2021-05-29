@@ -31,7 +31,7 @@ public class UserRepoImpl implements UserRepository {
 	@Override
 	public List<UserResponse> findAllUsers() {
 //		String sql = "SELECT * FROM User";
-		String sql = "SELECT User.UserId as UserId, FirstName, LastName, User.GenderId, Gender.Name as GenderName, User.RoleId, Role.Name as RoleName, Username, AvailablePoints, ProfilePicture, Status, EmailContact.EmailId as Email, MobileContact.MobileNumber as MobileNumber FROM User inner join EmailContact on User.UserId=EmailContact.UserId inner join Gender on User.GenderId=Gender.GenderId inner join Role on User.RoleId=Role.RoleId inner join MobileContact on User.UserId=MobileContact.UserId";
+		String sql = "SELECT User.UserId as UserId, FirstName, LastName, User.GenderId, Gender.Name as GenderName, User.RoleId, Role.Name as RoleName, Username, AvailablePoints, ProfilePicture, Status, EmailContact.EmailId as Email, MobileContact.MobileNumber as MobileNumber FROM User inner join EmailContact on User.UserId=EmailContact.UserId inner join Gender on User.GenderId=Gender.GenderId inner join Role on User.RoleId=Role.RoleId inner join MobileContact on User.UserId=MobileContact.UserId ORDER BY User.UserId";
 		return jdbcTemplate.query(sql, new UserResponseRowMapper());
 	}
 
@@ -60,7 +60,7 @@ public class UserRepoImpl implements UserRepository {
 
 	@Override
 	public List<UserResponse> findAllUsersByRole(int roleId) throws Exception {
-		String sql = "SELECT User.UserId as UserId, FirstName, LastName, User.GenderId, Gender.Name as GenderName, User.RoleId, Role.Name as RoleName, Username, AvailablePoints, ProfilePicture, Status, EmailContact.EmailId as Email, MobileContact.MobileNumber as MobileNumber FROM User inner join EmailContact on User.UserId=EmailContact.UserId inner join Gender on User.GenderId=Gender.GenderId inner join Role on User.RoleId=Role.RoleId inner join MobileContact on User.UserId=MobileContact.UserId WHERE RoleId= :roleId";
+		String sql = "SELECT User.UserId as UserId, FirstName, LastName, User.GenderId, Gender.Name as GenderName, User.RoleId, Role.Name as RoleName, Username, AvailablePoints, ProfilePicture, Status, EmailContact.EmailId as Email, MobileContact.MobileNumber as MobileNumber FROM User inner join EmailContact on User.UserId=EmailContact.UserId inner join Gender on User.GenderId=Gender.GenderId inner join Role on User.RoleId=Role.RoleId inner join MobileContact on User.UserId=MobileContact.UserId WHERE RoleId= :roleId ORDER BY User.UserId";
 		MapSqlParameterSource params = new MapSqlParameterSource("roleId", roleId);
 		return jdbcTemplate.query(sql, params, new UserResponseRowMapper());
 	}
@@ -80,7 +80,7 @@ public class UserRepoImpl implements UserRepository {
 
 	@Override
 	public List<UserResponse> findUsersByStatus(boolean status) throws Exception {
-		String sql = "SELECT User.UserId as UserId, FirstName, LastName, User.GenderId, Gender.Name as GenderName, User.RoleId, Role.Name as RoleName, Username, AvailablePoints, ProfilePicture, Status, EmailContact.EmailId as Email, MobileContact.MobileNumber as MobileNumber FROM User inner join EmailContact on User.UserId=EmailContact.UserId inner join Gender on User.GenderId=Gender.GenderId inner join Role on User.RoleId=Role.RoleId inner join MobileContact on User.UserId=MobileContact.UserId WHERE User.Status = :status";
+		String sql = "SELECT User.UserId as UserId, FirstName, LastName, User.GenderId, Gender.Name as GenderName, User.RoleId, Role.Name as RoleName, Username, AvailablePoints, ProfilePicture, Status, EmailContact.EmailId as Email, MobileContact.MobileNumber as MobileNumber FROM User inner join EmailContact on User.UserId=EmailContact.UserId inner join Gender on User.GenderId=Gender.GenderId inner join Role on User.RoleId=Role.RoleId inner join MobileContact on User.UserId=MobileContact.UserId WHERE User.Status = :status ORDER BY User.UserId";
 		MapSqlParameterSource params = new MapSqlParameterSource("status", status);
 		return jdbcTemplate.query(sql, params, new UserResponseRowMapper());
 	}

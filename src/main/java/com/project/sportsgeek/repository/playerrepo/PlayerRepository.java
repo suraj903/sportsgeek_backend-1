@@ -21,6 +21,8 @@ public interface PlayerRepository {
 
     boolean updatePlayer(int playerId, Player player) throws Exception;
 
+    boolean updatePlayerWithProfilePicture(int playerId, Player player) throws Exception;
+
     boolean updatePlayerType(int playerId, int playerTypeId) throws Exception;
 
     boolean deletePlayer(int playerId) throws Exception;

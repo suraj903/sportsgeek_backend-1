@@ -236,7 +236,7 @@ public class UserService implements UserDetailsService {
 			if (file.toString() != "") {
 				String profilePicture = "https://firebasestorage.googleapis.com/v0/b/sportsgeek-74e1e.appspot.com/o/" +file+"?alt=media&token=e9924ea4-c2d9-4782-bc2d-0fe734431c86";
 				user.setProfilePicture(profilePicture);
-//				result = userRepository.updateUserWithProfilePicture(userId, user);
+				result = userRepository.updateUserWithProfilePicture(userId, user);
 			}
 			else
 			{
@@ -244,10 +244,8 @@ public class UserService implements UserDetailsService {
 			}
 		}
 		else{  // If image not passed
-//			result = userRepository.updateUser(userId, user);
-			user.setProfilePicture("");
+			result = userRepository.updateUser(userId, user);
 		}
-		result = userRepository.updateUserWithProfilePicture(userId, user);
 		// Update User
 		if (result == true) {
 			// Update Email

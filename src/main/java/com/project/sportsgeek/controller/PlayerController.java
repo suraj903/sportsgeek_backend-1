@@ -96,17 +96,15 @@ public class PlayerController {
     @PreAuthorize("hasRole('Admin')")
 //    @RequestBody(required = true) @Valid Player player
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Player> addPlayer(@RequestParam("playerId") int playerId, @RequestParam("teamId") int teamId, @RequestParam("name") String name, @RequestParam("typeId") int typeId, @RequestParam("profilePicture") MultipartFile multipartFile) throws Exception {
-       String filename = multipartFile.getOriginalFilename();
-       Player player = Player.builder()
-               .playerId(playerId)
-               .teamId(teamId)
-               .name(name)
-               .typeId(typeId)
-               .profilePicture(filename)
-               .build();
+    public ResponseEntity<Player> addPlayer(@RequestParam("playerId") int playerId, @RequestParam("teamId") int teamId, @RequestParam("name") String name, @RequestParam("typeId") int typeId, @RequestParam(value="profilePicture", required = false) MultipartFile multipartFile) throws Exception {
+        Player player = new Player();
+        player.setPlayerId(playerId);
+        player.setTeamId(teamId);
+        player.setName(name);
+        player.setTypeId(typeId);
+
         Result<Player> playerResult = playerService.addPlayer(player,multipartFile);
-        return new ResponseEntity(playerResult.getData(),HttpStatus.valueOf(playerResult.getCode()));
+        return new ResponseEntity(playerResult.getData(), HttpStatus.valueOf(playerResult.getCode()));
     }
 
     @ApiResponses(value =
@@ -120,16 +118,15 @@ public class PlayerController {
     @PreAuthorize("hasRole('Admin')")
 //    @RequestBody(required = true) @Valid Player player
     @PutMapping(value = "/{playerId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Player> updatePlayer(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int playerId, @RequestParam("teamId") int teamId,@RequestParam("name") String name,@RequestParam("typeId") int typeId,@RequestParam("profilePicture") MultipartFile multipartFile) throws Exception {
-        String filename = multipartFile.getOriginalFilename();
-        Player player = Player.builder()
-                .teamId(teamId)
-                .name(name)
-                .typeId(typeId)
-                .profilePicture(filename)
-                .build();
+    public ResponseEntity<Player> updatePlayer(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int playerId, @RequestParam("teamId") int teamId, @RequestParam("name") String name, @RequestParam("typeId") int typeId, @RequestParam(value="profilePicture", required = false) MultipartFile multipartFile) throws Exception {
+        Player player = new Player();
+        player.setPlayerId(playerId);
+        player.setTeamId(teamId);
+        player.setName(name);
+        player.setTypeId(typeId);
+
         Result<Player> playerResult = playerService.updatePlayer(playerId, player, multipartFile);
-        return new ResponseEntity(playerResult.getData(),HttpStatus.valueOf(playerResult.getCode()));
+        return new ResponseEntity(playerResult.getData(), HttpStatus.valueOf(playerResult.getCode()));
     }
 
     @ApiResponses(value =

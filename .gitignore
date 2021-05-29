@@ -111,5 +111,5 @@ build/
 *.orig
 
 #Firebase
-*.json
+#*.json
 

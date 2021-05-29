@@ -70,6 +70,13 @@ public class PlayerRepoImpl implements PlayerRepository {
 
     @Override
     public boolean updatePlayer(int playerId, Player player) throws Exception {
+        String sql = "UPDATE Player SET TeamId = :teamId, Name = :name, TypeId = :typeId where PlayerId=:playerId";
+        player.setPlayerId(playerId);
+        return jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(player)) > 0;
+    }
+
+    @Override
+    public boolean updatePlayerWithProfilePicture(int playerId, Player player) throws Exception {
         String sql = "UPDATE Player SET TeamId = :teamId, Name = :name, TypeId = :typeId, ProfilePicture = :profilePicture where PlayerId=:playerId";
         player.setPlayerId(playerId);
         return jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(player)) > 0;

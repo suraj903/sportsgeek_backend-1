@@ -1,5 +1,6 @@
 package com.project.sportsgeek.mapper;
 
+import com.project.sportsgeek.config.Config;
 import com.project.sportsgeek.model.ContestWithUser;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -20,7 +21,7 @@ public class ContestRowMapper implements RowMapper<ContestWithUser> {
         contest.setShortName(rs.getString("TeamShortName"));
 //	        contest.setShortName(rs.getString("TeamShortName"));
 //	        contest.setShortName(rs.getString("TeamShortName"));
-        contest.setProfilePicture(rs.getString("ProfilePicture"));
+        contest.setProfilePicture(Config.FIREBASE_URL + rs.getString("ProfilePicture") + Config.FIREBASE_PARAMS);
         contest.setFirstName(rs.getString("FirstName"));
         contest.setLastName(rs.getString("LastName"));
         contest.setWinningPoints(rs.getInt("WinningPoints"));

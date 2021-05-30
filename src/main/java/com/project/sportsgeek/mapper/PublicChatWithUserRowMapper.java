@@ -1,5 +1,6 @@
 package com.project.sportsgeek.mapper;
 
+import com.project.sportsgeek.config.Config;
 import com.project.sportsgeek.model.PublicChatWithUser;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -23,6 +24,7 @@ public class PublicChatWithUserRowMapper implements RowMapper<PublicChatWithUser
         publicChatWithUser.setUserId(rs.getInt("UserId"));
         publicChatWithUser.setFirstName(rs.getString("FirstName"));
         publicChatWithUser.setLastName(rs.getString("LastName"));
+        publicChatWithUser.setProfilePicture(Config.FIREBASE_URL + rs.getString("ProfilePicture") + Config.FIREBASE_PARAMS);
         publicChatWithUser.setMessage(rs.getString("Message"));
         publicChatWithUser.setStatus(rs.getBoolean("Status"));
         publicChatWithUser.setChatTimestamp(rs.getTimestamp("ChatTimeStamp"));

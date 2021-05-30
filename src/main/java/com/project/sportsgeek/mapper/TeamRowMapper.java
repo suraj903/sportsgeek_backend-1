@@ -1,6 +1,7 @@
 package com.project.sportsgeek.mapper;
 
 
+import com.project.sportsgeek.config.Config;
 import com.project.sportsgeek.model.Team;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -14,7 +15,8 @@ public class TeamRowMapper implements RowMapper<Team> {
         team.setTeamId(rs.getInt("TeamId"));
         team.setName(rs.getString("Name"));
         team.setShortName(rs.getString("ShortName"));
-        team.setTeamLogo(rs.getString("TeamLogo"));
+//        team.setTeamLogo(Config.FIREBASE_URL + rs.getString("TeamLogo") + "?alt=media&token=" + Config.FIREBASE_TOKEN);
+        team.setTeamLogo(Config.FIREBASE_URL + rs.getString("TeamLogo") + Config.FIREBASE_PARAMS);
         return team;
     }
 }

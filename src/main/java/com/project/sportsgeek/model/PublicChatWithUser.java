@@ -16,6 +16,7 @@ public class PublicChatWithUser {
     private int userId;
     private String firstName;
     private String lastName;
+    private String profilePicture;
     private String message;
     private boolean status;
     private Timestamp chatTimestamp;

@@ -1,6 +1,7 @@
 package com.project.sportsgeek.mapper;
 
 
+import com.project.sportsgeek.config.Config;
 import com.project.sportsgeek.model.Matches;
 import com.project.sportsgeek.model.MatchesWithVenue;
 import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
@@ -17,10 +18,10 @@ public class MatchesRowMapper implements RowMapper<MatchesWithVenue> {
       matches.setStartDatetime(rs.getTimestamp("StartDatetime"));
       matches.setTeam1(rs.getString("team1long"));
       matches.setTeam1Short(rs.getString("team1short"));
-      matches.setTeam1Logo(rs.getString("team1logo"));
+      matches.setTeam1Logo(Config.FIREBASE_URL + rs.getString("team1logo") + Config.FIREBASE_PARAMS);
       matches.setTeam2(rs.getString("team2long"));
       matches.setTeam2Short(rs.getString("team2short"));
-      matches.setTeam2Logo(rs.getString("team2logo"));
+      matches.setTeam2Logo(Config.FIREBASE_URL + rs.getString("team2logo") + Config.FIREBASE_PARAMS);
       matches.setVenueId(rs.getInt("venueId"));
       matches.setVenue(rs.getString("venue"));
       matches.setMinimumPoints(rs.getInt("MinimumPoints"));

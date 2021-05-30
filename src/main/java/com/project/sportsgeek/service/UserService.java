@@ -166,9 +166,8 @@ public class UserService implements UserDetailsService {
 //			if(multipartFile.getOriginalFilename().length() != 0){
 			if(multipartFile != null){
 				File file = imageUploadService.uploadImage(multipartFile);
-				if (file.toString() != "") {
-					String profilePicture = "https://firebasestorage.googleapis.com/v0/b/sportsgeek-74e1e.appspot.com/o/" +file+"?alt=media&token=e9924ea4-c2d9-4782-bc2d-0fe734431c86";
-					userWithPassword.setProfilePicture(profilePicture);
+				if (file.getName() != "") {
+					userWithPassword.setProfilePicture(file.getName());
 				}
 				else
 				{
@@ -233,9 +232,8 @@ public class UserService implements UserDetailsService {
 //		if(multipartFile.getOriginalFilename().length() != 0){
 		if(multipartFile != null){
 			File file = imageUploadService.uploadImage(multipartFile);
-			if (file.toString() != "") {
-				String profilePicture = "https://firebasestorage.googleapis.com/v0/b/sportsgeek-74e1e.appspot.com/o/" +file+"?alt=media&token=e9924ea4-c2d9-4782-bc2d-0fe734431c86";
-				user.setProfilePicture(profilePicture);
+			if (file.getName() != "") {
+				user.setProfilePicture(file.getName());
 				result = userRepository.updateUserWithProfilePicture(userId, user);
 			}
 			else

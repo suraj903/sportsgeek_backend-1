@@ -1,5 +1,6 @@
 package com.project.sportsgeek.mapper;
 
+import com.project.sportsgeek.config.Config;
 import com.project.sportsgeek.model.Player;
 import com.project.sportsgeek.model.PlayerResponse;
 import org.springframework.jdbc.core.RowMapper;
@@ -14,7 +15,7 @@ public class PlayerRowMapper implements RowMapper<PlayerResponse> {
         player.setPlayerId(rs.getInt("PlayerId"));
         player.setName(rs.getString("Name"));
         player.setPlayerType(rs.getString("PlayerType"));
-        player.setProfilePicture(rs.getString("ProfilePicture"));
+        player.setProfilePicture(Config.FIREBASE_URL + rs.getString("ProfilePicture") + Config.FIREBASE_PARAMS);
         player.setTeam(rs.getString("TeamName"));
         return player;
     }

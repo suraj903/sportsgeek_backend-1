@@ -9,9 +9,9 @@ import java.sql.SQLException;
 public class TournamentRowMapper implements RowMapper<Tournament> {
     @Override
     public Tournament mapRow(ResultSet rs, int rowNum) throws SQLException {
-            Tournament tournament = new Tournament();
-            tournament.setTournamentId(rs.getInt("TournamentId"));
-            tournament.setName(rs.getString("Name"));
-            return tournament;
+        Tournament tournament = new Tournament();
+        tournament.setTournamentId(rs.getInt("TournamentId"));
+        tournament.setName(rs.getString("Name"));
+        return tournament;
     }
 }

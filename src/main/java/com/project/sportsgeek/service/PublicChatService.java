@@ -2,6 +2,7 @@ package com.project.sportsgeek.service;
 
 import com.project.sportsgeek.exception.ResultException;
 import com.project.sportsgeek.model.PublicChat;
+import com.project.sportsgeek.model.PublicChatFormatted;
 import com.project.sportsgeek.model.PublicChatWithUser;
 import com.project.sportsgeek.repository.publicchatrepo.PublicChatRepository;
 import com.project.sportsgeek.response.Result;
@@ -22,7 +23,12 @@ public class PublicChatService {
 
     public Result<List<PublicChatWithUser>> findAllPublicChat() {
         List<PublicChatWithUser> publicChatList = publicChatRepository.findAllPublicChat();
-        return new Result<>(200,"Public Chat Details Retrieved Successfully",publicChatList);
+        return new Result<>(200,"Public Chat Details Retrieved Successfully", publicChatList);
+    }
+
+    public Result<List<PublicChatFormatted>> findAllPublicChatFormatted() {
+        List<PublicChatFormatted> publicChatList = publicChatRepository.findAllPublicChatFormatted();
+        return new Result<>(200,"Public Chat Details Retrieved Successfully", publicChatList);
     }
 
     public Result<PublicChatWithUser> findPublicChatById(int publicChatId) throws Exception {

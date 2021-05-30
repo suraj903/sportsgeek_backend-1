@@ -56,9 +56,8 @@ public class TeamService {
         // Team Logo
         if(multipartFile != null){
             File file = imageUploadService.uploadImage(multipartFile);
-            if (file.toString() != "") {
-                String teamLogo = "https://firebasestorage.googleapis.com/v0/b/sportsgeek-74e1e.appspot.com/o/" +file+"?alt=media&token=e9924ea4-c2d9-4782-bc2d-0fe734431c86";
-                team.setTeamLogo(teamLogo);
+            if (file.getName() != "") {
+                team.setTeamLogo(file.getName());
             }
             else
             {
@@ -83,10 +82,9 @@ public class TeamService {
         // Team Logo
         if(multipartFile != null){
             File file = imageUploadService.uploadImage(multipartFile);
-            if (file.toString() != "")
+            if (file.getName() != "")
             {
-                String teamlogo = "https://firebasestorage.googleapis.com/v0/b/sportsgeek-74e1e.appspot.com/o/" +file+"?alt=media&token=e9924ea4-c2d9-4782-bc2d-0fe734431c86";
-                team.setTeamLogo(teamlogo);
+                team.setTeamLogo(file.getName());
                 result = teamRepository.updateTeamWithLogo(teamId, team);
             }
             else

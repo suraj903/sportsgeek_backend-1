@@ -64,9 +64,8 @@ public class PlayerService {
         // Profile Picture
         if(multipartFile != null){
             File file = imageUploadService.uploadImage(multipartFile);
-            if (file.toString() != "") {
-                String playerlogo = "https://firebasestorage.googleapis.com/v0/b/sportsgeek-74e1e.appspot.com/o/" +file+"?alt=media&token=e9924ea4-c2d9-4782-bc2d-0fe734431c86";
-                player.setProfilePicture(playerlogo);
+            if (file.getName() != "") {
+                player.setProfilePicture(file.getName());
             }
             else{
                 throw new ResultException(new Result<>(400, "Unable to upload Player Image."));
@@ -89,9 +88,8 @@ public class PlayerService {
         // Profile Picture
         if(multipartFile != null){
             File file = imageUploadService.uploadImage(multipartFile);
-            if (file.toString() != "") {
-                String playerlogo = "https://firebasestorage.googleapis.com/v0/b/sportsgeek-74e1e.appspot.com/o/" + file + "?alt=media&token=e9924ea4-c2d9-4782-bc2d-0fe734431c86";
-                player.setProfilePicture(playerlogo);
+            if (file.getName() != "") {
+                player.setProfilePicture(file.getName());
                 result = playerRepository.updatePlayerWithProfilePicture(playerId, player);
             }
             else{

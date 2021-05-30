@@ -1,5 +1,6 @@
 package com.project.sportsgeek.mapper;
 
+import com.project.sportsgeek.config.Config;
 import com.project.sportsgeek.model.MyMatches;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -10,10 +11,10 @@ public class MyMatchesRowMapper implements RowMapper<MyMatches> {
     @Override
     public MyMatches mapRow(ResultSet rs, int rowNum) throws SQLException {
         MyMatches myMatches = new MyMatches();
-        myMatches.setTeam1Logo(rs.getString("Team1Logo"));
+        myMatches.setTeam1Logo(Config.FIREBASE_URL + rs.getString("Team1Logo") + Config.FIREBASE_PARAMS);
         myMatches.setContestPoints(rs.getInt("ContestPoints"));
         myMatches.setTeam1Short(rs.getString("Team1Short"));
-        myMatches.setTeam2Logo(rs.getString("Team2Logo"));
+        myMatches.setTeam2Logo(Config.FIREBASE_URL + rs.getString("Team2Logo") + Config.FIREBASE_PARAMS);
         myMatches.setVenue(rs.getString("Venue"));
         myMatches.setTeam2Short(rs.getString("Team2Short"));
         myMatches.setTeamName(rs.getString("TeamName"));

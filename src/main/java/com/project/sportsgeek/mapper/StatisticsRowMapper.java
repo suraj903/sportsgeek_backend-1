@@ -1,5 +1,6 @@
 package com.project.sportsgeek.mapper;
 
+import com.project.sportsgeek.config.Config;
 import com.project.sportsgeek.model.Statistics;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -14,7 +15,7 @@ public class StatisticsRowMapper implements RowMapper<Statistics> {
         statistics.setFirstName(rs.getString("FirstName"));
         statistics.setUserName(rs.getString("UserName"));
         statistics.setUserId(rs.getInt("UserId"));
-        statistics.setProfilePicture(rs.getString("ProfilePicture"));
+        statistics.setProfilePicture(Config.FIREBASE_URL + rs.getString("ProfilePicture") + Config.FIREBASE_PARAMS);
         statistics.setTotalWinningPoints(rs.getInt("TotalWinningPoints"));
         return statistics;
     }

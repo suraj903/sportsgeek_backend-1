@@ -1,5 +1,6 @@
 package com.project.sportsgeek.mapper;
 
+import com.project.sportsgeek.config.Config;
 import com.project.sportsgeek.model.profile.User;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -18,7 +19,7 @@ public class UserWithContactRowMapper implements RowMapper<User> {
         user.setAvailablePoints(rs.getInt("AvailablePoints"));
         user.setRoleId(rs.getInt("RoleId"));
         user.setStatus(rs.getBoolean("Status"));
-        user.setProfilePicture(rs.getString("ProfilePicture"));
+        user.setProfilePicture(Config.FIREBASE_URL + rs.getString("ProfilePicture") + Config.FIREBASE_PARAMS);
         user.setEmail(rs.getString("Email"));
         user.setMobileNumber(rs.getString("MobileNumber"));
         return user;

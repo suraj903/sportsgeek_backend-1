@@ -12,15 +12,13 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
+//import java.net.URLEncoder;
+//import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.UUID;
 
 @Service
 public class ImageUploadService {
-
-    private static String TEMP_URL = "" ;
 
     public File uploadImage(MultipartFile multipartFile) {
         try {
@@ -28,7 +26,7 @@ public class ImageUploadService {
             fileName = UUID.randomUUID().toString().concat(this.getExtension(fileName));  // to generated random string values for file name.
 
             File file = this.convertToFile(multipartFile, fileName);                      // to convert multipartFile to File
-            TEMP_URL = this.uploadFile(file, fileName);                                   // to get uploaded file link
+            this.uploadFile(file, fileName);                                   // to get uploaded file link
             file.delete();
 //            System.out.println("File:"+file);// to delete the copy of uploaded file stored in the project folder// Your customized response
             return file;
@@ -51,13 +49,13 @@ public class ImageUploadService {
         return tempFile;
     }
 
-    private String uploadFile(File file, String fileName) throws IOException {
+    private void uploadFile(File file, String fileName) throws IOException {
         BlobId blobId = BlobId.of("sportsgeek-74e1e.appspot.com", fileName);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("media").build();
         GoogleCredentials credentials = GoogleCredentials.fromStream(new FileInputStream("sportsgeek-74e1e-firebase-adminsdk-4s62v-7cc67b989e.json"));
         Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
         storage.create(blobInfo, Files.readAllBytes(file.toPath()));
-        return String.format("https://firebasestorage.googleapis.com/v0/b/sportsgeek-74e1e.appspot.com/o/", URLEncoder.encode(fileName, String.valueOf(StandardCharsets.UTF_8)));
+//        return String.format("https://firebasestorage.googleapis.com/v0/b/sportsgeek-74e1e.appspot.com/o/", URLEncoder.encode(fileName, String.valueOf(StandardCharsets.UTF_8)));
     }
 
 }

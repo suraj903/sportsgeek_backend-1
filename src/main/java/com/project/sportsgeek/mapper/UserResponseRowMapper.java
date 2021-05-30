@@ -20,7 +20,11 @@ public class UserResponseRowMapper implements RowMapper<UserResponse> {
         user.setUsername(rs.getString("UserName"));
         user.setEmail(rs.getString("Email"));
         user.setMobileNumber(rs.getString("MobileNumber"));
-        user.setProfilePicture(Config.FIREBASE_URL + rs.getString("ProfilePicture") + Config.FIREBASE_PARAMS);
+        System.out.println("ProfilePicture : '" + rs.getString("ProfilePicture") + "'");
+        if(rs.getString("ProfilePicture").isEmpty())
+            user.setProfilePicture(rs.getString("ProfilePicture"));
+        else
+            user.setProfilePicture(Config.FIREBASE_URL + rs.getString("ProfilePicture") + Config.FIREBASE_PARAMS);
         user.setRoleId(rs.getInt("RoleId"));
         user.setRoleName(rs.getString("RoleName"));
         user.setAvailablePoints(rs.getInt("AvailablePoints"));

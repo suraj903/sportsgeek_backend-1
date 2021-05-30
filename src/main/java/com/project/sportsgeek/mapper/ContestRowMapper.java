@@ -19,9 +19,10 @@ public class ContestRowMapper implements RowMapper<ContestWithUser> {
         contest.setUsername(rs.getString("Username"));
         contest.setTeamId(rs.getInt("TeamId"));
         contest.setShortName(rs.getString("TeamShortName"));
-//	        contest.setShortName(rs.getString("TeamShortName"));
-//	        contest.setShortName(rs.getString("TeamShortName"));
-        contest.setProfilePicture(Config.FIREBASE_URL + rs.getString("ProfilePicture") + Config.FIREBASE_PARAMS);
+        if(rs.getString("ProfilePicture").isEmpty())
+            contest.setProfilePicture(rs.getString("ProfilePicture"));
+        else
+            contest.setProfilePicture(Config.FIREBASE_URL + rs.getString("ProfilePicture") + Config.FIREBASE_PARAMS);
         contest.setFirstName(rs.getString("FirstName"));
         contest.setLastName(rs.getString("LastName"));
         contest.setWinningPoints(rs.getInt("WinningPoints"));

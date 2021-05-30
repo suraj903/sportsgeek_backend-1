@@ -20,7 +20,10 @@ public class PublicChatFormattedRowMapper implements RowMapper<PublicChatFormatt
         UserForChat userForChat = new UserForChat();
         userForChat.set_id(rs.getInt("UserId"));
         userForChat.setName(rs.getString("FirstName") + " " + rs.getString("LastName"));
-        userForChat.setAvatar(Config.FIREBASE_URL + rs.getString("ProfilePicture") + Config.FIREBASE_PARAMS);
+        if(rs.getString("ProfilePicture").isEmpty())
+            userForChat.setAvatar(rs.getString("ProfilePicture"));
+        else
+            userForChat.setAvatar(Config.FIREBASE_URL + rs.getString("ProfilePicture") + Config.FIREBASE_PARAMS);
         publicChatFormatted.setUser(userForChat);
         return publicChatFormatted;
     }

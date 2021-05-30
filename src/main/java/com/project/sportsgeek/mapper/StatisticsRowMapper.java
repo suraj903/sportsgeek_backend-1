@@ -15,7 +15,10 @@ public class StatisticsRowMapper implements RowMapper<Statistics> {
         statistics.setFirstName(rs.getString("FirstName"));
         statistics.setUserName(rs.getString("UserName"));
         statistics.setUserId(rs.getInt("UserId"));
-        statistics.setProfilePicture(Config.FIREBASE_URL + rs.getString("ProfilePicture") + Config.FIREBASE_PARAMS);
+        if(rs.getString("ProfilePicture").isEmpty())
+            statistics.setProfilePicture(rs.getString("ProfilePicture"));
+        else
+            statistics.setProfilePicture(Config.FIREBASE_URL + rs.getString("ProfilePicture") + Config.FIREBASE_PARAMS);
         statistics.setTotalWinningPoints(rs.getInt("TotalWinningPoints"));
         return statistics;
     }

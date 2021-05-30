@@ -17,7 +17,10 @@ public class UserRowMapper implements RowMapper<User> {
         user.setLastName(rs.getString("LastName"));
         user.setGenderId(rs.getInt("GenderId"));
         user.setUsername(rs.getString("UserName"));
-        user.setProfilePicture(Config.FIREBASE_URL + rs.getString("ProfilePicture") + Config.FIREBASE_PARAMS);
+        if(rs.getString("ProfilePicture").isEmpty())
+            user.setProfilePicture(rs.getString("ProfilePicture"));
+        else
+            user.setProfilePicture(Config.FIREBASE_URL + rs.getString("ProfilePicture") + Config.FIREBASE_PARAMS);
         user.setRoleId(rs.getInt("RoleId"));
         user.setAvailablePoints(rs.getInt("AvailablePoints"));
         user.setStatus(rs.getBoolean("Status"));

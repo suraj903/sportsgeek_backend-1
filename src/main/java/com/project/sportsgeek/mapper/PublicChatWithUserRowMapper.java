@@ -24,7 +24,10 @@ public class PublicChatWithUserRowMapper implements RowMapper<PublicChatWithUser
         publicChatWithUser.setUserId(rs.getInt("UserId"));
         publicChatWithUser.setFirstName(rs.getString("FirstName"));
         publicChatWithUser.setLastName(rs.getString("LastName"));
-        publicChatWithUser.setProfilePicture(Config.FIREBASE_URL + rs.getString("ProfilePicture") + Config.FIREBASE_PARAMS);
+        if(rs.getString("ProfilePicture").isEmpty())
+            publicChatWithUser.setProfilePicture(rs.getString("ProfilePicture"));
+        else
+            publicChatWithUser.setProfilePicture(Config.FIREBASE_URL + rs.getString("ProfilePicture") + Config.FIREBASE_PARAMS);
         publicChatWithUser.setMessage(rs.getString("Message"));
         publicChatWithUser.setStatus(rs.getBoolean("Status"));
         publicChatWithUser.setChatTimestamp(rs.getTimestamp("ChatTimeStamp"));

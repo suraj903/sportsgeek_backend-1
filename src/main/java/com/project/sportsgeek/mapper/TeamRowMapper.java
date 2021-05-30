@@ -16,7 +16,10 @@ public class TeamRowMapper implements RowMapper<Team> {
         team.setName(rs.getString("Name"));
         team.setShortName(rs.getString("ShortName"));
 //        team.setTeamLogo(Config.FIREBASE_URL + rs.getString("TeamLogo") + "?alt=media&token=" + Config.FIREBASE_TOKEN);
-        team.setTeamLogo(Config.FIREBASE_URL + rs.getString("TeamLogo") + Config.FIREBASE_PARAMS);
+        if(rs.getString("TeamLogo").isEmpty())
+            team.setTeamLogo(rs.getString("TeamLogo"));
+        else
+            team.setTeamLogo(Config.FIREBASE_URL + rs.getString("TeamLogo") + Config.FIREBASE_PARAMS);
         return team;
     }
 }

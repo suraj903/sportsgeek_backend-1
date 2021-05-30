@@ -19,7 +19,10 @@ public class UserWithContactRowMapper implements RowMapper<User> {
         user.setAvailablePoints(rs.getInt("AvailablePoints"));
         user.setRoleId(rs.getInt("RoleId"));
         user.setStatus(rs.getBoolean("Status"));
-        user.setProfilePicture(Config.FIREBASE_URL + rs.getString("ProfilePicture") + Config.FIREBASE_PARAMS);
+        if(rs.getString("ProfilePicture").isEmpty())
+            user.setProfilePicture(rs.getString("ProfilePicture"));
+        else
+            user.setProfilePicture(Config.FIREBASE_URL + rs.getString("ProfilePicture") + Config.FIREBASE_PARAMS);
         user.setEmail(rs.getString("Email"));
         user.setMobileNumber(rs.getString("MobileNumber"));
         return user;

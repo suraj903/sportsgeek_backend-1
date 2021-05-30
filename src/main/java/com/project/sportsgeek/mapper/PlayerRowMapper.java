@@ -15,7 +15,10 @@ public class PlayerRowMapper implements RowMapper<PlayerResponse> {
         player.setPlayerId(rs.getInt("PlayerId"));
         player.setName(rs.getString("Name"));
         player.setPlayerType(rs.getString("PlayerType"));
-        player.setProfilePicture(Config.FIREBASE_URL + rs.getString("ProfilePicture") + Config.FIREBASE_PARAMS);
+        if(rs.getString("ProfilePicture").isEmpty())
+            player.setProfilePicture(rs.getString("ProfilePicture"));
+        else
+            player.setProfilePicture(Config.FIREBASE_URL + rs.getString("ProfilePicture") + Config.FIREBASE_PARAMS);
         player.setTeam(rs.getString("TeamName"));
         return player;
     }

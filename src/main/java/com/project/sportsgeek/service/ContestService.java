@@ -51,7 +51,8 @@ public class ContestService {
         if (contest != null) {
             return new Result<>(200, contest);
         }
-        throw new ResultException((new Result<>(404,"Contest for userId: "+ userId +" for matchId: " + matchId + " not found")));
+//        throw new ResultException((new Result<>(404,"Contest for userId: "+ userId +" for matchId: " + matchId + " not found")));
+        throw new ResultException((new Result<>(404,"Contest not found. Please place contest")));
     }
 
     public Result<Contest> updateContest(int contestId, Contest contest) throws Exception {
@@ -66,7 +67,8 @@ public class ContestService {
             }
             throw new ResultException(new Result<>(500, "Unable to update user available points."));
         }
-        throw new ResultException(new Result(404, "Contest with ContestId: " + contestId + " not found."));
+//        throw new ResultException(new Result(404, "Contest with ContestId: " + contestId + " not found."));
+        throw new ResultException(new Result(404, "Contest not found."));
     }
 
     public Result<String> deleteContest(int contestId) throws Exception{
@@ -80,6 +82,7 @@ public class ContestService {
             }
             throw new ResultException(new Result<>(500, "Unable to update user available points."));
         }
-        throw new ResultException(new Result<>(404, "Contest with ContestId: " + contestId + " not found."));
+//        throw new ResultException(new Result<>(404, "Contest with ContestId: " + contestId + " not found."));
+        throw new ResultException(new Result(404, "Contest not found."));
     }
 }

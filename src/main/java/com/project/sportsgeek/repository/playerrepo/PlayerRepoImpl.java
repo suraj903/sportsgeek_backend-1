@@ -60,7 +60,7 @@ public class PlayerRepoImpl implements PlayerRepository {
 
     @Override
     public int addPlayer(Player player) throws Exception {
-        String sql = "INSERT INTO Player (TeamId,Name,TypeId,ProfilePicture) VALUES(:teamId,:name,:typeId,:profilePicture)";
+        String sql = "INSERT INTO Player (PlayerId,TeamId,Name,TypeId,ProfilePicture) VALUES(:playerId,:teamId,:name,:typeId,:profilePicture)";
         int n = jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(player));
         if(n > 0) {
             return player.getPlayerId();

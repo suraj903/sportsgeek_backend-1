@@ -89,6 +89,7 @@ public class TeamController {
     public ResponseEntity<Team> updateTeam(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int teamId, @RequestParam("name") String name, @RequestParam("shortName") String shortName, @RequestParam(value="teamLogo", required = false) MultipartFile multipartFile) throws Exception {
         Team team = new Team();
         team.setName(name);
+        team.setShortName(shortName);
 
         Result<Team> teamResult = teamService.updateTeam(teamId, team, multipartFile);
         return new ResponseEntity(teamResult.getData(), HttpStatus.valueOf(teamResult.getCode()));

@@ -1,0 +1,69 @@
+@startuml
+skinparam ParticipantPadding 10
+skinparam BoxPadding 20
+actor User
+box "User Service"
+ participant user
+end box
+box "database"
+    participant database
+end box
+User -> user: GET /{userId}
+alt #white Update User Details
+activate user #lightblue
+    user -> "database" : Get User Details
+    activate "database" #lightblue
+    "database" -> "user" : <font color=darkblue><b>return "Response 200 Ok User Details"
+    deactivate "database"
+alt #lightgreen If user Found
+"user" -> User : <font color=darkblue><b>return "Response 200 OK"
+else #pink If User Not Found
+"user" -> User : <font color=darkblue><b>return "Response 404 "User with UserId not found"
+end alt
+User -> "user": PUT /{userId}
+note right #yellow
+    *params*
+    firstName=xyz
+    lastName=pqr
+    genderId=1
+    username=xyz112
+    email=xyz123@gmail.com
+    mobileNumber=9632587410
+    profilePicture=xyz.png
+    end note
+user -> "database" : Update User Details
+activate "database" #lightblue
+    "database" -> "user" : <font color=darkblue><b>return "Response 200 Ok User Details Updated"
+    deactivate "database"
+alt #lightgreen Success
+    "user" -> User : <font color=darkblue><b>return "Response 200 Ok User Details Updated Successfully"
+else #pink Error
+"user" -> User : <font color=darkblue><b>return "Response 400 Unable to upload User Image"
+else #pink If User Not Found
+"user" -> User : <font color=darkblue><b>return "Response 404 "User with UserId not found"
+end alt
+else #pink Internal Server Error
+"user" -> User : <font color=darkblue><b>return "Response 500 INTERNAL SERVER ERROR
+end alt
+
+User -> user: PUT /update-password
+alt #white Update Password
+note right #yellow
+    *params*
+    userId=1
+    oldPassword=*
+    newPassword=*
+    end note
+user -> "database" : Check Old Password
+activate "database" #lightblue
+    "database" -> "user" : <font color=darkblue><b>return "Response 200 Ok Password Changed Successfully"
+    deactivate "database"
+alt #lightgreen If old Password Matched
+    "user" -> User : <font color=darkblue><b>return "Response 200 Ok Password Changed Successfully"
+else #pink If Old Password Not Matched
+"user" -> User : <font color=darkblue><b>return "Response 400 Old Password does not match"
+end alt
+else #pink Internal Server Error
+"user" -> User : <font color=darkblue><b>return "Response 500 INTERNAL SERVER ERROR
+end alt
+@enduml

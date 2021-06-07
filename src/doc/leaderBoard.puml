@@ -1,0 +1,35 @@
+@startuml
+skinparam ParticipantPadding 10
+skinparam BoxPadding 20
+actor User
+box "Statistics Service"
+ participant Statistics
+end box
+box "database"
+    participant database
+end box
+User -> Statistics: GET users/statistics
+alt #white
+activate Statistics #lightblue
+    Statistics -> "database" : Get Users Statistics
+    activate "database" #lightblue
+    "database" -> "Statistics" : <font color=darkblue><b>return "Response 200 OK Users Statistics Details"
+deactivate "database"
+"Statistics" -> User : <font color=darkblue><b>return "Response 200 OK Users Statistics Details"
+else #pink Internal Server Error
+"Statistics" -> User : <font color=darkblue><b>return "Response 500 INTERNAL SERVER ERROR
+end alt
+deactivate "Statistics"
+
+User -> Statistics: GET users/future-contest
+alt #white
+activate Statistics #lightblue
+    Statistics -> "database" : Get Users Future Contest Points
+    activate "database" #lightblue
+    "database" -> "Statistics" : <font color=darkblue><b>return "Response 200 OK Users Future Contest Points Details"
+deactivate "database"
+"Statistics" -> User : <font color=darkblue><b>return "Response 200 OK Users Future Contest Points Details"
+else #pink Internal Server Error
+"Statistics" -> User : <font color=darkblue><b>return "Response 500 INTERNAL SERVER ERROR
+end alt
+@enduml

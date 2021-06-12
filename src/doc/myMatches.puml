@@ -1,0 +1,49 @@
+@startuml
+skinparam ParticipantPadding 10
+skinparam BoxPadding 20
+actor User
+box "My Matches Service"
+ participant myMatches
+end box
+box "database"
+    participant database
+end box
+User -> myMatches: GET /users/{userId}/upcoming
+alt #white Upcoming Matches
+activate myMatches #lightblue
+    myMatches -> "database" : Get Upcoming Matches
+    activate "database" #lightblue
+    "database" -> "myMatches" : <font color=darkblue><b>return "Response 200 OK User Upcoming Matches Details"
+deactivate "database"
+"myMatches" -> User : <font color=darkblue><b>return "Response 200 OK User Upcoming Matches Details"
+else #pink Internal Server Error
+"myMatches" -> User : <font color=darkblue><b>return "Response 500 INTERNAL SERVER ERROR
+end alt
+deactivate "myMatches"
+
+User -> "myMatches": GET /users/{userId}/live
+alt #white Live Matches
+activate myMatches #lightblue
+    myMatches -> "database" : Get User Live Matches Details
+    activate "database" #lightblue
+    "database" -> "myMatches" : <font color=darkblue><b>return "Response 200 OK User Live Matches Details"
+deactivate "database"
+"myMatches" -> User : <font color=darkblue><b>return "Response 200 OK User Live Matches Details"
+else #pink Internal Server Error
+"myMatches" -> User : <font color=darkblue><b>return "Response 500 INTERNAL SERVER ERROR
+end alt
+deactivate "myMatches"
+
+User -> "myMatches": GET /users/{userId}/result
+alt #white Old Matches Result
+activate myMatches #lightblue
+    myMatches -> "database" : Get User Old Matches Result Details
+    activate "database" #lightblue
+    "database" -> "myMatches" : <font color=darkblue><b>return "Response 200 OK User Old Matches Result Details"
+deactivate "database"
+"myMatches" -> User : <font color=darkblue><b>return "Response 200 OK User Old Matches Result Details"
+else #pink Internal Server Error
+"myMatches" -> User : <font color=darkblue><b>return "Response 500 INTERNAL SERVER ERROR
+end alt
+deactivate "myMatches"
+@enduml

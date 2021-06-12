@@ -5,6 +5,7 @@ import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
+import com.project.sportsgeek.config.Config;
 import com.project.sportsgeek.exception.ResultException;
 import com.project.sportsgeek.model.EmailContact;
 import com.project.sportsgeek.model.MobileContact;
@@ -71,6 +72,7 @@ public class TeamService {
         int teamId = teamRepository.addTeam(team);
         if (teamId > 0) {
             team.setTeamId(teamId);
+            team.setTeamLogo(Config.FIREBASE_URL + team.getTeamLogo() + Config.FIREBASE_PARAMS);
             return new Result<>(201, team);
         }else{
             throw new ResultException(new Result<>(400, "Unable to add Team."));
@@ -97,6 +99,7 @@ public class TeamService {
         }
         // Update Team
         if (result == true) {
+            team.setTeamLogo(Config.FIREBASE_URL + team.getTeamLogo() + Config.FIREBASE_PARAMS);
             return new Result<>(200,"Team Updated Successfully",team);
         }
         else

@@ -5,6 +5,7 @@ import com.google.cloud.storage.BlobId;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
+import com.project.sportsgeek.config.Config;
 import com.project.sportsgeek.exception.ResultException;
 import com.project.sportsgeek.model.Player;
 import com.project.sportsgeek.model.PlayerResponse;
@@ -76,8 +77,9 @@ public class PlayerService {
         }
         // Add Player
         int playerId = playerRepository.addPlayer(player);
-        player.setPlayerId(playerId);
         if (playerId > 0) {
+            player.setPlayerId(playerId);
+            player.setProfilePicture(Config.FIREBASE_URL + player.getProfilePicture() + Config.FIREBASE_PARAMS);
             return new Result<>(201,"Player Added Successfully",player);
         }
         throw new ResultException(new Result<>(400, "Unable to add Player."));
@@ -101,6 +103,7 @@ public class PlayerService {
         }
         // Update Player
         if (result == true) {
+            player.setProfilePicture(Config.FIREBASE_URL + player.getProfilePicture() + Config.FIREBASE_PARAMS);
             return new Result<>(200, "Player Details Updated Successfully", player);
         }
         throw new ResultException(new Result<>(400, "Player with PlayerId: " + playerId + " not found."));

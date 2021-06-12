@@ -46,6 +46,8 @@ public interface UserRepository {
 
     boolean deleteUser(int userId) throws Exception;
 
+    boolean deleteUserProfilePicture(int userId) throws Exception;
+
     boolean addAvailablePoints(int userId, int points) throws Exception;
 
     boolean deductAvailablePoints(int userId, int points) throws Exception;

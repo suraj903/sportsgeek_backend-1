@@ -13,11 +13,16 @@ public class EmailService {
     private JavaMailSender javaMailSender;
 
     public void sendEmail(Email email) throws  Exception {
-        SimpleMailMessage msg = new SimpleMailMessage();
+        try{
+            SimpleMailMessage msg = new SimpleMailMessage();
             msg.setTo(email.getSetTo());
             msg.setSubject(email.getSetSubject());
             msg.setText(email.getMessage());
             javaMailSender.send(msg);
+        }catch(Exception ex){
+            System.out.println("Error in sending email...");
+            ex.printStackTrace();
+        }
     }
 
 }

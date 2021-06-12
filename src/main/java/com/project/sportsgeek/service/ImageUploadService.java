@@ -23,6 +23,7 @@ public class ImageUploadService {
     public File uploadImage(MultipartFile multipartFile) {
         try {
             String fileName = multipartFile.getOriginalFilename();                        // to get original file name
+//            System.out.println("Filename : " + fileName);
             fileName = UUID.randomUUID().toString().concat(this.getExtension(fileName));  // to generated random string values for file name.
 
             File file = this.convertToFile(multipartFile, fileName);                      // to convert multipartFile to File

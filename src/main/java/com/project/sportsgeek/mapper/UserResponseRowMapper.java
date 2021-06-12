@@ -20,7 +20,6 @@ public class UserResponseRowMapper implements RowMapper<UserResponse> {
         user.setUsername(rs.getString("UserName"));
         user.setEmail(rs.getString("Email"));
         user.setMobileNumber(rs.getString("MobileNumber"));
-        System.out.println("ProfilePicture : '" + rs.getString("ProfilePicture") + "'");
         if(rs.getString("ProfilePicture").isEmpty())
             user.setProfilePicture(rs.getString("ProfilePicture"));
         else

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import com.project.sportsgeek.config.Config;
 import com.project.sportsgeek.model.Email;
 import com.project.sportsgeek.model.EmailContact;
 import com.project.sportsgeek.model.MobileContact;
@@ -171,7 +172,7 @@ public class UserService implements UserDetailsService {
 				}
 				else
 				{
-					throw new ResultException(new Result<>(400, "Unable to upload User Image."));
+					throw new ResultException(new Result<>(400, "Unable to upload Profile Picture."));
 				}
 			}else{
 				userWithPassword.setProfilePicture("");
@@ -179,6 +180,7 @@ public class UserService implements UserDetailsService {
 			// Add User
 			int userId = userRepository.addUser(userWithPassword);
 			userWithPassword.setUserId(userId);
+			userWithPassword.setProfilePicture(Config.FIREBASE_URL + userWithPassword.getProfilePicture() + Config.FIREBASE_PARAMS);
 			if (userId > 0) {
 				// Add Email
 				EmailContact emailContact = new EmailContact();
@@ -226,22 +228,27 @@ public class UserService implements UserDetailsService {
 //	------------------------------------------------- UPDATE SERVICE ----------------------------------------------------------------------------
 //	---------------------------------------------------------------------------------------------------------------------------------------------
 
-	public Result<User> updateUser(int userId, User user, MultipartFile multipartFile) throws Exception {
+	public Result<User> updateUser(int userId, User user, MultipartFile multipartFile, boolean updateProfilePicture) throws Exception {
 		boolean result = false;
 		// Upload Image
 //		if(multipartFile.getOriginalFilename().length() != 0){
-		if(multipartFile != null){
-			File file = imageUploadService.uploadImage(multipartFile);
-			if (file.getName() != "") {
-				user.setProfilePicture(file.getName());
-				result = userRepository.updateUserWithProfilePicture(userId, user);
+		if(updateProfilePicture == true){
+			if(multipartFile != null){
+				File file = imageUploadService.uploadImage(multipartFile);
+				if (file.getName() != "") {
+					user.setProfilePicture(file.getName());
+				}
+				else
+				{
+					throw new ResultException(new Result<>(400, "Unable to upload Profile Picture."));
+				}
 			}
-			else
-			{
-				throw new ResultException(new Result<>(400, "Unable to upload User Image."));
+			else{  // If image not passed
+				user.setProfilePicture("");
 			}
+			result = userRepository.updateUserWithProfilePicture(userId, user);
 		}
-		else{  // If image not passed
+		else{
 			result = userRepository.updateUser(userId, user);
 		}
 		// Update User
@@ -254,6 +261,8 @@ public class UserService implements UserDetailsService {
 			MobileContact mobileContact = new MobileContact();
 			mobileContact.setMobileNumber(user.getMobileNumber());
 			mobileContactRepository.updateMobileContactByUserId(userId, mobileContact);
+			// Set Full URL of Profile Picture
+			user.setProfilePicture(Config.FIREBASE_URL + user.getProfilePicture() + Config.FIREBASE_PARAMS);
 			return new Result<>(200, user);
 		}
 		throw new ResultException(new Result<>(404, "User with userId: " + userId + " not found."));
@@ -327,9 +336,10 @@ public class UserService implements UserDetailsService {
 	}
 
 	public Result<String> updateForgetPassword(UserWithOtp userWithOtp) throws Exception {
-		System.out.println("Send OTP in Update Password Service:" + sendOtp);
-		System.out.println("Otp Received by service" + userWithOtp.getOtp());
+//		System.out.println("Send OTP in Update Password Service:" + sendOtp);
+//		System.out.println("Otp Received by service" + userWithOtp.getOtp());
 		if (userWithOtp.getOtp() == sendOtp) {
+			sendOtp = 0;
 			if (userRepository.updateForgetPassword(userWithOtp)) {
 				return new Result<>(200, "password has been successfully Changed");
 			} else {
@@ -346,14 +356,20 @@ public class UserService implements UserDetailsService {
 
 	public Result<String> deleteUser(int userId) throws Exception {
 		UserResponse user = userRepository.findUserByUserId(userId);
-		System.out.println(user);
 		if (user != null) {
 			emailContactRepository.deleteEmailContactByUserId(userId);
 			mobileContactRepository.deleteMobileContactByUserId(userId);
 			rechargeRepository.deleteRechargeByUserId(userId);
 			contestRepository.deleteContestsByUserId(userId);
 			userRepository.deleteUser(userId);
-			return new Result<>(200, "User Deleted Successfully!!");
+			return new Result<>(200, "User deleted Successfully!!");
+		}
+		throw new ResultException(new Result<>(404, "User with userId: " + userId + " not found."));
+	}
+
+	public Result<String> deleteUserProfilePicture(int userId) throws Exception {
+		if (userRepository.deleteUserProfilePicture(userId)) {
+			return new Result<>(200, "User Profile Picture deleted Successfully!!");
 		}
 		throw new ResultException(new Result<>(404, "User with userId: " + userId + " not found."));
 	}

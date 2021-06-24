@@ -1,0 +1,145 @@
+@startuml
+header SportsGeek
+title Role CRUD
+skinparam ParticipantPadding 10
+skinparam BoxPadding 20
+actor Admin
+box "SportsGeek System"
+ participant sportsGeek
+end box
+box "Role Service"
+ participant role
+end box
+box "database"
+    database database
+end box
+
+Admin -> sportsGeek: Get all role Details
+activate "sportsGeek" #lightblue
+alt #white Get All roles
+    sportsGeek -> "role" : Get All roles
+    activate role #lightblue
+    "role" -> "database" : Get All roles
+    activate "database" #lightblue
+    "database" --> "role" : <font color=darkblue><b>Response Get All role Details
+    "role" --> "sportsGeek" : <font color=darkblue><b> Response Get All role Details
+"sportsGeek" --> Admin : <font color=darkblue><b> Response role Details
+else #pink Internal Server Error
+"database" --> "role" : <font color=darkblue><b> Database Error
+deactivate "database"
+"role" --> "sportsGeek" : <font color=darkblue><b> INTERNAL SERVER ERROR
+deactivate "role"
+"sportsGeek" --> Admin : <font color=darkblue><b> INTERNAL SERVER ERROR
+deactivate "sportsGeek"
+end alt
+
+Admin -> "sportsGeek": Get role Detail By Id
+activate "sportsGeek" #lightblue
+alt #white Get role By Id
+note right #yellow
+        *params*
+        roleId=123
+        end note
+    "sportsGeek" -> "role" : Get role By Id
+    activate role #lightblue
+    "role" -> "database" : Get role By Id
+        activate "database" #lightblue
+    "database" --> "role" : <font color=darkblue><b> Response role Details
+"role" --> "sportsGeek" : <font color=darkblue><b> Response role Details
+"sportsGeek" --> Admin : <font color=darkblue><b> Response role Details
+else #pink Not Found
+      "database" --> "role" : <font color=darkblue><b>Response role Id Not Found
+"role" --> "sportsGeek" : <font color=darkblue><b>Response role Id Not Found
+"sportsGeek" --> Admin : <font color=darkblue><b>Response role Id Not Found
+else #pink Internal Server Error
+"database" --> "role" : <font color=darkblue><b> Database Error
+deactivate "database"
+"role" --> "sportsGeek" : <font color=darkblue><b> INTERNAL SERVER ERROR
+deactivate "role"
+"sportsGeek" --> Admin : <font color=darkblue><b> INTERNAL SERVER ERROR
+deactivate "sportsGeek"
+end alt
+
+
+Admin -> "sportsGeek": Add role Details
+activate "sportsGeek" #lightblue
+note right #yellow
+        *params*
+        name=xyz
+        end note
+alt #white Add roles
+    "sportsGeek" -> "role" : Add role Details
+    activate role #lightblue
+    role -> "database" : Add role Details
+    activate "database" #lightblue
+    "database" --> "role" : <font color=darkblue><b>Response role Added Successfully
+"role" --> "sportsGeek" : <font color=darkblue><b> Response role Added Successfully
+"sportsGeek" --> Admin : <font color=darkblue><b>Response role Added Successfully
+else #pink Unable to Add role
+"database" --> "role" : <font color=darkblue><b>Response Unable to add role
+"role" --> "sportsGeek" : <font color=darkblue><b>Response Unable to add role
+"sportsGeek" --> Admin : <font color=darkblue><b>Response Unable to add role
+else #pink Internal Server Error
+"database" --> "role" : <font color=darkblue><b>Database Error
+deactivate "database"
+"role" --> "sportsGeek" : <font color=darkblue><b>INTERNAL SERVER ERROR
+deactivate "role"
+"sportsGeek" --> Admin : <font color=darkblue><b>INTERNAL SERVER ERROR
+deactivate "sportsGeek"
+end alt
+
+Admin -> "sportsGeek": Update role Details
+activate "sportsGeek" #lightblue
+note right #yellow
+        *params*
+        roleId=1
+        name=xyz
+        end note
+alt #white Update role
+    "sportsGeek" -> "role" : Update role
+    activate role #lightblue
+    role -> "database" : Update role
+    activate "database" #lightblue
+    "database" --> "role" : <font color=darkblue><b>Response role Updated Successfully
+"role" --> "sportsGeek" : <font color=darkblue><b>Response role Updated Successfully
+"sportsGeek" --> Admin : <font color=darkblue><b> Response role Updated Successfully
+else #pink Not Found
+"database" --> "role" : <font color=darkblue><b>Response role Id not found
+"role" --> "sportsGeek" : <font color=darkblue><b>Response role Id not found
+"sportsGeek" --> Admin : <font color=darkblue><b>Response role Id not found
+else #pink Internal Server Error
+"database" --> "role" : <font color=darkblue><b>Database Error
+deactivate "database"
+"role" --> "sportsGeek" : <font color=darkblue><b>INTERNAL SERVER ERROR
+deactivate "role"
+"sportsGeek" --> Admin : <font color=darkblue><b>INTERNAL SERVER ERROR
+deactivate "sportsGeek"
+end alt
+
+Admin -> "sportsGeek": Delete role
+activate "sportsGeek" #lightblue
+note right #yellow
+        *params*
+        roleId=1
+        end note
+alt #white Delete role
+    "sportsGeek" -> "role" : Delete role
+    activate role #lightblue
+    role -> "database" : Delete role
+    activate "database" #lightblue
+    "database" --> "role" : <font color=darkblue><b>Response role Deleted Successfully
+"role" --> "sportsGeek" : <font color=darkblue><b>Response role Deleted Successfully
+"sportsGeek" --> Admin : <font color=darkblue><b>Response role Deleted Successfully
+else #pink Not Found
+"database" --> "role" : <font color=darkblue><b>Response role Id not found
+"role" --> "sportsGeek" : <font color=darkblue><b>Response role Id not found
+"sportsGeek" --> Admin : <font color=darkblue><b>Response role Id not found
+else #pink Internal Server Error
+"database" --> "role" : <font color=darkblue><b>Database Error
+deactivate "database"
+"role" --> "sportsGeek" : <font color=darkblue><b>INTERNAL SERVER ERROR
+deactivate "role"
+"sportsGeek" --> Admin : <font color=darkblue><b>INTERNAL SERVER ERROR
+deactivate "sportsGeek"
+end alt
+@enduml

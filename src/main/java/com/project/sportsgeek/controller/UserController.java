@@ -159,10 +159,17 @@ public class UserController {
             @ApiResponse(code = 500, message = "Internal error")})
     @PreAuthorize("hasAnyRole('Admin','User')")
     @PutMapping("/{userId}")
-    public ResponseEntity<User> updateUser(@PathVariable int userId, @RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName, @RequestParam("genderId") int genderId, @RequestParam("username") String username, @RequestParam("email") String email, @RequestParam("mobileNumber") String mobileNumber, @RequestParam(value="profilePicture", required=false) MultipartFile multipartFile) throws Exception {
+    public ResponseEntity<User> updateUser(@PathVariable int userId, @RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName, @RequestParam("genderId") int genderId, @RequestParam("username") String username, @RequestParam("email") String email, @RequestParam("mobileNumber") String mobileNumber, @RequestParam(value="profilePicture", required=false) MultipartFile multipartFile, @RequestParam(value="updateProfilePicture", required=false) Boolean updateProfilePicture) throws Exception {
 //        String filename = multipartFile.getOriginalFilename();
 //        System.out.println("Filename : '" + filename + "'");
 //        System.out.println(multipartFile.getOriginalFilename().length());
+        if(updateProfilePicture == null){
+            if(multipartFile != null){
+                updateProfilePicture = true;
+            }else{
+                updateProfilePicture = false;
+            }
+        }
         User user = new User();
         user.setFirstName(firstName);
         user.setLastName(lastName);
@@ -171,7 +178,7 @@ public class UserController {
         user.setEmail(email);
         user.setMobileNumber(mobileNumber);
 
-        Result<User> userResult = userService.updateUser(userId, user, multipartFile);
+        Result<User> userResult = userService.updateUser(userId, user, multipartFile, updateProfilePicture);
         return new ResponseEntity<>(userResult.getData(), HttpStatus.valueOf(userResult.getCode()));
     }
 
@@ -226,6 +233,17 @@ public class UserController {
     @DeleteMapping("/{userId}")
     public ResponseEntity<Result<String>> deleteUser(@PathVariable int userId) throws Exception {
         Result<String> userResult = userService.deleteUser(userId);
+        return new ResponseEntity<>(userResult, HttpStatus.valueOf(userResult.getCode()));
+    }
+
+    @ApiResponses(value = {@ApiResponse(code = 200, message = "Successfully deleted schema"),
+            @ApiResponse(code = 404, message = "Schema not found"),
+            @ApiResponse(code = 409, message = "Schema is in use"),
+            @ApiResponse(code = 500, message = "Error deleting schema")})
+    @PreAuthorize("hasRole('Admin')")
+    @DeleteMapping("/{userId}/remove-profile-picture")
+    public ResponseEntity<Result<String>> deleteUserProfilePicture(@PathVariable int userId) throws Exception {
+        Result<String> userResult = userService.deleteUserProfilePicture(userId);
         return new ResponseEntity<>(userResult, HttpStatus.valueOf(userResult.getCode()));
     }
 

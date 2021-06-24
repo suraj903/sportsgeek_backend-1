@@ -264,4 +264,11 @@ public class UserRepoImpl implements UserRepository {
 		return jdbcTemplate.update(sql, params) > 0;
 	}
 
+	@Override
+	public boolean deleteUserProfilePicture(int userId) throws Exception {
+		String sql = "UPDATE User SET ProfilePicture='' WHERE UserId = :userId";
+		MapSqlParameterSource params = new MapSqlParameterSource("userId", userId);
+		return jdbcTemplate.update(sql, params) > 0;
+	}
+
 }

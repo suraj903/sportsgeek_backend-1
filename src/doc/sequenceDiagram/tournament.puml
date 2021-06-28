@@ -22,14 +22,10 @@ alt #white Get All tournaments
     "tournament" -> "database" : Get All tournaments
     activate "database" #lightblue
     "database" --> "tournament" : <font color=darkblue><b>Response Get All tournament Details
+    deactivate "database"
     "tournament" --> "sportsGeek" : <font color=darkblue><b> Response Get All tournament Details
-"sportsGeek" --> Admin : <font color=darkblue><b> Response tournament Details
-else #pink Internal Server Error
-"database" --> "tournament" : <font color=darkblue><b> Database Error
-deactivate "database"
-"tournament" --> "sportsGeek" : <font color=darkblue><b> INTERNAL SERVER ERROR
 deactivate "tournament"
-"sportsGeek" --> Admin : <font color=darkblue><b> INTERNAL SERVER ERROR
+"sportsGeek" --> Admin : <font color=darkblue><b> Response tournament Details
 deactivate "sportsGeek"
 end alt
 
@@ -49,14 +45,10 @@ note right #yellow
 "sportsGeek" --> Admin : <font color=darkblue><b> Response tournament Details
 else #pink Not Found
       "database" --> "tournament" : <font color=darkblue><b>Response tournament Id Not Found
-"tournament" --> "sportsGeek" : <font color=darkblue><b>Response tournament Id Not Found
-"sportsGeek" --> Admin : <font color=darkblue><b>Response tournament Id Not Found
-else #pink Internal Server Error
-"database" --> "tournament" : <font color=darkblue><b> Database Error
 deactivate "database"
-"tournament" --> "sportsGeek" : <font color=darkblue><b> INTERNAL SERVER ERROR
+"tournament" --> "sportsGeek" : <font color=darkblue><b>Response tournament Id Not Found
 deactivate "tournament"
-"sportsGeek" --> Admin : <font color=darkblue><b> INTERNAL SERVER ERROR
+"sportsGeek" --> Admin : <font color=darkblue><b>Response tournament Id Not Found
 deactivate "sportsGeek"
 end alt
 
@@ -77,14 +69,10 @@ alt #white Add tournaments
 "sportsGeek" --> Admin : <font color=darkblue><b>Response tournament Added Successfully
 else #pink Unable to Add tournament
 "database" --> "tournament" : <font color=darkblue><b>Response Unable to add tournament
-"tournament" --> "sportsGeek" : <font color=darkblue><b>Response Unable to add tournament
-"sportsGeek" --> Admin : <font color=darkblue><b>Response Unable to add tournament
-else #pink Internal Server Error
-"database" --> "tournament" : <font color=darkblue><b>Database Error
 deactivate "database"
-"tournament" --> "sportsGeek" : <font color=darkblue><b>INTERNAL SERVER ERROR
+"tournament" --> "sportsGeek" : <font color=darkblue><b>Response Unable to add tournament
 deactivate "tournament"
-"sportsGeek" --> Admin : <font color=darkblue><b>INTERNAL SERVER ERROR
+"sportsGeek" --> Admin : <font color=darkblue><b>Response Unable to add tournament
 deactivate "sportsGeek"
 end alt
 
@@ -105,14 +93,10 @@ alt #white Update tournament
 "sportsGeek" --> Admin : <font color=darkblue><b> Response tournament Updated Successfully
 else #pink Not Found
 "database" --> "tournament" : <font color=darkblue><b>Response tournament Id not found
-"tournament" --> "sportsGeek" : <font color=darkblue><b>Response tournament Id not found
-"sportsGeek" --> Admin : <font color=darkblue><b>Response tournament Id not found
-else #pink Internal Server Error
-"database" --> "tournament" : <font color=darkblue><b>Database Error
 deactivate "database"
-"tournament" --> "sportsGeek" : <font color=darkblue><b>INTERNAL SERVER ERROR
+"tournament" --> "sportsGeek" : <font color=darkblue><b>Response tournament Id not found
 deactivate "tournament"
-"sportsGeek" --> Admin : <font color=darkblue><b>INTERNAL SERVER ERROR
+"sportsGeek" --> Admin : <font color=darkblue><b>Response tournament Id not found
 deactivate "sportsGeek"
 end alt
 
@@ -133,14 +117,10 @@ alt #white Update Active Tournament
 "sportsGeek" --> Admin : <font color=darkblue><b> Response tournament Updated Successfully
 else #pink Not Found
 "database" --> "tournament" : <font color=darkblue><b>Response tournament Id not found
-"tournament" --> "sportsGeek" : <font color=darkblue><b>Response tournament Id not found
-"sportsGeek" --> Admin : <font color=darkblue><b>Response tournament Id not found
-else #pink Internal Server Error
-"database" --> "tournament" : <font color=darkblue><b>Database Error
 deactivate "database"
-"tournament" --> "sportsGeek" : <font color=darkblue><b>INTERNAL SERVER ERROR
+"tournament" --> "sportsGeek" : <font color=darkblue><b>Response tournament Id not found
 deactivate "tournament"
-"sportsGeek" --> Admin : <font color=darkblue><b>INTERNAL SERVER ERROR
+"sportsGeek" --> Admin : <font color=darkblue><b>Response tournament Id not found
 deactivate "sportsGeek"
 end alt
 
@@ -161,14 +141,10 @@ alt #white Delete tournament
 "sportsGeek" --> Admin : <font color=darkblue><b>Response tournament Deleted Successfully
 else #pink Not Found
 "database" --> "tournament" : <font color=darkblue><b>Response tournament Id not found
-"tournament" --> "sportsGeek" : <font color=darkblue><b>Response tournament Id not found
-"sportsGeek" --> Admin : <font color=darkblue><b>Response tournament Id not found
-else #pink Internal Server Error
-"database" --> "tournament" : <font color=darkblue><b>Database Error
 deactivate "database"
-"tournament" --> "sportsGeek" : <font color=darkblue><b>INTERNAL SERVER ERROR
+"tournament" --> "sportsGeek" : <font color=darkblue><b>Response tournament Id not found
 deactivate "tournament"
-"sportsGeek" --> Admin : <font color=darkblue><b>INTERNAL SERVER ERROR
+"sportsGeek" --> Admin : <font color=darkblue><b>Response tournament Id not found
 deactivate "sportsGeek"
 end alt
 @enduml

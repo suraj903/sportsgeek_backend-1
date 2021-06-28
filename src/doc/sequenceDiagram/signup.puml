@@ -53,15 +53,11 @@ else #pink Email Already Exist
 "sportsGeek" --> User : <font color=darkblue><b>Response Email already exist
 else #pink Unable to Add User
 "database" --> "user" : <font color=darkblue><b> Unable to Add User
-"user" --> "sportsGeek" : <font color=darkblue><b>Response Unable to Add User
-"sportsGeek" --> User : <font color=darkblue><b>Response Unable to Add User
-end alt
-else #pink Internal Server Error
-"database" --> "user" : <font color=darkblue><b> Database Error
 deactivate "database"
-"user" --> "sportsGeek" : <font color=darkblue><b> INTERNAL SERVER ERROR
+"user" --> "sportsGeek" : <font color=darkblue><b>Response Unable to Add User
 deactivate "user"
-"sportsGeek" --> User : <font color=darkblue><b> INTERNAL SERVER ERROR
+"sportsGeek" --> User : <font color=darkblue><b>Response Unable to Add User
 deactivate "sportsGeek"
+end alt
 end alt
 @enduml

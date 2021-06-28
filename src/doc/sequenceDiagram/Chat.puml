@@ -22,14 +22,10 @@ alt #white Get All Messages
     "publicChat" -> "database" : Get All Messages
         activate "database" #lightblue
     "database" --> "publicChat" : <font color=darkblue><b> Response messages Details
-"publicChat" --> "sportsGeek" : <font color=darkblue><b> Response messages Details
-"sportsGeek" --> User : <font color=darkblue><b> Response messages Details
-else #pink Internal Server Error
-"database" --> "publicChat" : <font color=darkblue><b> Database Error
 deactivate "database"
-"publicChat" --> "sportsGeek" : <font color=darkblue><b> INTERNAL SERVER ERROR
+"publicChat" --> "sportsGeek" : <font color=darkblue><b> Response messages Details
 deactivate "publicChat"
-"sportsGeek" --> User : <font color=darkblue><b> INTERNAL SERVER ERROR
+"sportsGeek" --> User : <font color=darkblue><b> Response messages Details
 deactivate "sportsGeek"
 end alt
 
@@ -45,14 +41,10 @@ activate "publicChat" #lightblue
 "sportsGeek" --> User : <font color=darkblue><b>Response Chat Added
 else #pink Unable to add chat
 "database" --> "publicChat" : <font color=darkblue><b>Response Unable to add chat
-"publicChat" --> "sportsGeek" : <font color=darkblue><b>Response Unable to add chat
-"sportsGeek" --> User : <font color=darkblue><b>Response Unable to add chat
-else #pink Internal Server Error
-"database" --> "publicChat" : <font color=darkblue><b> Database Error
 deactivate "database"
-"publicChat" --> "sportsGeek" : <font color=darkblue><b> INTERNAL SERVER ERROR
+"publicChat" --> "sportsGeek" : <font color=darkblue><b>Response Unable to add chat
 deactivate "publicChat"
-"sportsGeek" --> User : <font color=darkblue><b> INTERNAL SERVER ERROR
+"sportsGeek" --> User : <font color=darkblue><b>Response Unable to add chat
 deactivate "sportsGeek"
 end alt
 @enduml

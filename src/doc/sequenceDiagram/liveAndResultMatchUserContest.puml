@@ -30,14 +30,10 @@ note right #yellow
 "sportsGeek" --> User : <font color=darkblue><b> Response matches Details
 else #pink Not Found
       "database" --> "userContest" : <font color=darkblue><b>Response matches Id Not Found
-"userContest" --> "sportsGeek" : <font color=darkblue><b>Response matches Id Not Found
-"sportsGeek" --> User : <font color=darkblue><b>Response matches Id Not Found
-else #pink Internal Server Error
-"database" --> "userContest" : <font color=darkblue><b> Database Error
 deactivate "database"
-"userContest" --> "sportsGeek" : <font color=darkblue><b> INTERNAL SERVER ERROR
+"userContest" --> "sportsGeek" : <font color=darkblue><b>Response matches Id Not Found
 deactivate "userContest"
-"sportsGeek" --> User : <font color=darkblue><b> INTERNAL SERVER ERROR
+"sportsGeek" --> User : <font color=darkblue><b>Response matches Id Not Found
 deactivate "sportsGeek"
 end alt
 
@@ -53,14 +49,10 @@ activate "userContest" #lightblue
 "sportsGeek" --> User : <font color=darkblue><b>Response Contest Details
 else #pink MatchId Not Found
 "database" -> "userContest" : <font color=darkblue><b>Response match Id Not Found
-"userContest" -> "sportsGeek" : <font color=darkblue><b>Response match Id Not Found
-"sportsGeek" -> User : <font color=darkblue><b>Response match Id Not Found
-else #pink Internal Server Error
-"database" --> "userContest" : <font color=darkblue><b> Database Error
 deactivate "database"
-"userContest" --> "sportsGeek" : <font color=darkblue><b> INTERNAL SERVER ERROR
+"userContest" -> "sportsGeek" : <font color=darkblue><b>Response match Id Not Found
 deactivate "userContest"
-"sportsGeek" --> User : <font color=darkblue><b> INTERNAL SERVER ERROR
+"sportsGeek" -> User : <font color=darkblue><b>Response match Id Not Found
 deactivate "sportsGeek"
 end alt
 @enduml

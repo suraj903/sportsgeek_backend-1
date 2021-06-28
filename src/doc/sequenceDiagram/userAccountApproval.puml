@@ -22,14 +22,10 @@ activate accountApproval #lightblue
     accountApproval -> "database" : Get All User Details with Status False
     activate "database" #lightblue
     "database" --> "accountApproval" : <font color=darkblue><b>Response Get All User Details
+    deactivate "database"
     "accountApproval" --> "sportsGeek" : <font color=darkblue><b>Response Get All User Details
+   deactivate "accountApproval"
     "sportsGeek" --> User : <font color=darkblue><b>Response Get All User Details
-else #pink Internal Server Error
-"database" --> "accountApproval" : <font color=darkblue><b> Database Error
-deactivate "database"
-"accountApproval" --> "sportsGeek" : <font color=darkblue><b> INTERNAL SERVER ERROR
-deactivate "accountApproval"
-"sportsGeek" --> User : <font color=darkblue><b> INTERNAL SERVER ERROR
 deactivate "sportsGeek"
 end alt
 
@@ -45,14 +41,10 @@ activate accountApproval #lightblue
     "sportsGeek" --> User : <font color=darkblue><b>Response User Status Updated Successfully
 else #pink Unable to Add Contest
 "database" --> "accountApproval" : <font color=darkblue><b>Response Unable to Update Status
-"accountApproval" --> "sportsGeek" : <font color=darkblue><b>Response Unable to Update Status
-"sportsGeek" --> User : <font color=darkblue><b>Response Unable to Update Status
-else #pink Internal Server Error
-"database" --> "accountApproval" : <font color=darkblue><b> Database Error
 deactivate "database"
-"accountApproval" --> "sportsGeek" : <font color=darkblue><b> INTERNAL SERVER ERROR
+"accountApproval" --> "sportsGeek" : <font color=darkblue><b>Response Unable to Update Status
 deactivate "accountApproval"
-"sportsGeek" --> User : <font color=darkblue><b> INTERNAL SERVER ERROR
+"sportsGeek" --> User : <font color=darkblue><b>Response Unable to Update Status
 deactivate "sportsGeek"
 end alt
 @enduml

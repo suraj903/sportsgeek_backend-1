@@ -22,14 +22,10 @@ alt #white Get All genders
     "gender" -> "database" : Get All genders
     activate "database" #lightblue
     "database" --> "gender" : <font color=darkblue><b>Response Get All Gender Details
+    deactivate "database"
     "gender" --> "sportsGeek" : <font color=darkblue><b> Response Get All Gender Details
+    deactivate "gender"
 "sportsGeek" --> Admin : <font color=darkblue><b> Response Gender Details
-else #pink Internal Server Error
-"database" --> "gender" : <font color=darkblue><b> Database Error
-deactivate "database"
-"gender" --> "sportsGeek" : <font color=darkblue><b> INTERNAL SERVER ERROR
-deactivate "gender"
-"sportsGeek" --> Admin : <font color=darkblue><b> INTERNAL SERVER ERROR
 deactivate "sportsGeek"
 end alt
 
@@ -49,14 +45,10 @@ note right #yellow
 "sportsGeek" --> Admin : <font color=darkblue><b> Response Gender Details
 else #pink Not Found
       "database" --> "gender" : <font color=darkblue><b>Response Gender Id Not Found
-"gender" --> "sportsGeek" : <font color=darkblue><b>Response Gender Id Not Found
-"sportsGeek" --> Admin : <font color=darkblue><b>Response Gender Id Not Found
-else #pink Internal Server Error
-"database" --> "gender" : <font color=darkblue><b> Database Error
 deactivate "database"
-"gender" --> "sportsGeek" : <font color=darkblue><b> INTERNAL SERVER ERROR
+"gender" --> "sportsGeek" : <font color=darkblue><b>Response Gender Id Not Found
 deactivate "gender"
-"sportsGeek" --> Admin : <font color=darkblue><b> INTERNAL SERVER ERROR
+"sportsGeek" --> Admin : <font color=darkblue><b>Response Gender Id Not Found
 deactivate "sportsGeek"
 end alt
 
@@ -77,14 +69,10 @@ alt #white Add genders
 "sportsGeek" --> Admin : <font color=darkblue><b>Response Gender Added Successfully
 else #pink Unable to Add gender
 "database" --> "gender" : <font color=darkblue><b>Response Unable to add gender
-"gender" --> "sportsGeek" : <font color=darkblue><b>Response Unable to add gender
-"sportsGeek" --> Admin : <font color=darkblue><b>Response Unable to add gender
-else #pink Internal Server Error
-"database" --> "gender" : <font color=darkblue><b>Database Error
 deactivate "database"
-"gender" --> "sportsGeek" : <font color=darkblue><b>INTERNAL SERVER ERROR
+"gender" --> "sportsGeek" : <font color=darkblue><b>Response Unable to add gender
 deactivate "gender"
-"sportsGeek" --> Admin : <font color=darkblue><b>INTERNAL SERVER ERROR
+"sportsGeek" --> Admin : <font color=darkblue><b>Response Unable to add gender
 deactivate "sportsGeek"
 end alt
 
@@ -105,14 +93,10 @@ alt #white Update gender
 "sportsGeek" --> Admin : <font color=darkblue><b> Response Gender Updated Successfully
 else #pink Not Found
 "database" --> "gender" : <font color=darkblue><b>Response Gender Id not found
-"gender" --> "sportsGeek" : <font color=darkblue><b>Response gender Id not found
-"sportsGeek" --> Admin : <font color=darkblue><b>Response gender Id not found
-else #pink Internal Server Error
-"database" --> "gender" : <font color=darkblue><b>Database Error
 deactivate "database"
-"gender" --> "sportsGeek" : <font color=darkblue><b>INTERNAL SERVER ERROR
+"gender" --> "sportsGeek" : <font color=darkblue><b>Response gender Id not found
 deactivate "gender"
-"sportsGeek" --> Admin : <font color=darkblue><b>INTERNAL SERVER ERROR
+"sportsGeek" --> Admin : <font color=darkblue><b>Response gender Id not found
 deactivate "sportsGeek"
 end alt
 
@@ -132,14 +116,10 @@ alt #white Delete gender
 "sportsGeek" --> Admin : <font color=darkblue><b>Response Gender Deleted Successfully
 else #pink Not Found
 "database" --> "gender" : <font color=darkblue><b>Response gender Id not found
-"gender" --> "sportsGeek" : <font color=darkblue><b>Response gender Id not found
-"sportsGeek" --> Admin : <font color=darkblue><b>Response gender Id not found
-else #pink Internal Server Error
-"database" --> "gender" : <font color=darkblue><b>Database Error
 deactivate "database"
-"gender" --> "sportsGeek" : <font color=darkblue><b>INTERNAL SERVER ERROR
+"gender" --> "sportsGeek" : <font color=darkblue><b>Response gender Id not found
 deactivate "gender"
-"sportsGeek" --> Admin : <font color=darkblue><b>INTERNAL SERVER ERROR
+"sportsGeek" --> Admin : <font color=darkblue><b>Response gender Id not found
 deactivate "sportsGeek"
 end alt
 @enduml

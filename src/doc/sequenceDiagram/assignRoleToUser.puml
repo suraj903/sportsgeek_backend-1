@@ -22,14 +22,10 @@ activate assignRole #lightblue
     assignRole -> "database" : Get All User Details
     activate "database" #lightblue
     "database" --> "assignRole" : <font color=darkblue><b>Response Get All User Details
+    deactivate "database"
     "assignRole" --> "sportsGeek" : <font color=darkblue><b>Response Get All User Details
+    deactivate "assignRole"
     "sportsGeek" --> User : <font color=darkblue><b>Response Get All User Details
-else #pink Internal Server Error
-"database" --> "assignRole" : <font color=darkblue><b> Database Error
-deactivate "database"
-"assignRole" --> "sportsGeek" : <font color=darkblue><b> INTERNAL SERVER ERROR
-deactivate "assignRole"
-"sportsGeek" --> User : <font color=darkblue><b> INTERNAL SERVER ERROR
 deactivate "sportsGeek"
 end alt
 
@@ -41,14 +37,10 @@ activate assignRole #lightblue
     assignRole -> "database" : Get All Roles
     activate "database" #lightblue
     "database" --> "assignRole" : <font color=darkblue><b>Response Get All Roles
+    deactivate "database"
     "assignRole" --> "sportsGeek" : <font color=darkblue><b>Response Get All Roles
+   deactivate "assignRole"
     "sportsGeek" --> User : <font color=darkblue><b>Response Get All Roles
-else #pink Internal Server Error
-"database" --> "assignRole" : <font color=darkblue><b> Database Error
-deactivate "database"
-"assignRole" --> "sportsGeek" : <font color=darkblue><b> INTERNAL SERVER ERROR
-deactivate "assignRole"
-"sportsGeek" --> User : <font color=darkblue><b> INTERNAL SERVER ERROR
 deactivate "sportsGeek"
 end alt
 
@@ -70,14 +62,10 @@ else #pink User Id Not Found
 "sportsGeek" --> User : <font color=darkblue><b>Response User Id Not Found
 else #pink Unable to assign role
 "database" --> "assignRole" : <font color=darkblue><b>Response Unable to assign role
-"assignRole" --> "sportsGeek" : <font color=darkblue><b>Response Unable to assign role
-"sportsGeek" --> User : <font color=darkblue><b>Response Unable to assign role
-else #pink Internal Server Error
-"database" --> "assignRole" : <font color=darkblue><b> Database Error
 deactivate "database"
-"assignRole" --> "sportsGeek" : <font color=darkblue><b> INTERNAL SERVER ERROR
+"assignRole" --> "sportsGeek" : <font color=darkblue><b>Response Unable to assign role
 deactivate "assignRole"
-"sportsGeek" --> User : <font color=darkblue><b> INTERNAL SERVER ERROR
+"sportsGeek" --> User : <font color=darkblue><b>Response Unable to assign role
 deactivate "sportsGeek"
 end alt
 @enduml

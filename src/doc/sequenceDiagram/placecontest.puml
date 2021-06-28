@@ -21,14 +21,10 @@ activate "contest" #lightblue
     contest -> "database" : Get All Upcoming Matches
     activate "database" #lightblue
     "database" --> "contest" : <font color=darkblue><b>Response Upcoming Matches Details
-"contest" --> "sportsGeek" : <font color=darkblue><b>Response Upcoming Matches Details
-"sportsGeek" --> User : <font color=darkblue><b>Response Upcoming Matches Details
-else #pink Internal Server Error
-"database" --> "contest" : <font color=darkblue><b> Database Error
 deactivate "database"
-"contest" --> "sportsGeek" : <font color=darkblue><b> INTERNAL SERVER ERROR
+"contest" --> "sportsGeek" : <font color=darkblue><b>Response Upcoming Matches Details
 deactivate "contest"
-"sportsGeek" --> User : <font color=darkblue><b> INTERNAL SERVER ERROR
+"sportsGeek" --> User : <font color=darkblue><b>Response Upcoming Matches Details
 deactivate "sportsGeek"
 end alt
 
@@ -44,14 +40,10 @@ activate "contest" #lightblue
 "sportsGeek" --> User : <font color=darkblue><b>Response Match Details
 else #pink Not Found
 "database" --> "contest" : <font color=darkblue><b>Response match Id Not Found
-"contest" --> "sportsGeek" : <font color=darkblue><b>Response match Id Not Found
-"sportsGeek" --> User : <font color=darkblue><b>Response match Id Not Found
-else #pink Internal Server Error
-"database" --> "contest" : <font color=darkblue><b> Database Error
 deactivate "database"
-"contest" --> "sportsGeek" : <font color=darkblue><b> INTERNAL SERVER ERROR
+"contest" --> "sportsGeek" : <font color=darkblue><b>Response match Id Not Found
 deactivate "contest"
-"sportsGeek" --> User : <font color=darkblue><b> INTERNAL SERVER ERROR
+"sportsGeek" --> User : <font color=darkblue><b>Response match Id Not Found
 deactivate "sportsGeek"
 end alt
 
@@ -67,14 +59,10 @@ activate "contest" #lightblue
 "sportsGeek" --> User : <font color=darkblue><b>Response User Details
 else #pink Not Found
 "database" --> "contest" : <font color=darkblue><b>Response User Id Not Found
-"contest" --> "sportsGeek" : <font color=darkblue><b>Response User Id Not Found
-"sportsGeek" --> User : <font color=darkblue><b>Response User Id Not Found
-else #pink Internal Server Error
-"database" --> "contest" : <font color=darkblue><b> Database Error
 deactivate "database"
-"contest" --> "sportsGeek" : <font color=darkblue><b> INTERNAL SERVER ERROR
+"contest" --> "sportsGeek" : <font color=darkblue><b>Response User Id Not Found
 deactivate "contest"
-"sportsGeek" --> User : <font color=darkblue><b> INTERNAL SERVER ERROR
+"sportsGeek" --> User : <font color=darkblue><b>Response User Id Not Found
 deactivate "sportsGeek"
 end alt
 
@@ -89,15 +77,11 @@ activate "contest" #lightblue
 "contest" --> "sportsGeek" : <font color=darkblue><b>Response Contest Details
 "sportsGeek" --> User : <font color=darkblue><b>Response Contest Details
 else #pink Not Found
-"database" -> "contest" : <font color=darkblue><b>Response match Id Not Found
-"contest" -> "sportsGeek" : <font color=darkblue><b>Response match Id Not Found
-"sportsGeek" -> User : <font color=darkblue><b>Response match Id Not Found
-else #pink Internal Server Error
-"database" --> "contest" : <font color=darkblue><b> Database Error
+"database" --> "contest" : <font color=darkblue><b>Response match Id Not Found
 deactivate "database"
-"contest" --> "sportsGeek" : <font color=darkblue><b> INTERNAL SERVER ERROR
+"contest" --> "sportsGeek" : <font color=darkblue><b>Response match Id Not Found
 deactivate "contest"
-"sportsGeek" --> User : <font color=darkblue><b> INTERNAL SERVER ERROR
+"sportsGeek" --> User : <font color=darkblue><b>Response match Id Not Found
 deactivate "sportsGeek"
 end alt
 
@@ -114,14 +98,10 @@ activate "contest" #lightblue
 "sportsGeek" --> User : <font color=darkblue><b>Response Contest Added
 else #pink Unable to Add Contest
 "database" --> "contest" : <font color=darkblue><b>Response Unable to Add Contest
-"contest" --> "sportsGeek" : <font color=darkblue><b>Response Unable to Add Contest
-"sportsGeek" --> User : <font color=darkblue><b>Response Unable to Add Contest
-else #pink Internal Server Error
-"database" --> "contest" : <font color=darkblue><b> Database Error
 deactivate "database"
-"contest" --> "sportsGeek" : <font color=darkblue><b> INTERNAL SERVER ERROR
+"contest" --> "sportsGeek" : <font color=darkblue><b>Response Unable to Add Contest
 deactivate "contest"
-"sportsGeek" --> User : <font color=darkblue><b> INTERNAL SERVER ERROR
+"sportsGeek" --> User : <font color=darkblue><b>Response Unable to Add Contest
 deactivate "sportsGeek"
 end alt
 
@@ -136,15 +116,11 @@ activate "contest" #lightblue
 "contest" --> "sportsGeek" : <font color=darkblue><b>Response Contest Details
 "sportsGeek" --> User : <font color=darkblue><b>Response Contest Details
 else #pink MatchId Not Found
-"database" -> "contest" : <font color=darkblue><b>Response match Id Not Found
-"contest" -> "sportsGeek" : <font color=darkblue><b>Response match Id Not Found
-"sportsGeek" -> User : <font color=darkblue><b>Response match Id Not Found
-else #pink Internal Server Error
-"database" --> "contest" : <font color=darkblue><b> Database Error
+"database" --> "contest" : <font color=darkblue><b>Response match Id Not Found
 deactivate "database"
-"contest" --> "sportsGeek" : <font color=darkblue><b> INTERNAL SERVER ERROR
+"contest" --> "sportsGeek" : <font color=darkblue><b>Response match Id Not Found
 deactivate "contest"
-"sportsGeek" --> User : <font color=darkblue><b> INTERNAL SERVER ERROR
+"sportsGeek" --> User : <font color=darkblue><b>Response match Id Not Found
 deactivate "sportsGeek"
 end alt
 
@@ -159,22 +135,15 @@ activate "contest" #lightblue
 "contest" --> "sportsGeek" : <font color=darkblue><b>Response Contest Updated
 "sportsGeek" --> User : <font color=darkblue><b>Response Contest Updated
 else #pink contestId Not Found
-"database" -> "contest" : <font color=darkblue><b>Response contest Id Not Found
-"contest" -> "sportsGeek" : <font color=darkblue><b>Response contest Id Not Found
-"sportsGeek" -> User : <font color=darkblue><b>Response contest Id Not Found
+"database" --> "contest" : <font color=darkblue><b>Response contest Id Not Found
+"contest" --> "sportsGeek" : <font color=darkblue><b>Response contest Id Not Found
+"sportsGeek" --> User : <font color=darkblue><b>Response contest Id Not Found
 else #pink Unable to Add Contest
 "database" --> "contest" : <font color=darkblue><b>Response Unable to Update Contest
-"contest" --> "sportsGeek" : <font color=darkblue><b>Response Unable to Update Contest
-"sportsGeek" --> User : <font color=darkblue><b>Response Unable to Update Contest
-else #pink Internal Server Error
-"database" --> "contest" : <font color=darkblue><b> Database Error
 deactivate "database"
-"contest" --> "sportsGeek" : <font color=darkblue><b> INTERNAL SERVER ERROR
+"contest" --> "sportsGeek" : <font color=darkblue><b>Response Unable to Update Contest
 deactivate "contest"
-"sportsGeek" --> User : <font color=darkblue><b> INTERNAL SERVER ERROR
+"sportsGeek" --> User : <font color=darkblue><b>Response Unable to Update Contest
 deactivate "sportsGeek"
 end alt
-
-
-
 @enduml

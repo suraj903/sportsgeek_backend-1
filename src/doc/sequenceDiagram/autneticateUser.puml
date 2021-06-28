@@ -27,20 +27,19 @@ activate authenticate #lightblue
     authenticate -> "database" : Check user credentials
 activate "database" #lightblue
         "database" --> authenticate : <font color=darkblue><b>Response Get User Details
+deactivate "database"
 authenticate --> "authenticate" : authenticate user credentials
 alt #lightgreen user is valid
-"authenticate" --> User : <font color=darkblue><b>Response Valid User"
+"authenticate" --> "sportsGeek" : <font color=darkblue><b>Response Valid User"
+"sportsGeek" --> User : <font color=darkblue><b>Response Valid User"
 else #pink Bad Credentials
-"authenticate" --> User : <font color=darkblue><b>Response Invalid username or password
+"authenticate" --> "sportsGeek" : <font color=darkblue><b>Response Invalid username or password
+"sportsGeek" --> User : <font color=darkblue><b>Response Invalid username or password
 else #pink user is invalid
-"authenticate" --> User : <font color=darkblue><b>Response Sorry! you have been blocked by the admin
-end alt
-else #pink Internal Server Error
-"database" --> "authenticate" : <font color=darkblue><b> Database Error
-deactivate "database"
-"authenticate" --> "sportsGeek" : <font color=darkblue><b> INTERNAL SERVER ERROR
+"authenticate" --> "sportsGeek" : <font color=darkblue><b>Response Sorry! you have been blocked by the admin
 deactivate "authenticate"
-"sportsGeek" --> User : <font color=darkblue><b> INTERNAL SERVER ERROR
+"sportsGeek" --> User : <font color=darkblue><b>Response Sorry! you have been blocked by the admin
 deactivate "sportsGeek"
+end alt
 end alt
 @enduml

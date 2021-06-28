@@ -22,14 +22,10 @@ alt #white Get All teams
     "team" -> "database" : Get All teams
     activate "database" #lightblue
     "database" --> "team" : <font color=darkblue><b>Response Get All team Details
+    deactivate "database"
     "team" --> "sportsGeek" : <font color=darkblue><b> Response Get All team Details
-"sportsGeek" --> Admin : <font color=darkblue><b> Response team Details
-else #pink Internal Server Error
-"database" --> "team" : <font color=darkblue><b> Database Error
-deactivate "database"
-"team" --> "sportsGeek" : <font color=darkblue><b> INTERNAL SERVER ERROR
 deactivate "team"
-"sportsGeek" --> Admin : <font color=darkblue><b> INTERNAL SERVER ERROR
+"sportsGeek" --> Admin : <font color=darkblue><b> Response team Details
 deactivate "sportsGeek"
 end alt
 
@@ -49,14 +45,10 @@ note right #yellow
 "sportsGeek" --> Admin : <font color=darkblue><b> Response team Details
 else #pink Not Found
       "database" --> "team" : <font color=darkblue><b>Response team Id Not Found
-"team" --> "sportsGeek" : <font color=darkblue><b>Response team Id Not Found
-"sportsGeek" --> Admin : <font color=darkblue><b>Response team Id Not Found
-else #pink Internal Server Error
-"database" --> "team" : <font color=darkblue><b> Database Error
 deactivate "database"
-"team" --> "sportsGeek" : <font color=darkblue><b> INTERNAL SERVER ERROR
+"team" --> "sportsGeek" : <font color=darkblue><b>Response team Id Not Found
 deactivate "team"
-"sportsGeek" --> Admin : <font color=darkblue><b> INTERNAL SERVER ERROR
+"sportsGeek" --> Admin : <font color=darkblue><b>Response team Id Not Found
 deactivate "sportsGeek"
 end alt
 
@@ -79,14 +71,10 @@ alt #white Add teams
 "sportsGeek" --> Admin : <font color=darkblue><b>Response team Added Successfully
 else #pink Unable to Add team
 "database" --> "team" : <font color=darkblue><b>Response Unable to add team
-"team" --> "sportsGeek" : <font color=darkblue><b>Response Unable to add team
-"sportsGeek" --> Admin : <font color=darkblue><b>Response Unable to add team
-else #pink Internal Server Error
-"database" --> "team" : <font color=darkblue><b>Database Error
 deactivate "database"
-"team" --> "sportsGeek" : <font color=darkblue><b>INTERNAL SERVER ERROR
+"team" --> "sportsGeek" : <font color=darkblue><b>Response Unable to add team
 deactivate "team"
-"sportsGeek" --> Admin : <font color=darkblue><b>INTERNAL SERVER ERROR
+"sportsGeek" --> Admin : <font color=darkblue><b>Response Unable to add team
 deactivate "sportsGeek"
 end alt
 
@@ -109,14 +97,10 @@ alt #white Update team
 "sportsGeek" --> Admin : <font color=darkblue><b> Response team Updated Successfully
 else #pink Not Found
 "database" --> "team" : <font color=darkblue><b>Response team Id not found
-"team" --> "sportsGeek" : <font color=darkblue><b>Response team Id not found
-"sportsGeek" --> Admin : <font color=darkblue><b>Response team Id not found
-else #pink Internal Server Error
-"database" --> "team" : <font color=darkblue><b>Database Error
 deactivate "database"
-"team" --> "sportsGeek" : <font color=darkblue><b>INTERNAL SERVER ERROR
+"team" --> "sportsGeek" : <font color=darkblue><b>Response team Id not found
 deactivate "team"
-"sportsGeek" --> Admin : <font color=darkblue><b>INTERNAL SERVER ERROR
+"sportsGeek" --> Admin : <font color=darkblue><b>Response team Id not found
 deactivate "sportsGeek"
 end alt
 
@@ -136,14 +120,10 @@ alt #white Delete team
 "sportsGeek" --> Admin : <font color=darkblue><b>Response team Deleted Successfully
 else #pink Not Found
 "database" --> "team" : <font color=darkblue><b>Response team Id not found
-"team" --> "sportsGeek" : <font color=darkblue><b>Response team Id not found
-"sportsGeek" --> Admin : <font color=darkblue><b>Response team Id not found
-else #pink Internal Server Error
-"database" --> "team" : <font color=darkblue><b>Database Error
 deactivate "database"
-"team" --> "sportsGeek" : <font color=darkblue><b>INTERNAL SERVER ERROR
+"team" --> "sportsGeek" : <font color=darkblue><b>Response team Id not found
 deactivate "team"
-"sportsGeek" --> Admin : <font color=darkblue><b>INTERNAL SERVER ERROR
+"sportsGeek" --> Admin : <font color=darkblue><b>Response team Id not found
 deactivate "sportsGeek"
 end alt
 @enduml

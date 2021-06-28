@@ -21,14 +21,10 @@ alt #white Get All recharges
     recharge -> "database" : Get All recharges
     activate "database" #lightblue
     "database" --> "recharge" : <font color=darkblue><b> Response recharges Details
-"recharge" --> "sportsGeek" : <font color=darkblue><b> Response recharges Details
-"sportsGeek" --> Admin : <font color=darkblue><b> Response recharges Details
-else #pink Internal Server Error
-"database" --> "recharge" : <font color=darkblue><b> Database Error
 deactivate "database"
-"recharge" --> "sportsGeek" : <font color=darkblue><b> INTERNAL SERVER ERROR
+"recharge" --> "sportsGeek" : <font color=darkblue><b> Response recharges Details
 deactivate "recharge"
-"sportsGeek" --> Admin : <font color=darkblue><b> INTERNAL SERVER ERROR
+"sportsGeek" --> Admin : <font color=darkblue><b> Response recharges Details
 deactivate "sportsGeek"
 end alt
 
@@ -44,14 +40,10 @@ note right #yellow
     recharge -> "database" : Get recharge By Id
     activate "database" #lightblue
     "database" --> "recharge" : <font color=darkblue><b>Response recharge Details"
-"recharge" --> "sportsGeek" : <font color=darkblue><b> Response recharges Details
-"sportsGeek" --> Admin : <font color=darkblue><b> Response recharge Details
-else #pink Internal Server Error
-"database" --> "recharge" : <font color=darkblue><b> Database Error
 deactivate "database"
-"recharge" --> "sportsGeek" : <font color=darkblue><b> INTERNAL SERVER ERROR
+"recharge" --> "sportsGeek" : <font color=darkblue><b> Response recharges Details
 deactivate "recharge"
-"sportsGeek" --> Admin : <font color=darkblue><b> INTERNAL SERVER ERROR
+"sportsGeek" --> Admin : <font color=darkblue><b> Response recharge Details
 deactivate "sportsGeek"
 end alt
 
@@ -72,14 +64,10 @@ note right #yellow
 "sportsGeek" --> Admin : <font color=darkblue><b> Response recharge Details
 else #pink Not Found
 "database" --> "recharge" : <font color=darkblue><b> Response recharge Id Not Found
-"recharge" --> "sportsGeek" : <font color=darkblue><b> Response recharge Id Not Found
-"sportsGeek" --> Admin : <font color=darkblue><b> Response recharge Id Not Found
-else #pink Internal Server Error
-"database" --> "recharge" : <font color=darkblue><b> Database Error
 deactivate "database"
-"recharge" --> "sportsGeek" : <font color=darkblue><b> INTERNAL SERVER ERROR
+"recharge" --> "sportsGeek" : <font color=darkblue><b> Response recharge Id Not Found
 deactivate "recharge"
-"sportsGeek" --> Admin : <font color=darkblue><b> INTERNAL SERVER ERROR
+"sportsGeek" --> Admin : <font color=darkblue><b> Response recharge Id Not Found
 deactivate "sportsGeek"
 end alt
 
@@ -100,14 +88,10 @@ alt #white Add recharges
 "sportsGeek" --> Admin : <font color=darkblue><b>Response recharge Added Successfully
 else #pink Unable to Add recharge
 "database" --> "recharge" : <font color=darkblue><b>Unable to add recharge
-"recharge" --> "sportsGeek" : <font color=darkblue><b>Response Unable to add recharge
-"sportsGeek" --> Admin : <font color=darkblue><b>Response Unable to add recharge
-else #pink Internal Server Error
-"database" --> "recharge" : <font color=darkblue><b> Database Error
 deactivate "database"
-"recharge" --> "sportsGeek" : <font color=darkblue><b> INTERNAL SERVER ERROR
+"recharge" --> "sportsGeek" : <font color=darkblue><b>Response Unable to add recharge
 deactivate "recharge"
-"sportsGeek" --> Admin : <font color=darkblue><b> INTERNAL SERVER ERROR
+"sportsGeek" --> Admin : <font color=darkblue><b>Response Unable to add recharge
 deactivate "sportsGeek"
 end alt
 
@@ -128,14 +112,10 @@ activate recharge #lightblue
     "sportsGeek" --> Admin : <font color=darkblue><b>Response recharge Updated Successfully
 else #pink Not Found
 "database" --> "recharge" : <font color=darkblue><b>Response recharge Id not found
-"recharge" --> "sportsGeek" : <font color=darkblue><b>Response recharge Id not found
-"sportsGeek" --> Admin : <font color=darkblue><b>Response recharge Id not found
-else #pink Internal Server Error
-"database" --> "recharge" : <font color=darkblue><b> Database Error
 deactivate "database"
-"recharge" --> "sportsGeek" : <font color=darkblue><b> INTERNAL SERVER ERROR
+"recharge" --> "sportsGeek" : <font color=darkblue><b>Response recharge Id not found
 deactivate "recharge"
-"sportsGeek" --> Admin : <font color=darkblue><b> INTERNAL SERVER ERROR
+"sportsGeek" --> Admin : <font color=darkblue><b>Response recharge Id not found
 deactivate "sportsGeek"
 end alt
 
@@ -155,14 +135,10 @@ activate recharge #lightblue
     "sportsGeek" --> Admin : <font color=darkblue><b>Response recharge deleted Successfully
 else #pink Not Found
 "database" --> "recharge" : <font color=darkblue><b>Response recharge Id not found
-"recharge" --> "sportsGeek" : <font color=darkblue><b>Response recharge Id not found
-"sportsGeek" --> Admin : <font color=darkblue><b>Response recharge Id not found
-else #pink Internal Server Error
-"database" --> "recharge" : <font color=darkblue><b> Database Error
 deactivate "database"
-"recharge" --> "sportsGeek" : <font color=darkblue><b> INTERNAL SERVER ERROR
+"recharge" --> "sportsGeek" : <font color=darkblue><b>Response recharge Id not found
 deactivate "recharge"
-"sportsGeek" --> Admin : <font color=darkblue><b> INTERNAL SERVER ERROR
+"sportsGeek" --> Admin : <font color=darkblue><b>Response recharge Id not found
 deactivate "sportsGeek"
 end alt
 @enduml

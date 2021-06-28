@@ -21,14 +21,10 @@ activate myMatches #lightblue
     myMatches -> "database" : Get Upcoming Matches
     activate "database" #lightblue
     "database" --> "myMatches" : <font color=darkblue><b>Response User Upcoming Matches Details
+    deactivate "database"
     "myMatches" --> "sportsGeek" : <font color=darkblue><b>Response User Upcoming Matches Details
+    deactivate "myMatches"
     "sportsGeek" --> User : <font color=darkblue><b>Response User Upcoming Matches Details
-else #pink Internal Server Error
-"database" --> "myMatches" : <font color=darkblue><b> Database Error
-deactivate "database"
-"myMatches" --> "sportsGeek" : <font color=darkblue><b> INTERNAL SERVER ERROR
-deactivate "myMatches"
-"sportsGeek" --> User : <font color=darkblue><b> INTERNAL SERVER ERROR
 deactivate "sportsGeek"
 end alt
 
@@ -40,14 +36,10 @@ activate myMatches #lightblue
     myMatches -> "database" : Get User Live Matches Details
     activate "database" #lightblue
     "database" --> "myMatches" : <font color=darkblue><b>Response User Live Matches Details
-    "myMatches" --> "sportsGeek" : <font color=darkblue><b>Response User Live Matches Details
-    "sportsGeek" --> User : <font color=darkblue><b>Response User Live Matches Details
-else #pink Internal Server Error
-"database" --> "myMatches" : <font color=darkblue><b> Database Error
 deactivate "database"
-"myMatches" --> "sportsGeek" : <font color=darkblue><b> INTERNAL SERVER ERROR
-deactivate "myMatches"
-"sportsGeek" --> User : <font color=darkblue><b> INTERNAL SERVER ERROR
+    "myMatches" --> "sportsGeek" : <font color=darkblue><b>Response User Live Matches Details
+   deactivate "myMatches"
+    "sportsGeek" --> User : <font color=darkblue><b>Response User Live Matches Details
 deactivate "sportsGeek"
 end alt
 
@@ -60,14 +52,10 @@ activate myMatches #lightblue
     myMatches -> "database" : Get User Old Matches Details
     activate "database" #lightblue
     "database" --> "myMatches" : <font color=darkblue><b>Response User Old Matches Details
+    deactivate "database"
     "myMatches" --> "sportsGeek" : <font color=darkblue><b>Response User Old Matches Details
+    deactivate "myMatches"
     "sportsGeek" --> User : <font color=darkblue><b>Response User Old Matches Details
-else #pink Internal Server Error
-"database" --> "myMatches" : <font color=darkblue><b> Database Error
-deactivate "database"
-"myMatches" --> "sportsGeek" : <font color=darkblue><b> INTERNAL SERVER ERROR
-deactivate "myMatches"
-"sportsGeek" --> User : <font color=darkblue><b> INTERNAL SERVER ERROR
 deactivate "sportsGeek"
 end alt
 @enduml

@@ -22,14 +22,10 @@ alt #white Get All roles
     "role" -> "database" : Get All roles
     activate "database" #lightblue
     "database" --> "role" : <font color=darkblue><b>Response Get All role Details
+    deactivate "database"
     "role" --> "sportsGeek" : <font color=darkblue><b> Response Get All role Details
-"sportsGeek" --> Admin : <font color=darkblue><b> Response role Details
-else #pink Internal Server Error
-"database" --> "role" : <font color=darkblue><b> Database Error
-deactivate "database"
-"role" --> "sportsGeek" : <font color=darkblue><b> INTERNAL SERVER ERROR
 deactivate "role"
-"sportsGeek" --> Admin : <font color=darkblue><b> INTERNAL SERVER ERROR
+"sportsGeek" --> Admin : <font color=darkblue><b> Response role Details
 deactivate "sportsGeek"
 end alt
 
@@ -49,14 +45,10 @@ note right #yellow
 "sportsGeek" --> Admin : <font color=darkblue><b> Response role Details
 else #pink Not Found
       "database" --> "role" : <font color=darkblue><b>Response role Id Not Found
-"role" --> "sportsGeek" : <font color=darkblue><b>Response role Id Not Found
-"sportsGeek" --> Admin : <font color=darkblue><b>Response role Id Not Found
-else #pink Internal Server Error
-"database" --> "role" : <font color=darkblue><b> Database Error
 deactivate "database"
-"role" --> "sportsGeek" : <font color=darkblue><b> INTERNAL SERVER ERROR
+"role" --> "sportsGeek" : <font color=darkblue><b>Response role Id Not Found
 deactivate "role"
-"sportsGeek" --> Admin : <font color=darkblue><b> INTERNAL SERVER ERROR
+"sportsGeek" --> Admin : <font color=darkblue><b>Response role Id Not Found
 deactivate "sportsGeek"
 end alt
 
@@ -77,14 +69,10 @@ alt #white Add roles
 "sportsGeek" --> Admin : <font color=darkblue><b>Response role Added Successfully
 else #pink Unable to Add role
 "database" --> "role" : <font color=darkblue><b>Response Unable to add role
-"role" --> "sportsGeek" : <font color=darkblue><b>Response Unable to add role
-"sportsGeek" --> Admin : <font color=darkblue><b>Response Unable to add role
-else #pink Internal Server Error
-"database" --> "role" : <font color=darkblue><b>Database Error
 deactivate "database"
-"role" --> "sportsGeek" : <font color=darkblue><b>INTERNAL SERVER ERROR
+"role" --> "sportsGeek" : <font color=darkblue><b>Response Unable to add role
 deactivate "role"
-"sportsGeek" --> Admin : <font color=darkblue><b>INTERNAL SERVER ERROR
+"sportsGeek" --> Admin : <font color=darkblue><b>Response Unable to add role
 deactivate "sportsGeek"
 end alt
 
@@ -105,14 +93,10 @@ alt #white Update role
 "sportsGeek" --> Admin : <font color=darkblue><b> Response role Updated Successfully
 else #pink Not Found
 "database" --> "role" : <font color=darkblue><b>Response role Id not found
-"role" --> "sportsGeek" : <font color=darkblue><b>Response role Id not found
-"sportsGeek" --> Admin : <font color=darkblue><b>Response role Id not found
-else #pink Internal Server Error
-"database" --> "role" : <font color=darkblue><b>Database Error
 deactivate "database"
-"role" --> "sportsGeek" : <font color=darkblue><b>INTERNAL SERVER ERROR
+"role" --> "sportsGeek" : <font color=darkblue><b>Response role Id not found
 deactivate "role"
-"sportsGeek" --> Admin : <font color=darkblue><b>INTERNAL SERVER ERROR
+"sportsGeek" --> Admin : <font color=darkblue><b>Response role Id not found
 deactivate "sportsGeek"
 end alt
 
@@ -132,14 +116,10 @@ alt #white Delete role
 "sportsGeek" --> Admin : <font color=darkblue><b>Response role Deleted Successfully
 else #pink Not Found
 "database" --> "role" : <font color=darkblue><b>Response role Id not found
-"role" --> "sportsGeek" : <font color=darkblue><b>Response role Id not found
-"sportsGeek" --> Admin : <font color=darkblue><b>Response role Id not found
-else #pink Internal Server Error
-"database" --> "role" : <font color=darkblue><b>Database Error
 deactivate "database"
-"role" --> "sportsGeek" : <font color=darkblue><b>INTERNAL SERVER ERROR
+"role" --> "sportsGeek" : <font color=darkblue><b>Response role Id not found
 deactivate "role"
-"sportsGeek" --> Admin : <font color=darkblue><b>INTERNAL SERVER ERROR
+"sportsGeek" --> Admin : <font color=darkblue><b>Response role Id not found
 deactivate "sportsGeek"
 end alt
 @enduml

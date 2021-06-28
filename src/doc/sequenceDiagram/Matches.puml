@@ -22,14 +22,10 @@ alt #white Get All matches
     "matches" -> "database" : Get All matches
     activate "database" #lightblue
     "database" --> "matches" : <font color=darkblue><b>Response Get All matches Details
+    deactivate "database"
     "matches" --> "sportsGeek" : <font color=darkblue><b> Response Get All matches Details
-"sportsGeek" --> Admin : <font color=darkblue><b> Response matches Details
-else #pink Internal Server Error
-"database" --> "matches" : <font color=darkblue><b> Database Error
-deactivate "database"
-"matches" --> "sportsGeek" : <font color=darkblue><b> INTERNAL SERVER ERROR
 deactivate "matches"
-"sportsGeek" --> Admin : <font color=darkblue><b> INTERNAL SERVER ERROR
+"sportsGeek" --> Admin : <font color=darkblue><b> Response matches Details
 deactivate "sportsGeek"
 end alt
 
@@ -49,14 +45,10 @@ note right #yellow
 "sportsGeek" --> Admin : <font color=darkblue><b> Response matches Details
 else #pink Not Found
       "database" --> "matches" : <font color=darkblue><b>Response matches Id Not Found
-"matches" --> "sportsGeek" : <font color=darkblue><b>Response matches Id Not Found
-"sportsGeek" --> Admin : <font color=darkblue><b>Response matches Id Not Found
-else #pink Internal Server Error
-"database" --> "matches" : <font color=darkblue><b> Database Error
 deactivate "database"
-"matches" --> "sportsGeek" : <font color=darkblue><b> INTERNAL SERVER ERROR
+"matches" --> "sportsGeek" : <font color=darkblue><b>Response matches Id Not Found
 deactivate "matches"
-"sportsGeek" --> Admin : <font color=darkblue><b> INTERNAL SERVER ERROR
+"sportsGeek" --> Admin : <font color=darkblue><b>Response matches Id Not Found
 deactivate "sportsGeek"
 end alt
 
@@ -84,14 +76,10 @@ alt #white Add matches
 "sportsGeek" --> Admin : <font color=darkblue><b>Response matches Added Successfully
 else #pink Unable to Add matches
 "database" --> "matches" : <font color=darkblue><b>Response Unable to add matches
-"matches" --> "sportsGeek" : <font color=darkblue><b>Response Unable to add matches
-"sportsGeek" --> Admin : <font color=darkblue><b>Response Unable to add matches
-else #pink Internal Server Error
-"database" --> "matches" : <font color=darkblue><b>Database Error
 deactivate "database"
-"matches" --> "sportsGeek" : <font color=darkblue><b>INTERNAL SERVER ERROR
+"matches" --> "sportsGeek" : <font color=darkblue><b>Response Unable to add matches
 deactivate "matches"
-"sportsGeek" --> Admin : <font color=darkblue><b>INTERNAL SERVER ERROR
+"sportsGeek" --> Admin : <font color=darkblue><b>Response Unable to add matches
 deactivate "sportsGeek"
 end alt
 
@@ -118,14 +106,10 @@ alt #white Update matches
 "sportsGeek" --> Admin : <font color=darkblue><b> Response matches Updated Successfully
 else #pink Not Found
 "database" --> "matches" : <font color=darkblue><b>Response matches Id not found
-"matches" --> "sportsGeek" : <font color=darkblue><b>Response matches Id not found
-"sportsGeek" --> Admin : <font color=darkblue><b>Response matches Id not found
-else #pink Internal Server Error
-"database" --> "matches" : <font color=darkblue><b>Database Error
 deactivate "database"
-"matches" --> "sportsGeek" : <font color=darkblue><b>INTERNAL SERVER ERROR
+"matches" --> "sportsGeek" : <font color=darkblue><b>Response matches Id not found
 deactivate "matches"
-"sportsGeek" --> Admin : <font color=darkblue><b>INTERNAL SERVER ERROR
+"sportsGeek" --> Admin : <font color=darkblue><b>Response matches Id not found
 deactivate "sportsGeek"
 end alt
 
@@ -146,14 +130,10 @@ alt #white Update matches Contest Points
 "sportsGeek" --> Admin : <font color=darkblue><b>Response matches contest points Updated Successfully
 else #pink Not Found
 "database" --> "matches" : <font color=darkblue><b>Response matches Id not found
-"matches" --> "sportsGeek" : <font color=darkblue><b>Response matches Id not found
-"sportsGeek" --> Admin : <font color=darkblue><b>Response matches Id not found
-else #pink Internal Server Error
-"database" --> "matches" : <font color=darkblue><b>Database Error
 deactivate "database"
-"matches" --> "sportsGeek" : <font color=darkblue><b>INTERNAL SERVER ERROR
+"matches" --> "sportsGeek" : <font color=darkblue><b>Response matches Id not found
 deactivate "matches"
-"sportsGeek" --> Admin : <font color=darkblue><b>INTERNAL SERVER ERROR
+"sportsGeek" --> Admin : <font color=darkblue><b>Response matches Id not found
 deactivate "sportsGeek"
 end alt
 
@@ -174,14 +154,10 @@ alt #white Update Match Result
 "sportsGeek" --> Admin : <font color=darkblue><b>Response Match Result Updated Successfully
 else #pink Unable to Update Match Result
 "database" --> "matches" : <font color=darkblue><b>Response Unable to Update Match Result
-"matches" --> "sportsGeek" : <font color=darkblue><b>Response Unable to Update Match Result
-"sportsGeek" --> Admin : <font color=darkblue><b>Response Unable to Update Match Result
-else #pink Internal Server Error
-"database" --> "matches" : <font color=darkblue><b>Database Error
 deactivate "database"
-"matches" --> "sportsGeek" : <font color=darkblue><b>INTERNAL SERVER ERROR
+"matches" --> "sportsGeek" : <font color=darkblue><b>Response Unable to Update Match Result
 deactivate "matches"
-"sportsGeek" --> Admin : <font color=darkblue><b>INTERNAL SERVER ERROR
+"sportsGeek" --> Admin : <font color=darkblue><b>Response Unable to Update Match Result
 deactivate "sportsGeek"
 end alt
 
@@ -202,14 +178,10 @@ alt #white Delete matches
 "sportsGeek" --> Admin : <font color=darkblue><b>Response matches Deleted Successfully
 else #pink Not Found
 "database" --> "matches" : <font color=darkblue><b>Response matches Id not found
-"matches" --> "sportsGeek" : <font color=darkblue><b>Response matches Id not found
-"sportsGeek" --> Admin : <font color=darkblue><b>Response matches Id not found
-else #pink Internal Server Error
-"database" --> "matches" : <font color=darkblue><b>Database Error
 deactivate "database"
-"matches" --> "sportsGeek" : <font color=darkblue><b>INTERNAL SERVER ERROR
+"matches" --> "sportsGeek" : <font color=darkblue><b>Response matches Id not found
 deactivate "matches"
-"sportsGeek" --> Admin : <font color=darkblue><b>INTERNAL SERVER ERROR
+"sportsGeek" --> Admin : <font color=darkblue><b>Response matches Id not found
 deactivate "sportsGeek"
 end alt
 @enduml

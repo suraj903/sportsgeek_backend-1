@@ -22,14 +22,10 @@ activate Statistics #lightblue
     Statistics -> "database" : Get Users Statistics
     activate "database" #lightblue
     "database" --> "Statistics" : <font color=darkblue><b>Response Users Statistics Details
-"Statistics" --> sportsGeek : <font color=darkblue><b>Response Users Statistics Details
-"sportsGeek" --> User : <font color=darkblue><b>Response Users Statistics Details
-else #pink Internal Server Error
-"database" --> "Statistics" : <font color=darkblue><b> Database Error
 deactivate "database"
-"Statistics" --> "sportsGeek" : <font color=darkblue><b> INTERNAL SERVER ERROR
+"Statistics" --> sportsGeek : <font color=darkblue><b>Response Users Statistics Details
 deactivate "Statistics"
-"sportsGeek" --> User : <font color=darkblue><b> INTERNAL SERVER ERROR
+"sportsGeek" --> User : <font color=darkblue><b>Response Users Statistics Details
 deactivate "sportsGeek"
 end alt
 
@@ -41,14 +37,10 @@ activate Statistics #lightblue
     Statistics -> "database" : Get Users Future Contest Points
     activate "database" #lightblue
     "database" --> "Statistics" : <font color=darkblue><b>Response Users Future Contest Points Details
-"Statistics" --> sportsGeek : <font color=darkblue><b>Response Users Future Contest Points Details
-"sportsGeek" --> User : <font color=darkblue><b>Response Users Future Contest Points Details
-else #pink Internal Server Error
-"database" --> "Statistics" : <font color=darkblue><b> Database Error
 deactivate "database"
-"Statistics" --> "sportsGeek" : <font color=darkblue><b> INTERNAL SERVER ERROR
+"Statistics" --> sportsGeek : <font color=darkblue><b>Response Users Future Contest Points Details
 deactivate "Statistics"
-"sportsGeek" --> User : <font color=darkblue><b> INTERNAL SERVER ERROR
+"sportsGeek" --> User : <font color=darkblue><b>Response Users Future Contest Points Details
 deactivate "sportsGeek"
 end alt
 @enduml

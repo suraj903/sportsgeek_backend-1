@@ -22,14 +22,10 @@ alt #white Get All playerTypes
     "playerType" -> "database" : Get All playerTypes
     activate "database" #lightblue
     "database" --> "playerType" : <font color=darkblue><b>Response Get All playerType Details
+   deactivate "database"
     "playerType" --> "sportsGeek" : <font color=darkblue><b> Response Get All playerType Details
-"sportsGeek" --> Admin : <font color=darkblue><b> Response playerType Details
-else #pink Internal Server Error
-"database" --> "playerType" : <font color=darkblue><b> Database Error
-deactivate "database"
-"playerType" --> "sportsGeek" : <font color=darkblue><b> INTERNAL SERVER ERROR
 deactivate "playerType"
-"sportsGeek" --> Admin : <font color=darkblue><b> INTERNAL SERVER ERROR
+"sportsGeek" --> Admin : <font color=darkblue><b> Response playerType Details
 deactivate "sportsGeek"
 end alt
 
@@ -49,14 +45,10 @@ note right #yellow
 "sportsGeek" --> Admin : <font color=darkblue><b> Response playerType Details
 else #pink Not Found
       "database" --> "playerType" : <font color=darkblue><b>Response playerType Id Not Found
-"playerType" --> "sportsGeek" : <font color=darkblue><b>Response playerType Id Not Found
-"sportsGeek" --> Admin : <font color=darkblue><b>Response playerType Id Not Found
-else #pink Internal Server Error
-"database" --> "playerType" : <font color=darkblue><b> Database Error
 deactivate "database"
-"playerType" --> "sportsGeek" : <font color=darkblue><b> INTERNAL SERVER ERROR
+"playerType" --> "sportsGeek" : <font color=darkblue><b>Response playerType Id Not Found
 deactivate "playerType"
-"sportsGeek" --> Admin : <font color=darkblue><b> INTERNAL SERVER ERROR
+"sportsGeek" --> Admin : <font color=darkblue><b>Response playerType Id Not Found
 deactivate "sportsGeek"
 end alt
 
@@ -77,14 +69,10 @@ alt #white Add playerTypes
 "sportsGeek" --> Admin : <font color=darkblue><b>Response playerType Added Successfully
 else #pink Unable to Add playerType
 "database" --> "playerType" : <font color=darkblue><b>Response Unable to add playerType
-"playerType" --> "sportsGeek" : <font color=darkblue><b>Response Unable to add playerType
-"sportsGeek" --> Admin : <font color=darkblue><b>Response Unable to add playerType
-else #pink Internal Server Error
-"database" --> "playerType" : <font color=darkblue><b>Database Error
 deactivate "database"
-"playerType" --> "sportsGeek" : <font color=darkblue><b>INTERNAL SERVER ERROR
+"playerType" --> "sportsGeek" : <font color=darkblue><b>Response Unable to add playerType
 deactivate "playerType"
-"sportsGeek" --> Admin : <font color=darkblue><b>INTERNAL SERVER ERROR
+"sportsGeek" --> Admin : <font color=darkblue><b>Response Unable to add playerType
 deactivate "sportsGeek"
 end alt
 
@@ -105,14 +93,10 @@ alt #white Update playerType
 "sportsGeek" --> Admin : <font color=darkblue><b> Response playerType Updated Successfully
 else #pink Not Found
 "database" --> "playerType" : <font color=darkblue><b>Response playerType Id not found
-"playerType" --> "sportsGeek" : <font color=darkblue><b>Response playerType Id not found
-"sportsGeek" --> Admin : <font color=darkblue><b>Response playerType Id not found
-else #pink Internal Server Error
-"database" --> "playerType" : <font color=darkblue><b>Database Error
 deactivate "database"
-"playerType" --> "sportsGeek" : <font color=darkblue><b>INTERNAL SERVER ERROR
+"playerType" --> "sportsGeek" : <font color=darkblue><b>Response playerType Id not found
 deactivate "playerType"
-"sportsGeek" --> Admin : <font color=darkblue><b>INTERNAL SERVER ERROR
+"sportsGeek" --> Admin : <font color=darkblue><b>Response playerType Id not found
 deactivate "sportsGeek"
 end alt
 
@@ -132,14 +116,10 @@ alt #white Delete playerType
 "sportsGeek" --> Admin : <font color=darkblue><b>Response playerType Deleted Successfully
 else #pink Not Found
 "database" --> "playerType" : <font color=darkblue><b>Response playerType Id not found
-"playerType" --> "sportsGeek" : <font color=darkblue><b>Response playerType Id not found
-"sportsGeek" --> Admin : <font color=darkblue><b>Response playerType Id not found
-else #pink Internal Server Error
-"database" --> "playerType" : <font color=darkblue><b>Database Error
 deactivate "database"
-"playerType" --> "sportsGeek" : <font color=darkblue><b>INTERNAL SERVER ERROR
+"playerType" --> "sportsGeek" : <font color=darkblue><b>Response playerType Id not found
 deactivate "playerType"
-"sportsGeek" --> Admin : <font color=darkblue><b>INTERNAL SERVER ERROR
+"sportsGeek" --> Admin : <font color=darkblue><b>Response playerType Id not found
 deactivate "sportsGeek"
 end alt
 @enduml

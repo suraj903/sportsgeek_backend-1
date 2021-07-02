@@ -51,17 +51,17 @@ user -> "database" : Update User Details
 activate "database" #lightblue
 alt #lightgreen Success
 "database" --> "user" : <font color=darkblue><b>Response User Details Updated
-"user" --> "sportsGeek" : <font color=darkblue><b>return Response User Details Updated Successfully
-    "sportsGeek" --> User : <font color=darkblue><b>return Response User Details Updated Successfully
+"user" --> "sportsGeek" : <font color=darkblue><b> Response User Details Updated Successfully
+    "sportsGeek" --> User : <font color=darkblue><b> Response User Details Updated Successfully
 else #pink If User Not Found
 "database" --> "user" : <font color=darkblue><b>User with UserId not found
 deactivate "database"
 "user" --> "sportsGeek" : <font color=darkblue><b>Response User with UserId not found
 "sportsGeek" --> User : <font color=darkblue><b>Response User with UserId not found
 else #pink Error
-"user" --> "sportsGeek" : <font color=darkblue><b>return Response Unable to upload User Image
+"user" --> "sportsGeek" : <font color=darkblue><b> Response Unable to upload User Image
 deactivate "user"
-"sportsGeek" --> User : <font color=darkblue><b>return Response Unable to upload User Image
+"sportsGeek" --> User : <font color=darkblue><b> Response Unable to upload User Image
 deactivate "sportsGeek"
 end alt
 end alt

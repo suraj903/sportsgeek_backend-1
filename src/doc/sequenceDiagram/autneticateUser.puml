@@ -30,8 +30,8 @@ activate "database" #lightblue
 deactivate "database"
 authenticate --> "authenticate" : authenticate user credentials
 alt #lightgreen user is valid
-"authenticate" --> "sportsGeek" : <font color=darkblue><b>Response Valid User"
-"sportsGeek" --> User : <font color=darkblue><b>Response Valid User"
+"authenticate" --> "sportsGeek" : <font color=darkblue><b>Response Valid User
+"sportsGeek" --> User : <font color=darkblue><b>Response Valid User
 else #pink Bad Credentials
 "authenticate" --> "sportsGeek" : <font color=darkblue><b>Response Invalid username or password
 "sportsGeek" --> User : <font color=darkblue><b>Response Invalid username or password

@@ -48,11 +48,11 @@ activate "userContest" #lightblue
 "userContest" --> "sportsGeek" : <font color=darkblue><b>Response Contest Details
 "sportsGeek" --> User : <font color=darkblue><b>Response Contest Details
 else #pink MatchId Not Found
-"database" -> "userContest" : <font color=darkblue><b>Response match Id Not Found
+"database" --> "userContest" : <font color=darkblue><b>Response match Id Not Found
 deactivate "database"
-"userContest" -> "sportsGeek" : <font color=darkblue><b>Response match Id Not Found
+"userContest" --> "sportsGeek" : <font color=darkblue><b>Response match Id Not Found
 deactivate "userContest"
-"sportsGeek" -> User : <font color=darkblue><b>Response match Id Not Found
+"sportsGeek" --> User : <font color=darkblue><b>Response match Id Not Found
 deactivate "sportsGeek"
 end alt
 @enduml

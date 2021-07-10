@@ -170,14 +170,16 @@ public class UserRepoImpl implements UserRepository {
 
 	@Override
 	public boolean updateUser(int userId, User user) throws Exception {
-		String sql = "UPDATE User SET FirstName = :firstName, LastName = :lastName, GenderId = :genderId, Username = :username WHERE UserId=:userId";
+//		String sql = "UPDATE User SET FirstName = :firstName, LastName = :lastName, GenderId = :genderId, Username = :username WHERE UserId=:userId";
+		String sql = "UPDATE User SET FirstName = :firstName, LastName = :lastName, GenderId = :genderId WHERE UserId=:userId";
 		user.setUserId(userId);
 		return jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(user)) > 0;
 	}
 
 	@Override
 	public boolean updateUserWithProfilePicture(int userId, User user) throws Exception {
-		String sql = "UPDATE User SET FirstName = :firstName, LastName = :lastName, GenderId = :genderId, Username = :username, ProfilePicture = :profilePicture WHERE UserId=:userId";
+//		String sql = "UPDATE User SET FirstName = :firstName, LastName = :lastName, GenderId = :genderId, Username = :username, ProfilePicture = :profilePicture WHERE UserId=:userId";
+		String sql = "UPDATE User SET FirstName = :firstName, LastName = :lastName, GenderId = :genderId, ProfilePicture = :profilePicture WHERE UserId=:userId";
 		user.setUserId(userId);
 		return jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(user)) > 0;
 	}

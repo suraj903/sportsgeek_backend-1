@@ -159,7 +159,7 @@ public class UserController {
             @ApiResponse(code = 500, message = "Internal error")})
     @PreAuthorize("hasAnyRole('Admin','User')")
     @PutMapping("/{userId}")
-    public ResponseEntity<User> updateUser(@PathVariable int userId, @RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName, @RequestParam("genderId") int genderId, @RequestParam("username") String username, @RequestParam("email") String email, @RequestParam("mobileNumber") String mobileNumber, @RequestParam(value="profilePicture", required=false) MultipartFile multipartFile, @RequestParam(value="updateProfilePicture", required=false) Boolean updateProfilePicture) throws Exception {
+    public ResponseEntity<User> updateUser(@PathVariable int userId, @RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName, @RequestParam("genderId") int genderId, @RequestParam("email") String email, @RequestParam("mobileNumber") String mobileNumber, @RequestParam(value="profilePicture", required=false) MultipartFile multipartFile, @RequestParam(value="updateProfilePicture", required=false) Boolean updateProfilePicture) throws Exception {
 //        String filename = multipartFile.getOriginalFilename();
 //        System.out.println("Filename : '" + filename + "'");
 //        System.out.println(multipartFile.getOriginalFilename().length());
@@ -174,7 +174,6 @@ public class UserController {
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setGenderId(genderId);
-        user.setUsername(username);
         user.setEmail(email);
         user.setMobileNumber(mobileNumber);
 

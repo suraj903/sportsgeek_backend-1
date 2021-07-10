@@ -32,7 +32,7 @@ public class ImageUploadService {
 //            System.out.println("File:"+file);// to delete the copy of uploaded file stored in the project folder// Your customized response
             return file;
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
 //            File ex_file = new File("");
 //            return ex_file;
             return null;

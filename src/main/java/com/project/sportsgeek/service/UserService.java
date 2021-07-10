@@ -167,7 +167,7 @@ public class UserService implements UserDetailsService {
 //			if(multipartFile.getOriginalFilename().length() != 0){
 			if(multipartFile != null){
 				File file = imageUploadService.uploadImage(multipartFile);
-				if (file.getName() != "") {
+				if (file != null) {
 					userWithPassword.setProfilePicture(file.getName());
 				}
 				else
@@ -235,7 +235,7 @@ public class UserService implements UserDetailsService {
 		if(updateProfilePicture == true){
 			if(multipartFile != null){
 				File file = imageUploadService.uploadImage(multipartFile);
-				if (file.getName() != "") {
+				if (file != null) {
 					user.setProfilePicture(file.getName());
 				}
 				else

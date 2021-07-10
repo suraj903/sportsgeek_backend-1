@@ -57,7 +57,7 @@ public class TeamService {
         // Team Logo
         if(multipartFile != null){
             File file = imageUploadService.uploadImage(multipartFile);
-            if (file.getName() != "") {
+            if (file != null) {
                 team.setTeamLogo(file.getName());
             }
             else
@@ -84,7 +84,7 @@ public class TeamService {
         // Team Logo
         if(multipartFile != null){
             File file = imageUploadService.uploadImage(multipartFile);
-            if (file.getName() != "")
+            if (file != null)
             {
                 team.setTeamLogo(file.getName());
                 result = teamRepository.updateTeamWithLogo(teamId, team);

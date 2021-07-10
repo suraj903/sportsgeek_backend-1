@@ -65,7 +65,7 @@ public class PlayerService {
         // Profile Picture
         if(multipartFile != null){
             File file = imageUploadService.uploadImage(multipartFile);
-            if (file.getName() != "") {
+            if (file != null) {
                 player.setProfilePicture(file.getName());
             }
             else{
@@ -90,7 +90,7 @@ public class PlayerService {
         // Profile Picture
         if(multipartFile != null){
             File file = imageUploadService.uploadImage(multipartFile);
-            if (file.getName() != "") {
+            if (file != null) {
                 player.setProfilePicture(file.getName());
                 result = playerRepository.updatePlayerWithProfilePicture(playerId, player);
             }

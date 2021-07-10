@@ -33,8 +33,9 @@ public class ImageUploadService {
             return file;
         } catch (Exception e) {
             e.printStackTrace();
-            File ex_file = new File("");
-            return ex_file;
+//            File ex_file = new File("");
+//            return ex_file;
+            return null;
         }
     }
 

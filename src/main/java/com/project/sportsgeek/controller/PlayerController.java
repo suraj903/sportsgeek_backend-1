@@ -103,7 +103,7 @@ public class PlayerController {
         player.setName(name);
         player.setTypeId(typeId);
 
-        Result<Player> playerResult = playerService.addPlayer(player,multipartFile);
+        Result<Player> playerResult = playerService.addPlayer(player, multipartFile);
         return new ResponseEntity(playerResult.getData(), HttpStatus.valueOf(playerResult.getCode()));
     }
 

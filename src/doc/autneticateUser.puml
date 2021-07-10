@@ -13,7 +13,7 @@ note right #yellow
     *params*
     username=xyz123
     password=*****
-    end note
+end note
 alt #white
 activate authenticate #lightblue
     authenticate -> "database" : Check user credentials

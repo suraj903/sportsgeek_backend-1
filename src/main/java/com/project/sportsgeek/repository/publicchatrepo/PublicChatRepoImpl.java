@@ -24,7 +24,8 @@ public class PublicChatRepoImpl implements PublicChatRepository {
 
     @Override
     public List<PublicChatWithUser> findAllPublicChat() {
-        String sql = "SELECT PublicChatId, pc.UserId as UserId, FirstName, LastName, ProfilePicture, Message, pc.Status as Status, ChatTimestamp FROM PublicChat as pc INNER JOIN User as u on pc.UserId=u.UserId WHERE pc.Status=TRUE ORDER BY ChatTimestamp DESC";
+//        String sql = "SELECT PublicChatId, pc.UserId as UserId, FirstName, LastName, ProfilePicture, Message, pc.Status as Status, ChatTimestamp FROM PublicChat as pc INNER JOIN User as u on pc.UserId=u.UserId WHERE pc.Status=TRUE ORDER BY ChatTimestamp DESC";
+        String sql = "SELECT PublicChatId, pc.UserId as UserId, FirstName, LastName, ProfilePicture, Message, pc.Status as Status, ChatTimestamp FROM PublicChat as pc INNER JOIN User as u on pc.UserId=u.UserId WHERE pc.Status=TRUE ORDER BY ChatTimestamp";
         return jdbcTemplate.query(sql, new PublicChatWithUserRowMapper());
     }
 

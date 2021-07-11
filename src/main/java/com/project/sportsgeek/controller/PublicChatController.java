@@ -26,6 +26,20 @@ public class PublicChatController {
     @Autowired
     PublicChatService publicChatService;
 
+    // Dangerous when Table has large number of records
+//    @ApiResponses(value =
+//            {
+//                    @ApiResponse(code = 200, message = "success", response = PublicChat.class),
+//                    @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = ResultException.class)
+//            }
+//    )
+//    @PreAuthorize("hasAnyRole('Admin','User')")
+//    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<List<PublicChatWithUser>> getAllPublicChat() {
+//        Result<List<PublicChatWithUser>> publicChatList = publicChatService.findAllPublicChat();
+//        return new ResponseEntity<>(publicChatList.getData(), HttpStatus.valueOf(publicChatList.getCode()));
+//    }
+
     @ApiResponses(value =
             {
                     @ApiResponse(code = 200, message = "success", response = PublicChat.class),
@@ -33,9 +47,9 @@ public class PublicChatController {
             }
     )
     @PreAuthorize("hasAnyRole('Admin','User')")
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<PublicChatWithUser>> getAllPublicChat() {
-        Result<List<PublicChatWithUser>> publicChatList = publicChatService.findAllPublicChat();
+    @GetMapping(value = "/last-days/{days}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<PublicChatWithUser>> getAllPublicChatForLastDays(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int days) {
+        Result<List<PublicChatWithUser>> publicChatList = publicChatService.findAllPublicChatForLastDays(days);
         return new ResponseEntity<>(publicChatList.getData(), HttpStatus.valueOf(publicChatList.getCode()));
     }
 
@@ -46,9 +60,49 @@ public class PublicChatController {
             }
     )
     @PreAuthorize("hasAnyRole('Admin','User')")
-    @GetMapping(value = "/formatted", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<PublicChatFormatted>> getAllPublicChatFormatted() {
-        Result<List<PublicChatFormatted>> publicChatList = publicChatService.findAllPublicChatFormatted();
+    @GetMapping(value = "/after-id/{publicChatId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<PublicChatWithUser>> getAllPublicChatAfterId(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int publicChatId) {
+        Result<List<PublicChatWithUser>> publicChatList = publicChatService.findAllPublicChatAfterId(publicChatId);
+        return new ResponseEntity<>(publicChatList.getData(), HttpStatus.valueOf(publicChatList.getCode()));
+    }
+
+    // Formatted PublicChat
+//    @ApiResponses(value =
+//            {
+//                    @ApiResponse(code = 200, message = "success", response = PublicChat.class),
+//                    @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = ResultException.class)
+//            }
+//    )
+//    @PreAuthorize("hasAnyRole('Admin','User')")
+//    @GetMapping(value = "/formatted", produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<List<PublicChatFormatted>> getAllPublicChatFormatted() {
+//        Result<List<PublicChatFormatted>> publicChatList = publicChatService.findAllPublicChatFormatted();
+//        return new ResponseEntity<>(publicChatList.getData(), HttpStatus.valueOf(publicChatList.getCode()));
+//    }
+
+    @ApiResponses(value =
+            {
+                    @ApiResponse(code = 200, message = "success", response = PublicChat.class),
+                    @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = ResultException.class)
+            }
+    )
+    @PreAuthorize("hasAnyRole('Admin','User')")
+    @GetMapping(value = "/formatted/last-days/{days}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<PublicChatFormatted>> getAllPublicChatFormattedForLastDays(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int days) {
+        Result<List<PublicChatFormatted>> publicChatList = publicChatService.findAllPublicChatFormattedForLastDays(days);
+        return new ResponseEntity<>(publicChatList.getData(), HttpStatus.valueOf(publicChatList.getCode()));
+    }
+
+    @ApiResponses(value =
+            {
+                    @ApiResponse(code = 200, message = "success", response = PublicChat.class),
+                    @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = ResultException.class)
+            }
+    )
+    @PreAuthorize("hasAnyRole('Admin','User')")
+    @GetMapping(value = "/formatted/after-id/{publicChatId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<PublicChatFormatted>> getAllPublicChatFormattedAfterId(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int publicChatId) {
+        Result<List<PublicChatFormatted>> publicChatList = publicChatService.findAllPublicChatFormattedAfterId(publicChatId);
         return new ResponseEntity<>(publicChatList.getData(), HttpStatus.valueOf(publicChatList.getCode()));
     }
 

@@ -11,9 +11,13 @@ import java.util.List;
 @Repository(value = "publicChatRepo")
 public interface PublicChatRepository {
 
-    List<PublicChatWithUser> findAllPublicChat();
+//    List<PublicChatWithUser> findAllPublicChat();
+    List<PublicChatWithUser> findAllPublicChatForLastDays(int days);
+    List<PublicChatWithUser> findAllPublicChatAfterId(int publicChatId);
 
-    List<PublicChatFormatted> findAllPublicChatFormatted();
+//    List<PublicChatFormatted> findAllPublicChatFormatted();
+    List<PublicChatFormatted> findAllPublicChatFormattedForLastDays(int days);
+    List<PublicChatFormatted> findAllPublicChatFormattedAfterId(int publicChatId);
 
     List<PublicChatWithUser> findAllTodayPublicChat();
 

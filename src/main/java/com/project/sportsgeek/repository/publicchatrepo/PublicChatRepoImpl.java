@@ -22,17 +22,44 @@ public class PublicChatRepoImpl implements PublicChatRepository {
     @Autowired
     private NamedParameterJdbcTemplate jdbcTemplate;
 
+//    @Override
+//    public List<PublicChatWithUser> findAllPublicChat() {
+//        String sql = "SELECT PublicChatId, pc.UserId as UserId, FirstName, LastName, ProfilePicture, Message, pc.Status as Status, ChatTimestamp FROM PublicChat as pc INNER JOIN User as u on pc.UserId=u.UserId WHERE pc.Status=TRUE ORDER BY ChatTimestamp";
+//        return jdbcTemplate.query(sql, new PublicChatWithUserRowMapper());
+//    }
+
     @Override
-    public List<PublicChatWithUser> findAllPublicChat() {
-//        String sql = "SELECT PublicChatId, pc.UserId as UserId, FirstName, LastName, ProfilePicture, Message, pc.Status as Status, ChatTimestamp FROM PublicChat as pc INNER JOIN User as u on pc.UserId=u.UserId WHERE pc.Status=TRUE ORDER BY ChatTimestamp DESC";
-        String sql = "SELECT PublicChatId, pc.UserId as UserId, FirstName, LastName, ProfilePicture, Message, pc.Status as Status, ChatTimestamp FROM PublicChat as pc INNER JOIN User as u on pc.UserId=u.UserId WHERE pc.Status=TRUE ORDER BY ChatTimestamp";
-        return jdbcTemplate.query(sql, new PublicChatWithUserRowMapper());
+    public List<PublicChatWithUser> findAllPublicChatForLastDays(int days) {
+        String sql = "SELECT PublicChatId, pc.UserId as UserId, FirstName, LastName, ProfilePicture, Message, pc.Status as Status, ChatTimestamp FROM PublicChat as pc INNER JOIN User as u on pc.UserId=u.UserId WHERE pc.Status=TRUE AND ChatTimestamp > DATE_SUB(CURRENT_TIMESTAMP(), INTERVAL :days DAY) ORDER BY ChatTimestamp";
+        MapSqlParameterSource params = new MapSqlParameterSource("days", days);
+        return jdbcTemplate.query(sql, params, new PublicChatWithUserRowMapper());
     }
 
     @Override
-    public List<PublicChatFormatted> findAllPublicChatFormatted() {
-        String sql = "SELECT PublicChatId, pc.UserId as UserId, FirstName, LastName, ProfilePicture, Message, pc.Status as Status, ChatTimestamp FROM PublicChat as pc INNER JOIN User as u on pc.UserId=u.UserId WHERE pc.Status=TRUE ORDER BY ChatTimestamp DESC";
-        return jdbcTemplate.query(sql, new PublicChatFormattedRowMapper());
+    public List<PublicChatWithUser> findAllPublicChatAfterId(int publicChatId) {
+        String sql = "SELECT PublicChatId, pc.UserId as UserId, FirstName, LastName, ProfilePicture, Message, pc.Status as Status, ChatTimestamp FROM PublicChat as pc INNER JOIN User as u on pc.UserId=u.UserId WHERE pc.Status=TRUE AND PublicChatId > :publicChatId ORDER BY ChatTimestamp";
+        MapSqlParameterSource params = new MapSqlParameterSource("publicChatId", publicChatId);
+        return jdbcTemplate.query(sql, params, new PublicChatWithUserRowMapper());
+    }
+
+//    @Override
+//    public List<PublicChatFormatted> findAllPublicChatFormatted() {
+//        String sql = "SELECT PublicChatId, pc.UserId as UserId, FirstName, LastName, ProfilePicture, Message, pc.Status as Status, ChatTimestamp FROM PublicChat as pc INNER JOIN User as u on pc.UserId=u.UserId WHERE pc.Status=TRUE ORDER BY ChatTimestamp DESC";
+//        return jdbcTemplate.query(sql, new PublicChatFormattedRowMapper());
+//    }
+
+    @Override
+    public List<PublicChatFormatted> findAllPublicChatFormattedForLastDays(int days) {
+        String sql = "SELECT PublicChatId, pc.UserId as UserId, FirstName, LastName, ProfilePicture, Message, pc.Status as Status, ChatTimestamp FROM PublicChat as pc INNER JOIN User as u on pc.UserId=u.UserId WHERE pc.Status=TRUE AND ChatTimestamp > DATE_SUB(CURRENT_TIMESTAMP(), INTERVAL :days DAY) ORDER BY ChatTimestamp DESC";
+        MapSqlParameterSource params = new MapSqlParameterSource("days", days);
+        return jdbcTemplate.query(sql, params, new PublicChatFormattedRowMapper());
+    }
+
+    @Override
+    public List<PublicChatFormatted> findAllPublicChatFormattedAfterId(int publicChatId) {
+        String sql = "SELECT PublicChatId, pc.UserId as UserId, FirstName, LastName, ProfilePicture, Message, pc.Status as Status, ChatTimestamp FROM PublicChat as pc INNER JOIN User as u on pc.UserId=u.UserId WHERE pc.Status=TRUE AND PublicChatId > :publicChatId ORDER BY ChatTimestamp DESC";
+        MapSqlParameterSource params = new MapSqlParameterSource("publicChatId", publicChatId);
+        return jdbcTemplate.query(sql, params, new PublicChatFormattedRowMapper());
     }
 
     @Override

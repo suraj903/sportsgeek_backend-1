@@ -1,6 +1,7 @@
 package com.project.sportsgeek.controller;
 
 import org.springframework.boot.web.servlet.error.ErrorController;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +13,8 @@ public class AppErrorController implements ErrorController {
 
     @GetMapping
     public ResponseEntity<String> onError(){
-        return ResponseEntity.ok("<h1>SportsGeek Application</h1><br/><h3>Sorry, you are unauthorized to access.</h3>");
+//        return ResponseEntity.ok("<h1>SportsGeek Application</h1><br/><h3>Sorry, you are unauthorized to access.</h3>");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("<h1>SportsGeek Application</h1><br/><h3>Sorry, you are unauthorized to access.</h3>");
     }
 
     @Override

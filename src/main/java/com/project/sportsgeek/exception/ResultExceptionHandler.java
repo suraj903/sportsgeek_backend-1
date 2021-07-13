@@ -25,16 +25,17 @@ public class ResultExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({Exception.class})
     private ResponseEntity<Result<String>> handleException(Exception ex) {
-        List<Result.SportsGeekSystemError> error = new ArrayList<>();
-        if (ex.getCause() == null) {
-            error.add(new Result.SportsGeekSystemError((ex.getMessage().hashCode()),
-                    "there is some problem in the inbuilt functionality"));
-            logger.error("\n" + ex.hashCode() + "\n" + ex.getCause().getMessage() + "\n");
-        } else {
-            error.add(new Result.SportsGeekSystemError((ex.getMessage().hashCode()), ex.getCause().getMessage()));
-        }
-        logger.error("\n" + ex.hashCode() + "\n" + ex.getMessage());
-        Result<String> result = new Result<>(500, "unfortunately! there was some error at the server side.", error);
+//        List<Result.SportsGeekSystemError> error = new ArrayList<>();
+//        if (ex.getCause() == null) {
+//            error.add(new Result.SportsGeekSystemError((ex.getMessage().hashCode()),
+//                    "there is some problem in the inbuilt functionality"));
+//            logger.error("\n" + ex.hashCode() + "\n" + ex.getCause().getMessage() + "\n");
+//        } else {
+//            error.add(new Result.SportsGeekSystemError((ex.getMessage().hashCode()), ex.getCause().getMessage()));
+//        }
+//        logger.error("\n" + ex.hashCode() + "\n" + ex.getMessage());
+//        Result<String> result = new Result<>(500, "unfortunately! there was some error at the server side.", error);
+        Result<String> result = new Result<>(500, "unfortunately! there was some error at the server side.");
         return new ResponseEntity<>(result, HttpStatus.valueOf(result.getCode()));
     }
 

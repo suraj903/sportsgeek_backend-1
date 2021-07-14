@@ -17,7 +17,7 @@ import java.io.Serializable;
 @ApiModel(description = "Player Model")
 @EqualsAndHashCode
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class PlayerResponse implements Serializable {
+public class PlayerResponse extends Player implements Serializable {
 
     private int playerId;
     private String team;

@@ -51,4 +51,12 @@ public class PrivateChatRepoImpl implements PrivateChatRepository {
         MapSqlParameterSource params = new MapSqlParameterSource("privateChatId", privateChatId);
         return jdbcTemplate.update(sql, params) > 0;
     }
+
+    @Override
+    public boolean deletePrivateChatByUserId(int userId) throws Exception {
+        String sql = "DELETE FROM PrivateChat WHERE FromUserId = :userId OR ToUserId = :userId";
+        MapSqlParameterSource params = new MapSqlParameterSource("userId", userId);
+        params.addValue("userId",userId);
+        return jdbcTemplate.update(sql, params) > 0;
+    }
 }

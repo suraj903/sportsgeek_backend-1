@@ -14,6 +14,8 @@ import com.project.sportsgeek.model.profile.*;
 import com.project.sportsgeek.repository.contestrepo.ContestRepository;
 import com.project.sportsgeek.repository.emailcontactrepo.EmailContactRepository;
 import com.project.sportsgeek.repository.mobilecontactrepo.MobileContactRepository;
+import com.project.sportsgeek.repository.privatechatrepo.PrivateChatRepository;
+import com.project.sportsgeek.repository.publicchatrepo.PublicChatRepository;
 import com.project.sportsgeek.repository.rechargerepo.RechargeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -56,6 +58,12 @@ public class UserService implements UserDetailsService {
 
 	@Autowired
 	EmailService emailService;
+
+	@Autowired
+	PublicChatRepository publicChatRepository;
+
+	@Autowired
+	PrivateChatRepository privateChatRepository;
 
 	@Autowired
 	ImageUploadService imageUploadService;
@@ -357,12 +365,15 @@ public class UserService implements UserDetailsService {
 //	---------------------------------------------------------------------------------------------------------------------------------------------
 
 	public Result<String> deleteUser(int userId) throws Exception {
+		System.out.println("UserId"+userId);
 		UserResponse user = userRepository.findUserByUserId(userId);
 		if (user != null) {
 			emailContactRepository.deleteEmailContactByUserId(userId);
 			mobileContactRepository.deleteMobileContactByUserId(userId);
 			rechargeRepository.deleteRechargeByUserId(userId);
 			contestRepository.deleteContestsByUserId(userId);
+			publicChatRepository.deletePublicChatByUserId(userId);
+			privateChatRepository.deletePrivateChatByUserId(userId);
 			userRepository.deleteUser(userId);
 			return new Result<>(200, "User deleted Successfully!!");
 		}

@@ -101,4 +101,11 @@ public class PublicChatRepoImpl implements PublicChatRepository {
         return jdbcTemplate.update(sql, params) > 0;
     }
 
+    @Override
+    public boolean deletePublicChatByUserId(int userId) throws Exception {
+        String sql = "DELETE FROM PublicChat WHERE UserId = :userId";
+        MapSqlParameterSource params = new MapSqlParameterSource("userId", userId);
+        return jdbcTemplate.update(sql, params) > 0;
+    }
+
 }

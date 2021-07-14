@@ -82,7 +82,7 @@ public class ContestRepoImpl implements ContestRepository {
     @Override
     public boolean updateContest(int contestId, Contest contest) throws Exception {
         contest.setContestId(contestId);
-        String sql = "Update Contest SET TeamId = :teamId, ContestPoints = :contestPoints WHERE ContestId = :contestId";
+        String sql = "Update Contest SET TeamId = :teamId, ContestPoints = :contestPoints, UpdateTimestamp=CURRENT_TIMESTAMP WHERE ContestId = :contestId";
         return jdbcTemplate.update(sql,new BeanPropertySqlParameterSource(contest)) > 0;
     }
 

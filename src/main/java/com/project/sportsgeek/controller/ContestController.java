@@ -25,20 +25,6 @@ public class ContestController {
 
     @ApiResponses(value =
             {
-                    @ApiResponse(code = 201, message = "success", response = Contest.class),
-                    @ApiResponse(code = 400, message = "Bad request", response = ResultException.class),
-                    @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = ResultException.class)
-            }
-    )
-    @PreAuthorize("hasAnyRole('Admin','User')")
-    @PostMapping(path = "/contest", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Contest> addContest(@RequestBody(required = true) Contest contest) throws  Exception {
-        Result<Contest> contestResult = contestService.addContest(contest);
-        return new ResponseEntity(contestResult.getData(), HttpStatus.valueOf(contestResult.getCode()));
-    }
-
-    @ApiResponses(value =
-            {
                     @ApiResponse(code = 200, message = "success", response = Contest.class),
                     @ApiResponse(code = 404, message = "Bad request", response = ResultException.class),
                     @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = ResultException.class)
@@ -77,6 +63,20 @@ public class ContestController {
     public ResponseEntity<Contest> getContestByUserAndMatch(@PathVariable int userId , @PathVariable int matchId) throws Exception {
         Result<Contest> contestList = contestService.findContestByUserAndMatch(userId, matchId);
         return new ResponseEntity<>(contestList.getData(), HttpStatus.valueOf(contestList.getCode()));
+    }
+
+    @ApiResponses(value =
+            {
+                    @ApiResponse(code = 201, message = "success", response = Contest.class),
+                    @ApiResponse(code = 400, message = "Bad request", response = ResultException.class),
+                    @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = ResultException.class)
+            }
+    )
+    @PreAuthorize("hasAnyRole('Admin','User')")
+    @PostMapping(path = "/contest", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Contest> addContest(@RequestBody(required = true) Contest contest) throws  Exception {
+        Result<Contest> contestResult = contestService.addContest(contest);
+        return new ResponseEntity(contestResult.getData(), HttpStatus.valueOf(contestResult.getCode()));
     }
 
     @ApiResponses(value =

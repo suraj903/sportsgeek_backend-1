@@ -16,7 +16,7 @@ public interface MatchesRepository {
 
     List<MatchesWithVenue> findAllUpcomingMatches(int tournamentId) throws Exception;
 
-    MatchesWithVenue findMatchesById(int matchId) throws Exception;
+    MatchesWithVenue findMatchById(int matchId) throws Exception;
 
     List<MatchesWithVenue> findAllMatchesByTournament(int tournamentId) throws Exception;
 
@@ -43,5 +43,9 @@ public interface MatchesRepository {
     boolean updateMatchScheduleDate(int matchId, Timestamp date) throws Exception;
 
     boolean deleteMatches(int matchId) throws Exception;
+
+    Timestamp getMatchStartDatetimeById(int matchId);
+
+    Timestamp getCurrentTimestamp();
 
 }

@@ -74,7 +74,7 @@ public class ContestController {
     )
     @PreAuthorize("hasAnyRole('Admin','User')")
     @PostMapping(path = "/contest", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Contest> addContest(@RequestBody(required = true) Contest contest) throws  Exception {
+    public ResponseEntity<Contest> addContest(@RequestBody(required = true) Contest contest) throws Exception {
         Result<Contest> contestResult = contestService.addContest(contest);
         return new ResponseEntity(contestResult.getData(), HttpStatus.valueOf(contestResult.getCode()));
     }

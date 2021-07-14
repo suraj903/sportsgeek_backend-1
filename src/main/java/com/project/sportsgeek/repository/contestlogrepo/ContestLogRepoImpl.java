@@ -16,10 +16,13 @@ public class ContestLogRepoImpl implements ContestLogRepository {
 
     @Override
     public int addContestLog(ContestLog contestLog) throws Exception {
+        System.out.println("addContestLog");
+        System.out.println(contestLog);
         KeyHolder holder = new GeneratedKeyHolder();
         String sql = "INSERT INTO ContestLog (UserId, MatchId, OldTeamId, OldContestPoints, NewTeamId, NewContestPoints, Action)" +
                 " VALUES(:userId, :matchId, :oldTeamId, :oldContestPoints, :newTeamId, :newContestPoints, :action)";
         int n = jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(contestLog), holder);
+        System.out.println("n : " + n);
         if(n > 0) {
             return holder.getKey().intValue();
         }else {

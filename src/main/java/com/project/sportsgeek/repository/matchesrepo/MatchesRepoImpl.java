@@ -193,7 +193,7 @@ public class MatchesRepoImpl implements MatchesRepository {
     public Timestamp getMatchStartDatetimeById(int matchId) {
         String sql = "SELECT StartDatetime FROM Matches WHERE MatchId = :matchId";
         MapSqlParameterSource params = new MapSqlParameterSource("matchId", matchId);
-        Timestamp matchStartDatetime = namedParameterJdbcTemplate.queryForObject(sql, new BeanPropertySqlParameterSource(sql), Timestamp.class);
+        Timestamp matchStartDatetime = namedParameterJdbcTemplate.queryForObject(sql, params, Timestamp.class);
         return matchStartDatetime;
     }
 

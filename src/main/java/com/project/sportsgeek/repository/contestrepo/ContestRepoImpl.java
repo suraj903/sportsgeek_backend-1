@@ -73,6 +73,7 @@ public class ContestRepoImpl implements ContestRepository {
         KeyHolder holder = new GeneratedKeyHolder();
         String sql = "INSERT INTO Contest (UserId, MatchId, TeamId, ContestPoints, WinningPoints) VALUES (:userId, :matchId, :teamId, :contestPoints, :winningPoints)";
         int n = jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(contest), holder);
+        System.out.println(n);
         if(n > 0){
             return holder.getKey().intValue();
         }

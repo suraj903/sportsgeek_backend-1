@@ -47,6 +47,23 @@ public class MatchesRepoImpl implements MatchesRepository {
     }
 
     @Override
+    public MatchesWithVenue findMatchById(int matchId) throws Exception {
+//		String tournament_sql = "SELECT * from Tournament WHERE active = true";
+//        int tournamentid = jdbcTemplate.query(tournament_sql,new TournamentRowMapper()).get(0).getTournamentId();
+        String sql = "SELECT MatchId, StartDatetime, m.Name as Name, Team1, Team2, t1.Name as team1long, t1.ShortName as team1short, " +
+                "t1.TeamLogo as team1logo, t2.Name as team2long, t2.ShortName as team2short, t2.TeamLogo as team2logo, m.venueId as venueId, v.Name as venue, MinimumPoints, WinnerTeamId, ResultStatus, TournamentId  " +
+                "FROM Matches as m INNER JOIN Venue as v on m.VenueId=v.VenueId left JOIN Team as t1 on m.Team1=t1.TeamId left JOIN Team as t2 on m.Team2=t2.TeamId " +
+                "where MatchId=:matchId";
+        MapSqlParameterSource params = new MapSqlParameterSource("matchId", matchId);
+        List<MatchesWithVenue> matchList = namedParameterJdbcTemplate.query(sql, params, new MatchesRowMapper());
+        if(matchList.size() > 0){
+            return matchList.get(0);
+        }else{
+            return null;
+        }
+    }
+
+    @Override
     public List<MatchesWithVenue> findAllMatchesByTournament(int tournamentId) throws Exception {
         String sql = "SELECT MatchId, StartDatetime, m.Name as Name, Team1, Team2, t1.Name as team1long, t1.ShortName as team1short, " +
                 "t1.TeamLogo as team1logo, t2.Name as team2long, t2.ShortName as team2short, t2.TeamLogo as team2logo, m.venueId as venueId, v.Name as venue, MinimumPoints, WinnerTeamId, ResultStatus, TournamentId  " +
@@ -172,20 +189,19 @@ public class MatchesRepoImpl implements MatchesRepository {
        return namedParameterJdbcTemplate.update(sql, params) > 0;
     }
 
-	@Override
-	public MatchesWithVenue findMatchesById(int matchId) throws Exception {
-//		String tournament_sql = "SELECT * from Tournament WHERE active = true";
-//        int tournamentid = jdbcTemplate.query(tournament_sql,new TournamentRowMapper()).get(0).getTournamentId();
-       String sql = "SELECT MatchId, StartDatetime, m.Name as Name, Team1, Team2, t1.Name as team1long, t1.ShortName as team1short, " +
-               "t1.TeamLogo as team1logo, t2.Name as team2long, t2.ShortName as team2short, t2.TeamLogo as team2logo, m.venueId as venueId, v.Name as venue, MinimumPoints, WinnerTeamId, ResultStatus, TournamentId  " +
-               "FROM Matches as m INNER JOIN Venue as v on m.VenueId=v.VenueId left JOIN Team as t1 on m.Team1=t1.TeamId left JOIN Team as t2 on m.Team2=t2.TeamId " +
-               "where MatchId=:matchId";
-       MapSqlParameterSource params = new MapSqlParameterSource("matchId", matchId);
-       List<MatchesWithVenue> matchList = namedParameterJdbcTemplate.query(sql, params, new MatchesRowMapper());
-       if(matchList.size() > 0){
-           return matchList.get(0);
-       }else{
-           return null;
-       }
-	}
+    @Override
+    public Timestamp getMatchStartDatetimeById(int matchId) {
+        String sql = "SELECT StartDatetime FROM Matches WHERE MatchId = :matchId";
+        MapSqlParameterSource params = new MapSqlParameterSource("matchId", matchId);
+        Timestamp matchStartDatetime = namedParameterJdbcTemplate.queryForObject(sql, params, Timestamp.class);
+        return matchStartDatetime;
+    }
+
+    @Override
+    public Timestamp getCurrentTimestamp() {
+        String sql = "SELECT CURRENT_TIMESTAMP()";
+        Timestamp currentTimestamp = namedParameterJdbcTemplate.queryForObject(sql, new BeanPropertySqlParameterSource(sql), Timestamp.class);
+        return currentTimestamp;
+    }
+
 }

@@ -3,14 +3,12 @@ package com.project.sportsgeek.service;
 
 import com.project.sportsgeek.exception.ResultException;
 import com.project.sportsgeek.model.PlayerType;
-import com.project.sportsgeek.repository.playertype.PlayerTypeRepository;
+import com.project.sportsgeek.repository.playertyperepo.PlayerTypeRepository;
 import com.project.sportsgeek.response.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service

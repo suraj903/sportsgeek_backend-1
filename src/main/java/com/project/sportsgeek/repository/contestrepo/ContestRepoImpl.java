@@ -73,6 +73,7 @@ public class ContestRepoImpl implements ContestRepository {
         KeyHolder holder = new GeneratedKeyHolder();
         String sql = "INSERT INTO Contest (UserId, MatchId, TeamId, ContestPoints, WinningPoints) VALUES (:userId, :matchId, :teamId, :contestPoints, :winningPoints)";
         int n = jdbcTemplate.update(sql, new BeanPropertySqlParameterSource(contest), holder);
+        System.out.println(n);
         if(n > 0){
             return holder.getKey().intValue();
         }
@@ -82,7 +83,7 @@ public class ContestRepoImpl implements ContestRepository {
     @Override
     public boolean updateContest(int contestId, Contest contest) throws Exception {
         contest.setContestId(contestId);
-        String sql = "Update Contest SET TeamId = :teamId, ContestPoints = :contestPoints WHERE ContestId = :contestId";
+        String sql = "Update Contest SET TeamId = :teamId, ContestPoints = :contestPoints, UpdateTimestamp=CURRENT_TIMESTAMP WHERE ContestId = :contestId";
         return jdbcTemplate.update(sql,new BeanPropertySqlParameterSource(contest)) > 0;
     }
 

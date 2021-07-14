@@ -49,7 +49,7 @@ public class MatchesService {
     }
     
     public Result<MatchesWithVenue> findMatchesById(int matchId) throws Exception {
-        MatchesWithVenue matchesWithVenue = matchesRepository.findMatchesById(matchId);
+        MatchesWithVenue matchesWithVenue = matchesRepository.findMatchById(matchId);
         if(matchesWithVenue != null){
             return new Result<>(200, matchesWithVenue);
         }

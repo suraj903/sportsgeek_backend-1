@@ -1,4 +1,4 @@
-package com.project.sportsgeek.repository.playertype;
+package com.project.sportsgeek.repository.playertyperepo;
 
 import com.project.sportsgeek.mapper.PlayerTypeRowMapper;
 import com.project.sportsgeek.model.PlayerType;

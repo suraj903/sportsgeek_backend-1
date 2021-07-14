@@ -90,25 +90,29 @@ public class ContestService {
             contest.setContestId(contestId);
             // Get old Contest Points
             Contest oldContest = contestRepository.findContestById(contestId);
-            if (contestRepository.updateContest(contestId, contest)) {
-                // Update User Available Points
-                boolean result = userRepository.addAvailablePoints(contest.getUserId(), oldContest.getContestPoints() - contest.getContestPoints());
-                // Log Contest in ContestLog Table
-                ContestLog contestLog = new ContestLog();
-                contestLog.setUserId(contest.getUserId());
-                contestLog.setMatchId(contest.getMatchId());
-                contestLog.setOldTeamId(oldContest.getTeamId());
-                contestLog.setOldContestPoints(oldContest.getContestPoints());
-                contestLog.setNewTeamId(contest.getTeamId());
-                contestLog.setNewContestPoints(contest.getContestPoints());
-                contestLog.setAction("UPDATE");
-                contestLogRepository.addContestLog(contestLog);
-                if(result){
-                    return new Result<>(200, contest);
+            if(oldContest.getTeamId() != contest.getTeamId() || oldContest.getContestPoints() != contest.getContestPoints()){
+                if (contestRepository.updateContest(contestId, contest)) {
+                    // Update User Available Points
+                    boolean result = userRepository.addAvailablePoints(contest.getUserId(), oldContest.getContestPoints() - contest.getContestPoints());
+                    // Log Contest in ContestLog Table
+                    ContestLog contestLog = new ContestLog();
+                    contestLog.setUserId(contest.getUserId());
+                    contestLog.setMatchId(contest.getMatchId());
+                    contestLog.setOldTeamId(oldContest.getTeamId());
+                    contestLog.setOldContestPoints(oldContest.getContestPoints());
+                    contestLog.setNewTeamId(contest.getTeamId());
+                    contestLog.setNewContestPoints(contest.getContestPoints());
+                    contestLog.setAction("UPDATE");
+                    contestLogRepository.addContestLog(contestLog);
+                    if(result){
+                        return new Result<>(200, contest);
+                    }
+                    throw new ResultException(new Result<>(500, "Unable to update user available points."));
                 }
-                throw new ResultException(new Result<>(500, "Unable to update user available points."));
+                throw new ResultException(new Result(404, "Contest not found."));
+            }else{
+                return new Result<>(200, contest);
             }
-            throw new ResultException(new Result(404, "Contest not found."));
         }else{
             throw new ResultException(new Result<>(400, "Contest cannot be updated as the Match has already started."));
         }

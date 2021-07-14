@@ -23,32 +23,32 @@ public class PublicChatService {
 
 //    public Result<List<PublicChatWithUser>> findAllPublicChat() {
 //        List<PublicChatWithUser> publicChatList = publicChatRepository.findAllPublicChat();
-//        return new Result<>(200,"Public Chat Details Retrieved Successfully", publicChatList);
+//        return new Result<>(200, publicChatList);
 //    }
 
     public Result<List<PublicChatWithUser>> findAllPublicChatForLastDays(int days) {
         List<PublicChatWithUser> publicChatList = publicChatRepository.findAllPublicChatForLastDays(days);
-        return new Result<>(200,"Public Chat Details Retrieved Successfully", publicChatList);
+        return new Result<>(200, publicChatList);
     }
 
     public Result<List<PublicChatWithUser>> findAllPublicChatAfterId(int publicChatId) {
         List<PublicChatWithUser> publicChatList = publicChatRepository.findAllPublicChatAfterId(publicChatId);
-        return new Result<>(200,"Public Chat Details Retrieved Successfully", publicChatList);
+        return new Result<>(200, publicChatList);
     }
 
 //    public Result<List<PublicChatFormatted>> findAllPublicChatFormatted() {
 //        List<PublicChatFormatted> publicChatList = publicChatRepository.findAllPublicChatFormatted();
-//        return new Result<>(200,"Public Chat Details Retrieved Successfully", publicChatList);
+//        return new Result<>(200, publicChatList);
 //    }
 
     public Result<List<PublicChatFormatted>> findAllPublicChatFormattedForLastDays(int days) {
         List<PublicChatFormatted> publicChatList = publicChatRepository.findAllPublicChatFormattedForLastDays(days);
-        return new Result<>(200,"Public Chat Details Retrieved Successfully", publicChatList);
+        return new Result<>(200, publicChatList);
     }
 
     public Result<List<PublicChatFormatted>> findAllPublicChatFormattedAfterId(int publicChatId) {
         List<PublicChatFormatted> publicChatList = publicChatRepository.findAllPublicChatFormattedAfterId(publicChatId);
-        return new Result<>(200,"Public Chat Details Retrieved Successfully", publicChatList);
+        return new Result<>(200, publicChatList);
     }
 
     public Result<PublicChatWithUser> findPublicChatById(int publicChatId) throws Exception {

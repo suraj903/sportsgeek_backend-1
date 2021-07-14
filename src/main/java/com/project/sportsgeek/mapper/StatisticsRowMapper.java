@@ -19,7 +19,7 @@ public class StatisticsRowMapper implements RowMapper<Statistics> {
             statistics.setProfilePicture(rs.getString("ProfilePicture"));
         else
             statistics.setProfilePicture(Config.FIREBASE_URL + rs.getString("ProfilePicture") + Config.FIREBASE_PARAMS);
-        statistics.setTotalWinningPoints(rs.getInt("TotalWinningPoints"));
+        statistics.setAvailablePoints(rs.getInt("AvailablePoints"));
         return statistics;
     }
 }

@@ -10,16 +10,17 @@ spring:
 #    username: root
 #    password: ENC(QRWFXH2r6PfEQmr/WPB1Gw==)
 #    driver-class-name: com.mysql.cj.jdbc.Driver
-#  datasource:
-#    url: jdbc:mysql://sportsgeekdb.czwuknrdjddo.ap-south-1.rds.amazonaws.com:3306/sportsgeekdb
-#    username: ENC(BglRPvY2GycD4N4wo7KE6w==)
-#    password: ENC(Z54EdNXG1dKMtnP4y/0ukPet3Ogg9BRj)
-#    driver-class-name: com.mysql.cj.jdbc.Driver
   datasource:
-    url: jdbc:mysql://sql6.freemysqlhosting.net:3306/sql6424715
-    username: ENC(FCd5qEM1fOun6OB15QppJt/TVe2bDUcG)
-    password: ENC(/5zX6a50MiztKkU4+NtQwLgkANegOe9n)
+    url: jdbc:mysql://mysql-38452-0.cloudclusters.net:38452/sportsgeekdb
+    username: ENC(xwGAuFlhPIZgRVGPeNAJlw==)
+    password: ENC(y1qtzq9KK0uhapkuwY/EWIk98mwU3ZL8)
     driver-class-name: com.mysql.cj.jdbc.Driver
+#  datasource:
+#    url: jdbc:mysql://sql6.freemysqlhosting.net:3306/sql6424715
+#    username: ENC(FCd5qEM1fOun6OB15QppJt/TVe2bDUcG)
+#    password: ENC(/5zX6a50MiztKkU4+NtQwLgkANegOe9n)
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+
   jpa:
     hibernate:
       ddl-auto: none

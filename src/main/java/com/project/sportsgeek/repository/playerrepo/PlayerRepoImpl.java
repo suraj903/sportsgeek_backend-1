@@ -21,7 +21,7 @@ public class PlayerRepoImpl implements PlayerRepository {
     @Override
     public List<PlayerResponse> findAllPlayers() {
 //       String sql = "SELECT PlayerId,TeamId,Name,TypeId,ProfilePicture FROM Player";
-        String sql = "SELECT p.PlayerId as PlayerId, t.Name as TeamName, p.Name as Name,pt.TypeName as PlayerType, p.ProfilePicture as ProfilePicture " +
+        String sql = "SELECT p.PlayerId as PlayerId, t.Name as TeamName, p.Name as Name,pt.TypeName as PlayerType, p.ProfilePicture as ProfilePicture, t.TeamId as TeamId,pt.PlayerTypeId as PlayerTypeId " +
                 "FROM Player as p INNER JOIN PlayerType as pt on p.TypeId = pt.PlayerTypeId INNER JOIN Team as t on p.TeamId=t.TeamId";
        return jdbcTemplate.query(sql, new PlayerRowMapper());
     }
@@ -29,7 +29,7 @@ public class PlayerRepoImpl implements PlayerRepository {
     @Override
     public PlayerResponse findPlayerByPlayerId(int playerId) throws Exception {
 //        String sql = "SELECT PlayerId,TeamId,Name,TypeId,ProfilePicture FROM Player WHERE PlayerId="+id;
-        String sql = "SELECT p.PlayerId as PlayerId, t.Name as TeamName, p.Name as Name,pt.TypeName as PlayerType, p.ProfilePicture as ProfilePicture " +
+        String sql = "SELECT p.PlayerId as PlayerId, t.Name as TeamName, p.Name as Name,pt.TypeName as PlayerType, p.ProfilePicture as ProfilePicture, t.TeamId as TeamId,pt.PlayerTypeId as PlayerTypeId " +
                 "FROM Player as p INNER JOIN PlayerType as pt on p.TypeId = pt.PlayerTypeId INNER JOIN Team as t on p.TeamId=t.TeamId WHERE p.PlayerId=:playerId";
         MapSqlParameterSource params = new MapSqlParameterSource("playerId", playerId);
         List<PlayerResponse> playerList = jdbcTemplate.query(sql, params, new PlayerRowMapper());
@@ -43,7 +43,7 @@ public class PlayerRepoImpl implements PlayerRepository {
     @Override
     public List<PlayerResponse> findPlayerByPlayerType(int playerTypeId) throws Exception {
 //        String sql = "SELECT PlayerId,TeamId,Name,TypeId,ProfilePicture FROM Player WHERE TypeId="+id;
-        String sql = "SELECT p.PlayerId as PlayerId, t.Name as TeamName, p.Name as Name,pt.TypeName as PlayerType, p.ProfilePicture as ProfilePicture " +
+        String sql = "SELECT p.PlayerId as PlayerId, t.Name as TeamName, p.Name as Name,pt.TypeName as PlayerType, p.ProfilePicture as ProfilePicture, t.TeamId as TeamId,pt.PlayerTypeId as PlayerTypeId " +
                 "FROM Player as p INNER JOIN PlayerType as pt on p.TypeId = pt.PlayerTypeId INNER JOIN Team as t on p.TeamId=t.TeamId WHERE p.TypeId=:playerTypeId";
         MapSqlParameterSource params = new MapSqlParameterSource("playerTypeId", playerTypeId);
         return jdbcTemplate.query(sql, params, new PlayerRowMapper());
@@ -52,7 +52,7 @@ public class PlayerRepoImpl implements PlayerRepository {
     @Override
     public List<PlayerResponse> findPlayerByTeamId(int teamId) throws Exception {
 //        String sql = "SELECT PlayerId,TeamId,Name,TypeId,ProfilePicture FROM Player WHERE TeamId="+id;
-        String sql = "SELECT p.PlayerId as PlayerId, t.Name as TeamName, p.Name as Name,pt.TypeName as PlayerType, p.ProfilePicture as ProfilePicture " +
+        String sql = "SELECT p.PlayerId as PlayerId, t.Name as TeamName, p.Name as Name,pt.TypeName as PlayerType, p.ProfilePicture as ProfilePicture, t.TeamId as TeamId,pt.PlayerTypeId as PlayerTypeId " +
                 "FROM Player as p INNER JOIN PlayerType as pt on p.TypeId = pt.PlayerTypeId INNER JOIN Team as t on p.TeamId=t.TeamId WHERE p.TeamId=:teamId";
         MapSqlParameterSource params = new MapSqlParameterSource("teamId", teamId);
         return jdbcTemplate.query(sql, params, new PlayerRowMapper());

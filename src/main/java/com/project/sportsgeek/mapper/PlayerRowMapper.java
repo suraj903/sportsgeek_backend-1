@@ -20,6 +20,8 @@ public class PlayerRowMapper implements RowMapper<PlayerResponse> {
         else
             player.setProfilePicture(Config.FIREBASE_URL + rs.getString("ProfilePicture") + Config.FIREBASE_PARAMS);
         player.setTeam(rs.getString("TeamName"));
+        player.setTypeId(rs.getInt("PlayerTypeId"));
+        player.setTeamId(rs.getInt("TeamId"));
         return player;
     }
 }

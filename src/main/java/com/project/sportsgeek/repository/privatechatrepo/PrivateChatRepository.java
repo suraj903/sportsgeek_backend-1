@@ -15,5 +15,6 @@ public interface PrivateChatRepository {
     boolean updatePrivateChat(int privateChatId, PrivateChat privateChat) throws Exception;
 
     boolean deletePrivateChat(int privateChatId) throws Exception;
+    boolean deletePrivateChatByUserId(int userId) throws Exception;
 
 }

@@ -83,4 +83,11 @@ public class ContestLogRepoImpl implements ContestLogRepository {
         MapSqlParameterSource params = new MapSqlParameterSource("contestLogId", contestLogId);
         return jdbcTemplate.query(sql, params, new ContestLogFormattedRowMapper());
     }
+
+    @Override
+    public boolean deleteContestLogByUserId(int userId) throws Exception {
+        String sql = "DELETE FROM ContestLog WHERE UserId = :userId";
+        MapSqlParameterSource params = new MapSqlParameterSource("userId", userId);
+        return jdbcTemplate.update(sql, params) > 0;
+    }
 }

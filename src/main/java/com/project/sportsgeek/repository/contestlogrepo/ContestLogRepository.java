@@ -18,4 +18,6 @@ public interface ContestLogRepository {
 
     List<ContestLogFormatted> findAllContestLogFormattedForLastDays(int days);
     List<ContestLogFormatted> findAllContestLogFormattedAfterId(int contestLogId);
+
+    boolean deleteContestLogByUserId(int userId) throws Exception;
 }

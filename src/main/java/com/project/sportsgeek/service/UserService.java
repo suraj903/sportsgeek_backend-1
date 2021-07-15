@@ -11,6 +11,7 @@ import com.project.sportsgeek.model.Email;
 import com.project.sportsgeek.model.EmailContact;
 import com.project.sportsgeek.model.MobileContact;
 import com.project.sportsgeek.model.profile.*;
+import com.project.sportsgeek.repository.contestlogrepo.ContestLogRepository;
 import com.project.sportsgeek.repository.contestrepo.ContestRepository;
 import com.project.sportsgeek.repository.emailcontactrepo.EmailContactRepository;
 import com.project.sportsgeek.repository.mobilecontactrepo.MobileContactRepository;
@@ -55,6 +56,10 @@ public class UserService implements UserDetailsService {
 	@Autowired
 	@Qualifier(value = "contestRepo")
 	ContestRepository contestRepository;
+
+	@Autowired
+	@Qualifier(value = "contestLogRepo")
+	ContestLogRepository contestLogRepository;
 
 	@Autowired
 	EmailService emailService;
@@ -372,6 +377,7 @@ public class UserService implements UserDetailsService {
 			mobileContactRepository.deleteMobileContactByUserId(userId);
 			rechargeRepository.deleteRechargeByUserId(userId);
 			contestRepository.deleteContestsByUserId(userId);
+			contestLogRepository.deleteContestLogByUserId(userId);
 			publicChatRepository.deletePublicChatByUserId(userId);
 			privateChatRepository.deletePrivateChatByUserId(userId);
 			userRepository.deleteUser(userId);

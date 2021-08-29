@@ -11,7 +11,7 @@
 	<groupId>com.project</groupId>
 	<artifactId>sportsgeek</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>SportSGeek</name>
+	<name>SportsGeek</name>
 	<description>SportsGeek Project</description>
 	<properties>
 		<java.version>1.8</java.version>

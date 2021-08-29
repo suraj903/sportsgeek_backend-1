@@ -11,9 +11,9 @@ spring:
 #    password: ENC(QRWFXH2r6PfEQmr/WPB1Gw==)
 #    driver-class-name: com.mysql.cj.jdbc.Driver
   datasource:
-    url: jdbc:mysql://mysql-38452-0.cloudclusters.net:38452/sportsgeekdb
+    url: jdbc:mysql://mysql-47802-0.cloudclusters.net:18936/sportsgeekdb
     username: ENC(xwGAuFlhPIZgRVGPeNAJlw==)
-    password: ENC(y1qtzq9KK0uhapkuwY/EWIk98mwU3ZL8)
+    password: ENC(MOofLqPHPH6tFL1xTbvOXycacmummo1X)
     driver-class-name: com.mysql.cj.jdbc.Driver
 #  datasource:
 #    url: jdbc:mysql://sql6.freemysqlhosting.net:3306/sql6424715

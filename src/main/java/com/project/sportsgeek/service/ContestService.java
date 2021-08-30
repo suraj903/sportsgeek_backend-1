@@ -53,7 +53,19 @@ public class ContestService {
         Timestamp matchStartDatetime = matchesRepository.getMatchStartDatetimeById(contest.getMatchId());
         // Get Database Current Timestamp
         Timestamp currentTimestamp = matchesRepository.getCurrentTimestamp();
-        if(matchStartDatetime.after(currentTimestamp)){
+        if(currentTimestamp.after(matchStartDatetime)){
+            throw new ResultException(new Result<>(400, "Contest cannot be placed as the Match has already started."));
+        }
+        // Validate with Minimum Contest Points
+        else if(contest.getContestPoints() < matchesRepository.findMatchById(contest.getMatchId()).getMinimumPoints()){
+            throw new ResultException(new Result<>(400, "Contest cannot be placed as Contest points is less than minimum points."));
+        }
+        // Validate with User Available Points
+        else if(contest.getContestPoints() > userRepository.findUserByUserId(contest.getUserId()).getAvailablePoints()){
+            throw new ResultException(new Result<>(400, "Contest cannot be placed as Contest points is greater than user available points."));
+        }
+        else{
+            // Validation success, so add contest
             int contestId = contestRepository.addContest(contest);
             if (contestId > 0) {
                 contest.setContestId(contestId);
@@ -75,9 +87,6 @@ public class ContestService {
                 throw new ResultException(new Result<>(500, "Unable to update user available points."));
             }
             throw new ResultException(new Result<>(500, "Unable to add Contest"));
-        }
-        else{
-            throw new ResultException(new Result<>(400, "Contest cannot be placed as the Match has already started."));
         }
     }
 

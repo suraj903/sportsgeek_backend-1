@@ -58,11 +58,11 @@ public class ContestService {
         }
         // Validate with Minimum Contest Points
         else if(contest.getContestPoints() < matchesRepository.findMatchById(contest.getMatchId()).getMinimumPoints()){
-            throw new ResultException(new Result<>(400, "Contest cannot be placed as Contest points is less than minimum points."));
+            throw new ResultException(new Result<>(400, "Contest points is less than minimum points."));
         }
         // Validate with User Available Points
         else if(contest.getContestPoints() > userRepository.findUserByUserId(contest.getUserId()).getAvailablePoints()){
-            throw new ResultException(new Result<>(400, "Contest cannot be placed as Contest points is greater than user available points."));
+            throw new ResultException(new Result<>(400, "Contest points is greater than user available points."));
         }
         else{
             // Validation success, so add contest

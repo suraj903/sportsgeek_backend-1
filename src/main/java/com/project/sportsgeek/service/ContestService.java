@@ -91,14 +91,25 @@ public class ContestService {
     }
 
     public Result<Contest> updateContest(int contestId, Contest contest) throws Exception {
+        // Get old Contest Points
+        Contest oldContest = contestRepository.findContestById(contestId);
         // Validation of Match StartTime
         Timestamp matchStartDatetime = matchesRepository.getMatchStartDatetimeById(contest.getMatchId());
         // Get Database Current Timestamp
         Timestamp currentTimestamp = matchesRepository.getCurrentTimestamp();
-        if(matchStartDatetime.after(currentTimestamp)) {
+        if(currentTimestamp.after(matchStartDatetime)) {
+            throw new ResultException(new Result<>(400, "Contest cannot be updated as the Match has already started."));
+        }
+        // Validate with Minimum Contest Points
+        else if(contest.getContestPoints() < matchesRepository.findMatchById(contest.getMatchId()).getMinimumPoints()){
+            throw new ResultException(new Result<>(400, "Contest points is less than minimum points."));
+        }
+        // Validate with User Available Points
+        else if(contest.getContestPoints() > (userRepository.findUserByUserId(contest.getUserId()).getAvailablePoints() + oldContest.getContestPoints())){
+            throw new ResultException(new Result<>(400, "Contest points is greater than user available points + old contest points."));
+        }
+        else{
             contest.setContestId(contestId);
-            // Get old Contest Points
-            Contest oldContest = contestRepository.findContestById(contestId);
             if(oldContest.getTeamId() != contest.getTeamId() || oldContest.getContestPoints() != contest.getContestPoints()){
                 if (contestRepository.updateContest(contestId, contest)) {
                     // Update User Available Points
@@ -122,8 +133,6 @@ public class ContestService {
             }else{
                 return new Result<>(200, contest);
             }
-        }else{
-            throw new ResultException(new Result<>(400, "Contest cannot be updated as the Match has already started."));
         }
     }
 

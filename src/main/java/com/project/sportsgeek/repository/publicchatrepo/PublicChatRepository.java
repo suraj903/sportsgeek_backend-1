@@ -26,6 +26,7 @@ public interface PublicChatRepository {
     int addPublicChat(PublicChat publicChat) throws Exception;
 
     boolean updatePublicChat(int publicChatId, PublicChat publicChat) throws Exception;
+    boolean updatePublicChatStatus(int publicChatId, boolean status) throws Exception;
 
     boolean deletePublicChat(int publicChatId) throws Exception;
     boolean deletePublicChatByUserId(int userId) throws Exception;

@@ -143,9 +143,23 @@ public class PublicChatController {
     )
     @PreAuthorize("hasAnyRole('Admin','User')")
     @PutMapping(value = "/{publicChatId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PublicChat> updatePublicChat(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int publicChatId,@RequestBody(required = true) @Valid PublicChat publicChat) throws Exception {
+    public ResponseEntity<PublicChat> updatePublicChat(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int publicChatId, @RequestBody(required = true) @Valid PublicChat publicChat) throws Exception {
         Result<PublicChat> publicChatResult = publicChatService.updatePublicChat(publicChatId, publicChat);
         return new ResponseEntity(publicChatResult.getData(), HttpStatus.valueOf(publicChatResult.getCode()));
+    }
+
+    @ApiResponses(value =
+            {
+                    @ApiResponse(code = 201, message = "success", response = PublicChat.class),
+                    @ApiResponse(code = 400, message = "Bad request", response = ResultException.class),
+                    @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = ResultException.class)
+            }
+    )
+    @PreAuthorize("hasAnyRole('Admin')")
+    @PutMapping(value = "/{publicChatId}/status/{status}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Result<String>> updatePublicChatStatus(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int publicChatId, @PathVariable @Valid boolean status) throws Exception {
+        Result<String> result = publicChatService.updatePublicChatStatus(publicChatId, status);
+        return new ResponseEntity(result, HttpStatus.valueOf(result.getCode()));
     }
 
     @ApiResponses(value =
@@ -155,7 +169,7 @@ public class PublicChatController {
                     @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = ResultException.class)
             }
     )
-    @PreAuthorize("hasAnyRole('Admin','User')")
+    @PreAuthorize("hasAnyRole('Admin')")
     @DeleteMapping(value = "/{publicChatId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Result<String>> deletePublicChatById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int publicChatId) throws Exception {
         Result<String> result =  publicChatService.deletePublicChat(publicChatId);

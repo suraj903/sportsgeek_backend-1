@@ -95,6 +95,14 @@ public class PublicChatRepoImpl implements PublicChatRepository {
     }
 
     @Override
+    public boolean updatePublicChatStatus(int publicChatId, boolean status) throws Exception {
+        String sql = "UPDATE PublicChat SET Status = :status WHERE PublicChatId = :publicChatId";
+        MapSqlParameterSource params = new MapSqlParameterSource("publicChatId", publicChatId);
+        params.addValue("status", status);
+        return jdbcTemplate.update(sql, params) > 0;
+    }
+
+    @Override
     public boolean deletePublicChat(int publicChatId) throws Exception {
         String sql = "DELETE FROM PublicChat WHERE PublicChatId = :publicChatId";
         MapSqlParameterSource params = new MapSqlParameterSource("publicChatId", publicChatId);

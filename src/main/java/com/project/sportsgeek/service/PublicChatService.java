@@ -76,9 +76,16 @@ public class PublicChatService {
         throw new ResultException(new Result<>(404, "Public Chat with PublicChatId: " + publicChatId + " not found."));
     }
 
+    public Result<String> updatePublicChatStatus(int publicChatId, boolean status) throws Exception {
+        if (publicChatRepository.updatePublicChatStatus(publicChatId, status)) {
+            return new Result<>(200, "Status of PublicChatId: " + publicChatId + " updated successfully.");
+        }
+        throw new ResultException(new Result<>(404, "Public Chat with PublicChatId: " + publicChatId + " not found."));
+    }
+
     public Result<String> deletePublicChat(int publicChatId) throws Exception{
         if (publicChatRepository.deletePublicChat(publicChatId)) {
-            return new Result<>(200,"Public Chat Deleted Successfully");
+            return new Result<>(200, "Public Chat Deleted Successfully");
         }
         throw new ResultException(new Result<>(404, "Public Chat with PublicChatId: " + publicChatId + " not found."));
     }

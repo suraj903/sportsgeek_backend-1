@@ -45,7 +45,7 @@ public class ContestService {
             return new Result<>(200, contest);
         }
 //        throw new ResultException((new Result<>(404,"Contest for userId: "+ userId +" for matchId: " + matchId + " not found")));
-        throw new ResultException((new Result<>(404,"Contest not found. Please place contest")));
+        throw new ResultException((new Result<>(404,"Bet not found. Please place Bet.")));
     }
 
     public Result<Contest> addContest(Contest contest) throws Exception {
@@ -54,15 +54,15 @@ public class ContestService {
         // Get Database Current Timestamp
         Timestamp currentTimestamp = matchesRepository.getCurrentTimestamp();
         if(currentTimestamp.after(matchStartDatetime)){
-            throw new ResultException(new Result<>(400, "Contest cannot be placed as the Match has already started."));
+            throw new ResultException(new Result<>(400, "Bet cannot be placed as the Match has already started."));
         }
         // Validate with Minimum Contest Points
         else if(contest.getContestPoints() < matchesRepository.findMatchById(contest.getMatchId()).getMinimumPoints()){
-            throw new ResultException(new Result<>(400, "Contest points is less than minimum points."));
+            throw new ResultException(new Result<>(400, "Bet points is less than minimum bet points."));
         }
         // Validate with User Available Points
         else if(contest.getContestPoints() > userRepository.findUserByUserId(contest.getUserId()).getAvailablePoints()){
-            throw new ResultException(new Result<>(400, "Contest points is greater than user available points."));
+            throw new ResultException(new Result<>(400, "Bet points is greater than user available points."));
         }
         else{
             // Validation success, so add contest
@@ -86,7 +86,7 @@ public class ContestService {
                 }
                 throw new ResultException(new Result<>(500, "Unable to update user available points."));
             }
-            throw new ResultException(new Result<>(500, "Unable to add Contest"));
+            throw new ResultException(new Result<>(500, "Unable to place Bet"));
         }
     }
 
@@ -106,7 +106,7 @@ public class ContestService {
         }
         // Validate with User Available Points
         else if(contest.getContestPoints() > (userRepository.findUserByUserId(contest.getUserId()).getAvailablePoints() + oldContest.getContestPoints())){
-            throw new ResultException(new Result<>(400, "Contest points is greater than user available points + old contest points."));
+            throw new ResultException(new Result<>(400, "Bet points is greater than user available points + old contest points."));
         }
         else{
             contest.setContestId(contestId);
@@ -129,7 +129,7 @@ public class ContestService {
                     }
                     throw new ResultException(new Result<>(500, "Unable to update user available points."));
                 }
-                throw new ResultException(new Result(404, "Contest not found."));
+                throw new ResultException(new Result(404, "Bet not found."));
             }else{
                 return new Result<>(200, contest);
             }

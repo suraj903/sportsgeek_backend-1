@@ -21,62 +21,62 @@ import javax.validation.constraints.Pattern;
 @RestController
 @RequestMapping(path = "/private-chat",produces = MediaType.APPLICATION_JSON_VALUE)
 public class PrivateChatController {
-    @Autowired
-    PrivateChatService privateChatService;
-
-    @ApiResponses(value =
-            {
-                    @ApiResponse(code = 200, message = "success", response = PrivateChat.class),
-                    @ApiResponse(code = 404, message = "Bad request", response = ResultException.class),
-                    @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = ResultException.class)
-            }
-    )
-    @PreAuthorize("hasAnyRole('Admin','User')")
-    @GetMapping(value = "/users/{userId1}/{userId2}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<PrivateChat>> getPrivateChatByUserId(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int userId1, @PathVariable @Valid @Pattern(regexp = "[0-9]*") int userId2) throws Exception {
-        Result<List<PrivateChat>> privateChatList = privateChatService.findPrivateChatByUserId(userId1, userId2);
-        return new ResponseEntity<>(privateChatList.getData(), HttpStatus.valueOf(privateChatList.getCode()));
-    }
-
-    @ApiResponses(value =
-            {
-                    @ApiResponse(code = 201, message = "success", response = PrivateChat.class),
-                    @ApiResponse(code = 400, message = "Bad request", response = ResultException.class),
-                    @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = ResultException.class)
-            }
-    )
-    @PreAuthorize("hasAnyRole('Admin','User')")
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PrivateChat> addPrivateChat(@RequestBody(required = true) @Valid PrivateChat privateChat) throws Exception {
-        Result<PrivateChat> privateChatResult = privateChatService.addPrivateChat(privateChat);
-        return new ResponseEntity(privateChatResult.getData(), HttpStatus.valueOf(privateChatResult.getCode()));
-    }
-
-    @ApiResponses(value =
-            {
-                    @ApiResponse(code = 201, message = "success", response = PrivateChat.class),
-                    @ApiResponse(code = 400, message = "Bad request", response = ResultException.class),
-                    @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = ResultException.class)
-            }
-    )
-    @PreAuthorize("hasAnyRole('Admin','User')")
-    @PutMapping(value = "/{privateChatId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<PrivateChat> updatePrivateChat(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int privateChatId,@RequestBody(required = true) @Valid PrivateChat privateChat) throws Exception {
-        Result<PrivateChat> privateChatResult = privateChatService.updatePrivateChat(privateChatId, privateChat);
-        return new ResponseEntity(privateChatResult.getData(), HttpStatus.valueOf(privateChatResult.getCode()));
-    }
-
-    @ApiResponses(value =
-            {
-                    @ApiResponse(code = 200, message = "success", response = PrivateChat.class),
-                    @ApiResponse(code = 404, message = "Bad request", response = ResultException.class),
-                    @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = ResultException.class)
-            }
-    )
-    @PreAuthorize("hasAnyRole('Admin','User')")
-    @DeleteMapping(value = "/{privateChatId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Result<String>> deletePrivateChatById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int privateChatId) throws Exception {
-        Result<String> result =  privateChatService.deletePrivateChat(privateChatId);
-        return new ResponseEntity(result, HttpStatus.valueOf(result.getCode()));
-    }
+//    @Autowired
+//    PrivateChatService privateChatService;
+//
+//    @ApiResponses(value =
+//            {
+//                    @ApiResponse(code = 200, message = "success", response = PrivateChat.class),
+//                    @ApiResponse(code = 404, message = "Bad request", response = ResultException.class),
+//                    @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = ResultException.class)
+//            }
+//    )
+//    @PreAuthorize("hasAnyRole('Admin','User')")
+//    @GetMapping(value = "/users/{userId1}/{userId2}",produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<List<PrivateChat>> getPrivateChatByUserId(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int userId1, @PathVariable @Valid @Pattern(regexp = "[0-9]*") int userId2) throws Exception {
+//        Result<List<PrivateChat>> privateChatList = privateChatService.findPrivateChatByUserId(userId1, userId2);
+//        return new ResponseEntity<>(privateChatList.getData(), HttpStatus.valueOf(privateChatList.getCode()));
+//    }
+//
+//    @ApiResponses(value =
+//            {
+//                    @ApiResponse(code = 201, message = "success", response = PrivateChat.class),
+//                    @ApiResponse(code = 400, message = "Bad request", response = ResultException.class),
+//                    @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = ResultException.class)
+//            }
+//    )
+//    @PreAuthorize("hasAnyRole('Admin','User')")
+//    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<PrivateChat> addPrivateChat(@RequestBody(required = true) @Valid PrivateChat privateChat) throws Exception {
+//        Result<PrivateChat> privateChatResult = privateChatService.addPrivateChat(privateChat);
+//        return new ResponseEntity(privateChatResult.getData(), HttpStatus.valueOf(privateChatResult.getCode()));
+//    }
+//
+//    @ApiResponses(value =
+//            {
+//                    @ApiResponse(code = 201, message = "success", response = PrivateChat.class),
+//                    @ApiResponse(code = 400, message = "Bad request", response = ResultException.class),
+//                    @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = ResultException.class)
+//            }
+//    )
+//    @PreAuthorize("hasAnyRole('Admin','User')")
+//    @PutMapping(value = "/{privateChatId}",produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<PrivateChat> updatePrivateChat(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int privateChatId,@RequestBody(required = true) @Valid PrivateChat privateChat) throws Exception {
+//        Result<PrivateChat> privateChatResult = privateChatService.updatePrivateChat(privateChatId, privateChat);
+//        return new ResponseEntity(privateChatResult.getData(), HttpStatus.valueOf(privateChatResult.getCode()));
+//    }
+//
+//    @ApiResponses(value =
+//            {
+//                    @ApiResponse(code = 200, message = "success", response = PrivateChat.class),
+//                    @ApiResponse(code = 404, message = "Bad request", response = ResultException.class),
+//                    @ApiResponse(code = 500, message = "Unfortunately there is technical error while processing your request", response = ResultException.class)
+//            }
+//    )
+//    @PreAuthorize("hasAnyRole('Admin','User')")
+//    @DeleteMapping(value = "/{privateChatId}",produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<Result<String>> deletePrivateChatById(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int privateChatId) throws Exception {
+//        Result<String> result =  privateChatService.deletePrivateChat(privateChatId);
+//        return new ResponseEntity(result, HttpStatus.valueOf(result.getCode()));
+//    }
 }

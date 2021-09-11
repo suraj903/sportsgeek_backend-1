@@ -22,7 +22,7 @@ public class ContestLogWithUserRowMapper implements RowMapper<ContestLogWithUser
         String msg = team1Name + " VS " + team2Name + " " + getFormattedDate(matchStartDatetime);
         msg += " -> " + rs.getString("FirstName") + " " + rs.getString("LastName");
         if(rs.getString("Action").equals("INSERT")){
-            msg += " placed contest on " + newTeamName + " for " + rs.getInt("NewContestPoints") + " points";
+            msg += " placed bet on " + newTeamName + " for " + rs.getInt("NewContestPoints") + " points";
         }
         else if(rs.getString("Action").equals("UPDATE")){
             String oldTeamName = rs.getInt("OldTeamId") == rs.getInt("Team1") ? rs.getString("Team1Name") : rs.getString("Team2Name");
@@ -30,7 +30,7 @@ public class ContestLogWithUserRowMapper implements RowMapper<ContestLogWithUser
             int newPoints = rs.getInt("NewContestPoints");
             msg += " changed ";
             if(!newTeamName.equals(oldTeamName) && newPoints != oldPoints){
-                msg += "contest from " + oldTeamName + " to " + newTeamName + " from " + oldPoints + " to " + newPoints;
+                msg += "bet from " + oldTeamName + " to " + newTeamName + " from " + oldPoints + " to " + newPoints;
             }
             else if(newPoints != oldPoints){
                 msg += "points from " + oldPoints + " to " + newPoints + " for " + newTeamName;

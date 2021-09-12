@@ -36,6 +36,9 @@ public class ContestLogController {
     @PreAuthorize("hasAnyRole('Admin','User')")
     @GetMapping(value = "/last-days/{days}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ContestLogWithUser>> getAllContestLogForLastDays(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int days) {
+        if(days > 30){
+            days = 30;  // Set Max days
+        }
         Result<List<ContestLogWithUser>> contestLogList = contestLogService.findAllContestLogForLastDays(days);
         return new ResponseEntity<>(contestLogList.getData(), HttpStatus.valueOf(contestLogList.getCode()));
     }
@@ -63,6 +66,9 @@ public class ContestLogController {
     @PreAuthorize("hasAnyRole('Admin','User')")
     @GetMapping(value = "/formatted/last-days/{days}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ContestLogFormatted>> getAllContestLogFormattedForLastDays(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int days) {
+        if(days > 30){
+            days = 30;  // Set Max days
+        }
         Result<List<ContestLogFormatted>> contestLogList = contestLogService.findAllContestLogFormattedForLastDays(days);
         return new ResponseEntity<>(contestLogList.getData(), HttpStatus.valueOf(contestLogList.getCode()));
     }

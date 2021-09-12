@@ -49,6 +49,9 @@ public class PublicChatController {
     @PreAuthorize("hasAnyRole('Admin','User')")
     @GetMapping(value = "/last-days/{days}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<PublicChatWithUser>> getAllPublicChatForLastDays(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int days) {
+        if(days > 30){
+            days = 30;  // Set Max days
+        }
         Result<List<PublicChatWithUser>> publicChatList = publicChatService.findAllPublicChatForLastDays(days);
         return new ResponseEntity<>(publicChatList.getData(), HttpStatus.valueOf(publicChatList.getCode()));
     }
@@ -89,6 +92,9 @@ public class PublicChatController {
     @PreAuthorize("hasAnyRole('Admin','User')")
     @GetMapping(value = "/formatted/last-days/{days}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<PublicChatFormatted>> getAllPublicChatFormattedForLastDays(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int days) {
+        if(days > 30){
+            days = 30;  // Set Max days
+        }
         Result<List<PublicChatFormatted>> publicChatList = publicChatService.findAllPublicChatFormattedForLastDays(days);
         return new ResponseEntity<>(publicChatList.getData(), HttpStatus.valueOf(publicChatList.getCode()));
     }

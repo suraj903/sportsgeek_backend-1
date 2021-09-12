@@ -27,6 +27,7 @@ public class MyMatchesResultRowMapper implements RowMapper<MyMatches> {
         myMatchesResult.setStartDatetime(rs.getTimestamp("StartDateTime"));
         myMatchesResult.setWinningPoints(rs.getInt("WinningPoints"));
         myMatchesResult.setWinnerTeamName(rs.getString("WinnerTeam"));
+        myMatchesResult.setResultStatus(rs.getInt("ResultStatus"));
         myMatchesResult.setMatchId(rs.getInt("MatchId"));
         return myMatchesResult;
     }

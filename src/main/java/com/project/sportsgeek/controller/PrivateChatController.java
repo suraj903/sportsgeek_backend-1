@@ -18,8 +18,8 @@ import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 
-@RestController
-@RequestMapping(path = "/private-chat",produces = MediaType.APPLICATION_JSON_VALUE)
+//@RestController
+//@RequestMapping(path = "/private-chat",produces = MediaType.APPLICATION_JSON_VALUE)
 public class PrivateChatController {
 //    @Autowired
 //    PrivateChatService privateChatService;

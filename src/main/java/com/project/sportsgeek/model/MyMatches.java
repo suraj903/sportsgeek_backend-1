@@ -35,5 +35,6 @@ public class MyMatches implements Serializable {
     private String Venue;
     private Timestamp StartDatetime;
     private String WinnerTeamName;
+    private int resultStatus;
     private int WinningPoints;
 }

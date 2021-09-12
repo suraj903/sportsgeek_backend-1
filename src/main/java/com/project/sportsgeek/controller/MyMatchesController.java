@@ -67,7 +67,7 @@ public class MyMatchesController {
     )
     @PreAuthorize("hasAnyRole('Admin','User')")
     @GetMapping(value = "/users/{userId}/result",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<MyMatches>> getResultContestByUserId(@PathVariable @Valid @Pattern(regexp = "[0-9]*")  int userId) throws Exception {
+    public ResponseEntity<List<MyMatches>> getResultContestByUserId(@PathVariable @Valid @Pattern(regexp = "[0-9]*") int userId) throws Exception {
         Result<List<MyMatches>> matchesList = myMatchesService.findResultMatchesByUserId(userId);
         return new ResponseEntity<>(matchesList.getData(), HttpStatus.valueOf(matchesList.getCode()));
     }

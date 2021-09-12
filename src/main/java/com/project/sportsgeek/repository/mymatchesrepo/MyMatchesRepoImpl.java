@@ -42,7 +42,7 @@ public class MyMatchesRepoImpl implements MyMatchesRepository {
 
     @Override
     public List<MyMatches> findResultContestByUserId(int userId) throws Exception {
-        String sql = " SELECT StartDatetime, t3.ShortName as TeamName, ContestPoints, t1.ShortName as Team1Short, t1.TeamLogo as Team1Logo, t2.ShortName as Team2Short, t2.TeamLogo as Team2Logo, v.Name as Venue, WinningPoints, t4.ShortName as WinnerTeam,c.MatchId as MatchId \n" +
+        String sql = " SELECT StartDatetime, t3.ShortName as TeamName, ContestPoints, t1.ShortName as Team1Short, t1.TeamLogo as Team1Logo, t2.ShortName as Team2Short, t2.TeamLogo as Team2Logo, v.Name as Venue, WinningPoints, t4.ShortName as WinnerTeam, ResultStatus, c.MatchId as MatchId \n" +
                 "        FROM Matches as m inner join Team as t1 on m.Team1=t1.TeamId\n" +
                 "        inner join Team as t2 on m.Team2=t2.TeamId\n" +
                 "        inner join Contest as c on c.MatchId = m.MatchId\n" +

@@ -30,7 +30,7 @@ public class ContestLogFormattedRowMapper implements RowMapper<ContestLogFormatt
             int newPoints = rs.getInt("NewContestPoints");
             msg += " changed ";
             if(!newTeamName.equals(oldTeamName) && newPoints != oldPoints){
-                msg += "bet from " + oldTeamName + " to " + newTeamName + " from " + oldPoints + " to " + newPoints;
+                msg += "bet from " + oldTeamName + " to " + newTeamName + " from " + oldPoints + " to " + newPoints + " points";
             }
             else if(newPoints != oldPoints){
                 msg += "points from " + oldPoints + " to " + newPoints + " for " + newTeamName;

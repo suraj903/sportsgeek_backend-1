@@ -8,7 +8,8 @@ spring:
 #  datasource:
 #    url: jdbc:mysql://localhost:3306/sportsgeekdb
 #    username: root
-#    password: ENC(QRWFXH2r6PfEQmr/WPB1Gw==)
+##    password: ENC(QRWFXH2r6PfEQmr/WPB1Gw==)
+#    password: elephant
 #    driver-class-name: com.mysql.cj.jdbc.Driver
   datasource:
     url: jdbc:mysql://mysql-47802-0.cloudclusters.net:18936/sportsgeekdb

@@ -17,14 +17,14 @@ public class JwtTokenUtil implements Serializable {
 
     private static final long serialVersionUID = -2550185165626007488L;
 
-    public static final long JWT_TOKEN_VALIDITY = 180*24*60*60;  // 6 months
+//    public static final long JWT_TOKEN_VALIDITY = 180*24*60*60;  // 6 months
 //    public static final long JWT_TOKEN_VALIDITY = 60*60*24*30; // 30 days
 //    public static final long JWT_TOKEN_VALIDITY = 60*60*1;  // 1 hour
 //    public static final long JWT_TOKEN_VALIDITY = 60*60*5; // 5 hours
-//    public static final long JWT_TOKEN_VALIDITY = 60*2;  // 2 minutes
+    public static final long JWT_TOKEN_VALIDITY = 60*2;  // 2 minutes
 
-    private String secret = "secret";
-//    private String secret = "!N@2PzeQV5weNm3Y";
+//    private String secret = "secret";
+    private String secret = "N@2Pz!eQV5weNm3Y";
 
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);

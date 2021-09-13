@@ -56,7 +56,7 @@ public class UserController {
     @PreAuthorize("hasAnyRole('Admin','User')")
     @GetMapping("/{userId}")
     public ResponseEntity<UserResponse> getUserById(@PathVariable int userId) throws Exception {
-        System.out.println("userId : " + userId);
+//        System.out.println("userId : " + userId);
         Result<UserResponse> userResult = userService.findUserByUserId(userId);
         return new ResponseEntity<>(userResult.getData(), HttpStatus.valueOf(userResult.getCode()));
     }
@@ -138,7 +138,7 @@ public class UserController {
     @PreAuthorize("hasAnyRole('Admin','User')")
     @PutMapping("/update-password")
     public ResponseEntity<Result<String>> updatePassword(@RequestBody(required = true) UserWithNewPassword userWithNewPassword) throws Exception {
-        System.out.println(userWithNewPassword);
+//        System.out.println(userWithNewPassword);
         Result<String> userResult = userService.updatePassword(userWithNewPassword);
         return new ResponseEntity<>(userResult, HttpStatus.valueOf(userResult.getCode()));
     }

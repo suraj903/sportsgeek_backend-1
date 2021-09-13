@@ -88,9 +88,9 @@ public class UserService implements UserDetailsService {
 	}
 
 	public Result<UserResponse> findUserByUserId(int userId) throws Exception {
-		System.out.println("Service userId : " + userId);
+//		System.out.println("Service userId : " + userId);
 		UserResponse user = userRepository.findUserByUserId(userId);
-		System.out.println("Service : " + user);
+//		System.out.println("Service : " + user);
 		if (user != null) {
 			return new Result<>(200, user);
 		}

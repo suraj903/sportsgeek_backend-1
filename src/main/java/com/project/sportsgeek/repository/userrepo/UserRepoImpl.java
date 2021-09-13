@@ -37,12 +37,12 @@ public class UserRepoImpl implements UserRepository {
 
 	@Override
 	public UserResponse findUserByUserId(int userId) throws Exception {
-		System.out.println("Repo userId : " + userId);
+//		System.out.println("Repo userId : " + userId);
 		String sql = "SELECT User.UserId as UserId, FirstName, LastName, User.GenderId, Gender.Name as GenderName, User.RoleId, Role.Name as RoleName, Username, AvailablePoints, ProfilePicture, Status, EmailContact.EmailId as Email, MobileContact.MobileNumber as MobileNumber FROM User inner join EmailContact on User.UserId=EmailContact.UserId inner join Gender on User.GenderId=Gender.GenderId inner join Role on User.RoleId=Role.RoleId inner join MobileContact on User.UserId=MobileContact.UserId WHERE User.UserId = :userId";
 		MapSqlParameterSource params = new MapSqlParameterSource("userId", userId);
 		List<UserResponse> userList = jdbcTemplate.query(sql, params, new UserResponseRowMapper());
-		System.out.println("userList Size : " + userList.size());
-		System.out.println("userList : " + userList);
+//		System.out.println("userList Size : " + userList.size());
+//		System.out.println("userList : " + userList);
 		if(userList.size() > 0){
 			return userList.get(0);
 		}
@@ -141,7 +141,7 @@ public class UserRepoImpl implements UserRepository {
 //		String sql = "SELECT u.UserId AS UserId, Username, r.Name AS Role, Status from User as u inner join Role as r on u.RoleId = r.RoleId where u.UserName=:username and u.Password=:password";
 
 		List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, new BeanPropertySqlParameterSource(userAtLogin));
-		System.out.println("List size : " + list.size());
+//		System.out.println("List size : " + list.size());
 		if (list.size() > 0) {
 			return new UserForLoginState(Integer.parseInt(list.get(0).get("UserId") + ""),
 					list.get(0).get("UserName") + "", list.get(0).get("Role") + "",

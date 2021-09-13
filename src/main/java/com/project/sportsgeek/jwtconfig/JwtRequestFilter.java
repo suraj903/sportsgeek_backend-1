@@ -7,6 +7,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.project.sportsgeek.exception.ResultException;
+import com.project.sportsgeek.response.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -43,14 +45,18 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             try {
                 username = jwttokenutil.getUsernameFromToken(jwtToken);
             } catch (IllegalArgumentException e) {
-                System.out.println("Unable to get JWT Token");
+//                System.out.println("Unable to get JWT Token");
+//                throw new ResultException((new Result<>(400,"Unable to get JWT Token")));
             } catch (ExpiredJwtException e) {
-                System.out.println("JWT Token has expired");
+//                System.out.println("JWT Token has expired");
+//                throw new ResultException((new Result<>(401,"JWT Token has expired")));
             }
-        } else {
-            logger.warn("JWT Token does not begin with Bearer String");
         }
+//        else {
+//            logger.warn("JWT Token does not begin with Bearer String");
+//        }
 
+        System.out.println("Username : " + username);
         //Once we get the token validate it.
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
